@@ -83,6 +83,24 @@ debugAndroidTestAnnotationProcessorClasspath - Resolved configuration for annota
 No dependencies
 
 debugAndroidTestCompileClasspath - Resolved configuration for compilation for variant: debugAndroidTest
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -142,17 +160,36 @@ debugAndroidTestCompileClasspath - Resolved configuration for compilation for va
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
           \--- org.jetbrains:annotations:13.0
 
 debugAndroidTestRuntimeClasspath - Resolved configuration for runtime for variant: debugAndroidTest
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -212,11 +249,12 @@ debugAndroidTestRuntimeClasspath - Resolved configuration for runtime for varian
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
@@ -244,6 +282,24 @@ debugCompile - Compile dependencies for 'debug' sources (deprecated: use 'debugI
 No dependencies
 
 debugCompileClasspath - Resolved configuration for compilation for variant: debug
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -303,11 +359,12 @@ debugCompileClasspath - Resolved configuration for compilation for variant: debu
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
@@ -326,6 +383,24 @@ debugProvided - Provided dependencies for 'debug' sources (deprecated: use 'debu
 No dependencies
 
 debugRuntimeClasspath - Resolved configuration for runtime for variant: debug
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -385,11 +460,12 @@ debugRuntimeClasspath - Resolved configuration for runtime for variant: debug
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
@@ -405,6 +481,24 @@ debugUnitTestAnnotationProcessorClasspath - Resolved configuration for annotatio
 No dependencies
 
 debugUnitTestCompileClasspath - Resolved configuration for compilation for variant: debugUnitTest
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -464,17 +558,36 @@ debugUnitTestCompileClasspath - Resolved configuration for compilation for varia
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
           \--- org.jetbrains:annotations:13.0
 
 debugUnitTestRuntimeClasspath - Resolved configuration for runtime for variant: debugUnitTest
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -534,11 +647,12 @@ debugUnitTestRuntimeClasspath - Resolved configuration for runtime for variant: 
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
@@ -554,6 +668,7 @@ default - Configuration for default artifacts.
 No dependencies
 
 implementation - Implementation only dependencies for 'main' sources. (n)
++--- com.google.firebase:firebase-auth:16.0.1 (n)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0 (n)
 +--- com.hannesdorfmann.mosby3:mvp-lce:3.1.0 (n)
 +--- com.jakewharton:butterknife:8.8.1 (n)
@@ -564,6 +679,7 @@ implementation - Implementation only dependencies for 'main' sources. (n)
 +--- io.reactivex.rxjava2:rxjava:2.1.14 (n)
 +--- io.reactivex.rxjava2:rxandroid:2.0.2 (n)
 +--- com.android.support.constraint:constraint-layout:1.1.0 (n)
++--- com.android.support:recyclerview-v7:25.4.0 (n)
 +--- com.google.android.gms:play-services-maps:15.0.1 (n)
 +--- unspecified (n)
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41 (n)
@@ -861,6 +977,24 @@ releaseCompile - Compile dependencies for 'release' sources (deprecated: use 're
 No dependencies
 
 releaseCompileClasspath - Resolved configuration for compilation for variant: release
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -920,11 +1054,12 @@ releaseCompileClasspath - Resolved configuration for compilation for variant: re
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
@@ -943,6 +1078,24 @@ releaseProvided - Provided dependencies for 'release' sources (deprecated: use '
 No dependencies
 
 releaseRuntimeClasspath - Resolved configuration for runtime for variant: release
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -1002,11 +1155,12 @@ releaseRuntimeClasspath - Resolved configuration for runtime for variant: releas
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
@@ -1022,6 +1176,24 @@ releaseUnitTestAnnotationProcessorClasspath - Resolved configuration for annotat
 No dependencies
 
 releaseUnitTestCompileClasspath - Resolved configuration for compilation for variant: releaseUnitTest
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -1081,17 +1253,36 @@ releaseUnitTestCompileClasspath - Resolved configuration for compilation for var
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41
           \--- org.jetbrains:annotations:13.0
 
 releaseUnitTestRuntimeClasspath - Resolved configuration for runtime for variant: releaseUnitTest
++--- com.google.firebase:firebase-auth:16.0.1
+|    +--- com.google.android.gms:play-services-base:15.0.1
+|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
+|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-basement:15.0.1
+|    +--- com.google.android.gms:play-services-flags:15.0.1
+|    |    +--- com.google.android.gms:play-services-base:[15.0.1] -> 15.0.1 (*)
+|    |    \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    +--- com.google.firebase:firebase-auth-interop:16.0.0
+|    |    +--- com.google.android.gms:play-services-base:15.0.1 (*)
+|    |    +--- com.google.android.gms:play-services-basement:15.0.1
+|    |    +--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    |    \--- com.google.firebase:firebase-common:16.0.0
+|    |         +--- com.google.android.gms:play-services-basement:15.0.1
+|    |         \--- com.google.android.gms:play-services-tasks:15.0.1 (*)
+|    \--- com.google.firebase:firebase-common:16.0.0 (*)
 +--- com.hannesdorfmann.mosby3:mvp:3.1.0
 |    +--- com.android.support:appcompat-v7:25.4.0
 |    |    +--- com.android.support:support-annotations:25.4.0
@@ -1151,11 +1342,12 @@ releaseUnitTestRuntimeClasspath - Resolved configuration for runtime for variant
 |    \--- io.reactivex.rxjava2:rxjava:2.1.9 -> 2.1.14 (*)
 +--- com.android.support.constraint:constraint-layout:1.1.0
 |    \--- com.android.support.constraint:constraint-layout-solver:1.1.0
++--- com.android.support:recyclerview-v7:25.4.0
+|    +--- com.android.support:support-annotations:25.4.0
+|    +--- com.android.support:support-compat:25.4.0 (*)
+|    \--- com.android.support:support-core-ui:25.4.0 (*)
 +--- com.google.android.gms:play-services-maps:15.0.1
-|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1
-|    |    +--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
-|    |    \--- com.google.android.gms:play-services-tasks:[15.0.1] -> 15.0.1
-|    |         \--- com.google.android.gms:play-services-basement:[15.0.1] -> 15.0.1
+|    +--- com.google.android.gms:play-services-base:[15.0.1,16.0.0) -> 15.0.1 (*)
 |    \--- com.google.android.gms:play-services-basement:[15.0.1,16.0.0) -> 15.0.1
 \--- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
      \--- org.jetbrains.kotlin:kotlin-stdlib:1.2.41

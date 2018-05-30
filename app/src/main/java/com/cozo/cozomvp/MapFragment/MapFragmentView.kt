@@ -2,7 +2,7 @@ package com.cozo.cozomvp
 
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
-interface MapView : MvpView {
+interface MapFragmentView : MvpView {
 
     // adds single marker to identify user's location on map. Centers map around it.
     fun addUserMarkerToMap(location: NetworkModel.Location)

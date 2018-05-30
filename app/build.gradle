@@ -1,17 +1,14 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 25
     defaultConfig {
         applicationId "com.cozo.cozomvp"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -26,6 +23,11 @@ android {
 
 dependencies {
 
+    // Firebase lib
+    implementation ('com.google.firebase:firebase-auth:16.0.1'){
+        exclude group: "com.android.support"
+    }
+
     // Mosby is a Model-View-Presenter framework for android. License: Apache 2.0
     implementation 'com.hannesdorfmann.mosby3:mvp:3.1.0'
     implementation 'com.hannesdorfmann.mosby3:mvp-lce:3.1.0'
@@ -35,24 +37,20 @@ dependencies {
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Retrofit is a library that serves as a REST client. It sits on top of OkHttp. License: Apache 2.0
-    //implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    //implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     // Adapter to work with Gson
-    //implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-    //implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     // ReactiveX is a library for composing asynchronous and event-based programs. License: Apache 2.0
-    //implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
     // Layout
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:recyclerview-v7:25.4.0'
 
     // Google Play services
     implementation ('com.google.android.gms:play-services-maps:15.0.1'){

@@ -1,8 +1,11 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.MapFragment
 
+import com.cozo.cozomvp.MapDataProvider
+import com.cozo.cozomvp.MapFragmentView
+import com.cozo.cozomvp.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
-class MapPresenter : MvpBasePresenter<MapView>() {
+class MapFragmentPresenter : MvpBasePresenter<MapFragmentView>() {
 
     private var mDataProvider: MapDataProvider? = null
 
@@ -17,7 +20,7 @@ class MapPresenter : MvpBasePresenter<MapView>() {
             }
             override fun onRestaurantDataGenerated(locations: List<NetworkModel.Location>) {}
         })
-        //call function to retrieve userID (here or in BL)
+        // call function to retrieve userID (here or in BL?)
         mDataProvider?.provideUserLatLng("UserFoo")
     }
 

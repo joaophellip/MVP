@@ -20,7 +20,7 @@ interface APIServices{
     fun userMainLocation(@Query("user") user: String):
             Observable<NetworkModel.Location>
 
-    @GET ("restaurants/nearest")
+    @GET ("restaurants/nearest/")
     fun restaurantsNearest(@Query("radius") radius: Int,
                            @Query("latitude") latitude: Double,
                            @Query("longitude") longitude: Double):
