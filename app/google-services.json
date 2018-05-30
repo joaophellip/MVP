@@ -41,7 +41,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:993721473319:android:69f4801a23d0f77f",
         "android_client_info": {
-          "package_name": "com.example.cozo.appenginestandenv"
+          "package_name": "com.cozo.cozomvp"
         }
       },
       "oauth_client": [
