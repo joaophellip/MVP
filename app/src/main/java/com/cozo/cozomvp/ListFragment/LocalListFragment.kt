@@ -1,4 +1,4 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.listFragment
 
 import android.os.Bundle
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
@@ -7,26 +7,35 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import butterknife.BindView
+import com.cozo.cozomvp.CardMenuData
+import com.cozo.cozomvp.mapFragment.LocalMapFragment
+import com.cozo.cozomvp.NetworkModel
+import com.cozo.cozomvp.R
 
 class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>(), ListFragmentView {
 
     @BindView(R.id.recyclerView)
     lateinit var recyclerView: RecyclerView
 
+    private lateinit var mRecyclerAdapter: RecyclerViewAdapter
+
     override fun createPresenter(): ListFragmentPresenter {
         return ListFragmentPresenter()
     }
 
-    /*override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val mView = inflater.inflate(R.layout.fragment_list, container, false)
-        val mRecyclerView = mView.recyclerView
-        mRecyclerView.adapter = mAdapter
-        mRecyclerView.layoutManager = mLayoutManager
-        return mView
-    }*/
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        mRecyclerAdapter = RecyclerViewAdapter()
+    }
+
+    override fun onLocationDataAvailable(location: NetworkModel.Location) {
+        presenter.onLocationDataAvailable(location)
+    }
+
+    override fun addRestaurantsDataToCards(cards: List<CardMenuData>) {
+        mRecyclerAdapter.setRestaurantList(cards)
+        recyclerView.adapter = mRecyclerAdapter
     }
 
     override fun highlightCardView(restaurantID: String) {
@@ -36,7 +45,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
     companion object {
         val TAG : String = LocalListFragment::class.java.simpleName
 
-        fun newInstance():LocalMapFragment{
+        fun newInstance(): LocalMapFragment {
             return LocalMapFragment()
         }
     }

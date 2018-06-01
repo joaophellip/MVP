@@ -1,19 +1,26 @@
 package com.cozo.cozomvp
 
+import android.graphics.Bitmap
+
 /**
- * These is the singleton model for storing backend responses received through HTTP
+ * This is the singleton model for storing backend responses received through HTTP
  */
 object NetworkModel{
 
-    // used as data model for data.JSON from APIServices.restaurantsNearest
-    data class ListRestaurantsNearest(val objects: List<RestNearestObjects>)
-    data class RestNearestObjects(
+    // data model for APIServices.restaurantsNearestLocation
+    data class ListNearestRestaurantsLocation(val objects: List<RestLocationObjects>)
+    data class RestLocationObjects(
             val id: String,
-            val location: Location,
-            val metadata: MenuMetadata)
+            val location: Location)
     data class Location(
             val latitude: Double,
             val longitude: Double)
+
+    // data model for APIServices.restaurantsNearestMenu
+    data class ListNearestRestaurantMenu(val objects: List<RestMenuObjects>)
+    data class RestMenuObjects(
+            val id: String,
+            val metadata: MenuMetadata)
     data class MenuMetadata(
             val ingredients: String,
             val name: String,
@@ -33,5 +40,22 @@ object NetworkModel{
             val relativePrice: Int,
             val rating: Float,
             val ratedBy: Int)
-
 }
+
+/**
+ * This is the model for storing the mapping inside fragment of map
+ */
+data class MapPresenterData(
+        val restID: String,
+        val location: NetworkModel.Location)
+
+/**
+ * This is the model for storing the mapping inside fragment of list
+ */
+data class ListPresenterData(
+        val restID: String,
+        val cardMenu: CardMenuData)     //Check the diff btwn object->dataclass vs dataclass only
+
+data class CardMenuData(
+        var image: Bitmap?,
+        val menu: NetworkModel.MenuMetadata)

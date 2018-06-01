@@ -1,9 +1,9 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.mapFragment
 
 import android.os.Bundle
 import android.view.View
-import com.cozo.cozomvp.MainActivity.MainActivity
-import com.cozo.cozomvp.MapFragment.MapFragmentPresenter
+import com.cozo.cozomvp.NetworkModel
+import com.cozo.cozomvp.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,12 +23,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.provideUserLocation()
         (childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment).getMapAsync(this)
-
-        //testOnClickCallbackProcess
-        val mActivity = activity as MainActivity
-        mActivity.highlightCard("test")
     }
     /*override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.mapFragment, container, false)
@@ -43,12 +38,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
                 .newLatLngZoom(mUserDefaultLocation, defaultMapZoom.toFloat()))
     }
 
-    override fun readyToReceiveRestaurantsLocations(location: NetworkModel.Location) {
-        presenter.provideRestaurantsLocations(location)
-    }
-
     override fun addRestaurantMarkersToMap(locations: List<NetworkModel.Location>) {
-        mUserDefaultLocation = null
         locations.forEach {
             mMap?.addMarker(MarkerOptions()
                     .position(LatLng(it.latitude,it.longitude))
@@ -60,11 +50,19 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         mMap = p0
     }
 
+    override fun onLocationDataAvailable(location: NetworkModel.Location) {
+        presenter.onLocationDataAvailable(location)
+    }
+
+    /*//testOnClickCallbackProcess
+val mActivity = activity as MainActivity
+mActivity.highlightCard("test")*/
+
     companion object {
         val TAG : String = LocalMapFragment::class.java.simpleName
         const val defaultMapZoom = 15
 
-        fun newInstance():LocalMapFragment{
+        fun newInstance(): LocalMapFragment {
             return LocalMapFragment()
         }
     }
