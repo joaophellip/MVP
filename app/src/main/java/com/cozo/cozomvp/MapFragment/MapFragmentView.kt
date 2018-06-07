@@ -1,18 +1,26 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.mapFragment
 
+import com.cozo.cozomvp.networkAPI.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 interface MapFragmentView : MvpView {
 
+    // callback for when user location is available.
+    fun onLocationDataAvailable(location: NetworkModel.Location)
+
     // adds single marker to identify user's location on map. Centers map around it.
     fun addUserMarkerToMap(location: NetworkModel.Location)
 
-    // fired when view is ready to receive restaurants locations.
-    fun readyToReceiveRestaurantsLocations(location: NetworkModel.Location)
-
     // adds markers to identify restaurants' locations on map.
-    fun addRestaurantMarkersToMap(locations: List<NetworkModel.Location>)
+    fun addRestaurantMarkersToMap(locations: List<NetworkModel.RestLocationObjects>)
 
-    // centers map around latitude and longitude coordinates
-    //fun animateMarker(latitude: Double, longitude: Double)
+    // highlight restaurant marker to match highlighted cardview.
+    fun highlightMapMarker(restID: String)
+
+    interface MainActivityListener{
+
+        //
+        fun onMapMarkerClicked(restID: String)
+    }
+
 }
