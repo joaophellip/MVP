@@ -1,6 +1,6 @@
 package com.cozo.cozomvp.mapFragment
 
-import com.cozo.cozomvp.NetworkModel
+import com.cozo.cozomvp.networkAPI.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 interface MapFragmentView : MvpView {
@@ -12,6 +12,15 @@ interface MapFragmentView : MvpView {
     fun addUserMarkerToMap(location: NetworkModel.Location)
 
     // adds markers to identify restaurants' locations on map.
-    fun addRestaurantMarkersToMap(locations: List<NetworkModel.Location>)
+    fun addRestaurantMarkersToMap(locations: List<NetworkModel.RestLocationObjects>)
+
+    // highlight restaurant marker to match highlighted cardview.
+    fun highlightMapMarker(restID: String)
+
+    interface MainActivityListener{
+
+        //
+        fun onMapMarkerClicked(restID: String)
+    }
 
 }

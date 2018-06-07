@@ -9,29 +9,47 @@ import android.widget.RatingBar
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.cozo.cozomvp.CardMenuData
+import com.cozo.cozomvp.networkAPI.ListPresenterData
 import com.cozo.cozomvp.R
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
-    private var restaurantList: List<CardMenuData> = ArrayList()
+    private var restaurantList: List<ListPresenterData> = ArrayList()
+    private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerViewHolder {
         return RecyclerViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.cardview, parent, false))
     }
 
-    override fun getItemCount(): Int {
-        return restaurantList.size
-    }
+    override fun getItemCount(): Int  = restaurantList.size
 
     override fun onBindViewHolder(holder: RecyclerViewHolder?, position: Int) {
         (holder as RecyclerViewHolder).bindView(position)
     }
 
-    fun setRestaurantList(cards: List<CardMenuData>) {
+    fun setRestaurantList(cards: List<ListPresenterData>) {
         restaurantList = cards
         for (i in restaurantList.indices) {
             notifyItemInserted(i)
+            mPositionMap[i] = restaurantList[i].restID
+        }
+    }
+
+    fun currentRestID(position: Int) : String = mPositionMap[position]!!
+
+    fun positionById(restID: String) : Int? {
+        // do a few error handling here...
+        return when (mPositionMap.containsValue(restID)){
+            true -> {
+                val mMap = mPositionMap.filterValues{
+                    it == restID
+                }
+                return when(mMap.size == 1){
+                    true -> mMap.keys.elementAt(0)
+                    else -> -2
+                }
+            }
+            false -> -1
         }
     }
 
@@ -49,16 +67,16 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerVie
         }
 
         fun bindView(position: Int){
-            //adjust formatting later on to use xml file instead of local vals
-            val ratedBy = "( ${restaurantList[position].menu.ratedBy} )"
-            val formattedPrice = "R$ " + String.format("%02.2f", restaurantList[position].menu.price).replace(".",",")
-            val formattedPrepTime = "${restaurantList[position].menu.prepTime} min"
+            //adjust formatting later on to use xml file instead of local variables
+            val ratedBy = "( ${restaurantList[position].cardMenu.menu.ratedBy} )"
+            val formattedPrice = "R$ " + String.format("%02.2f", restaurantList[position].cardMenu.menu.price).replace(".",",")
+            val formattedPrepTime = "${restaurantList[position].cardMenu.menu.prepTime} min"
 
-            this.mFoodImage.setImageBitmap(restaurantList[position].image)
-            this.mFoodTitle.text = restaurantList[position].menu.name
+            this.mFoodImage.setImageBitmap(restaurantList[position].cardMenu.image)
+            this.mFoodTitle.text = restaurantList[position].cardMenu.menu.name
             this.mFoodPrice.text = formattedPrice
             this.mFoodAveragePrepTime.text = formattedPrepTime
-            this.mFoodRating.rating = restaurantList[position].menu.rating
+            this.mFoodRating.rating = restaurantList[position].cardMenu.menu.rating
             this.mRatedBy.text = ratedBy
         }
     }

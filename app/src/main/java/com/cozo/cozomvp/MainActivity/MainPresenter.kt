@@ -1,23 +1,24 @@
 package com.cozo.cozomvp.mainActivity
 
-import com.cozo.cozomvp.*
+import com.cozo.cozomvp.dataProvider.DataProvider
+import com.cozo.cozomvp.dataProvider.DataProviderInterface
 import com.cozo.cozomvp.listFragment.LocalListFragment
 import com.cozo.cozomvp.mapFragment.LocalMapFragment
+import com.cozo.cozomvp.networkAPI.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
-class MainPresenter : MvpBasePresenter<MainView>() {
+class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private var mDataProvider: DataProvider? = null
 
-    // retrieves user geo location (latitude, longitude) from Data Provider and sends it to the view.
-    fun provideUserLocation(){
-        mDataProvider = DataProvider(object : DataProvider.UserLocationListener {
-            override fun onSuccess(location: NetworkModel.Location) {
+    override fun provideUserLocation(){
+        mDataProvider = DataProvider(object : DataProviderInterface.MainActivityListener {
+            override fun onUserLocationRequestCompleted(location: NetworkModel.Location) {
                 ifViewAttached {
                     it.onLocationAvailable(location)
                 }
             }
-            override fun onError(e: Throwable) {
+            override fun onUserLocationRequestFailed(e: Throwable) {
                 //do something later
             }
         })
@@ -25,19 +26,20 @@ class MainPresenter : MvpBasePresenter<MainView>() {
         mDataProvider?.provideUserLatLng("UserFoo")
     }
 
-    // informs list fragment that user location has been retrieved
-    fun relayLocationToListFragment(location: NetworkModel.Location, listFragment: LocalListFragment){
+    override fun relayLocationToListFragment(location: NetworkModel.Location, listFragment: LocalListFragment){
         listFragment.onLocationDataAvailable(location)
     }
 
-    // informs map fragment that user location has been retrieved
-    fun relayLocationToMapFragment(location: NetworkModel.Location, mapFragment: LocalMapFragment){
+    override fun relayLocationToMapFragment(location: NetworkModel.Location, mapFragment: LocalMapFragment){
         mapFragment.onLocationDataAvailable(location)
     }
 
-    // informs list fragment that cardview needs to be highlighted
-    fun highlightCardView(restaurantID: String, listFragment: LocalListFragment){
-        listFragment.highlightCardView(restaurantID)
+    override fun onCardViewHighlighted(restID: String, mapFragment: LocalMapFragment){
+        mapFragment.highlightMapMarker(restID)
+    }
+
+    override fun onMapMarkerClicked(restID: String, listFragment: LocalListFragment) {
+        listFragment.highlightCardView(restID)
     }
 
 }
