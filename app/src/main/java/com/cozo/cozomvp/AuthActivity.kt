@@ -3,7 +3,7 @@ package com.cozo.cozomvp
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.cozo.cozomvp.MainActivity.MainActivity
+import com.cozo.cozomvp.mainActivity.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

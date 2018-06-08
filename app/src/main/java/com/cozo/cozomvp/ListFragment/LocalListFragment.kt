@@ -41,15 +41,14 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
         return ListFragmentPresenter()
     }
 
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         mRecyclerAdapter = RecyclerViewAdapter()
         mRootView = view as ViewGroup
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mView = inflater?.inflate(R.layout.fragment_list, container, false)
         mRecyclerView = mView?.findViewById(R.id.recyclerView) as RecyclerView  //had to initialize the variable recyclerView. But why since I annotated with ButterKnife (this bind wasnt enough)
 

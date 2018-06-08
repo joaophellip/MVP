@@ -20,7 +20,7 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
         mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestAuthListener {
             override fun onAuthAndLinkedCompleted() {
                 ifViewAttached {
-                    it.showAuthAndLinkedCompletedActivity()
+                    it.showMainActivity()
                 }
             }
 
@@ -59,7 +59,7 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
                 }
 
                 ifViewAttached {
-                    it.showAuthAndLinkedCompletedActivity()
+                    it.showMainActivity()
                 }
             }
 

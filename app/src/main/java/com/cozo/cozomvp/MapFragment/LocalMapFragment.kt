@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cozo.cozomvp.networkAPI.NetworkModel
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.networkAPI.NetworkModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -43,7 +43,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_map, container, false)
     }
 

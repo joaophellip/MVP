@@ -9,21 +9,21 @@ import android.widget.RatingBar
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.cozo.cozomvp.networkAPI.ListPresenterData
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.networkAPI.ListPresenterData
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
     private var restaurantList: List<ListPresenterData> = ArrayList()
     private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         return RecyclerViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.cardview, parent, false))
     }
 
     override fun getItemCount(): Int  = restaurantList.size
 
-    override fun onBindViewHolder(holder: RecyclerViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         (holder as RecyclerViewHolder).bindView(position)
     }
 
