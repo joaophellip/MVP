@@ -1,12 +1,9 @@
 package com.cozo.cozomvp
 
-import android.os.Bundle
-import com.hannesdorfmann.mosby3.mvp.MvpFragment
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.View
 import butterknife.BindView
+import com.hannesdorfmann.mosby3.mvp.MvpFragment
 
 class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>(), ListFragmentView {
 
@@ -24,10 +21,10 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
         mRecyclerView.layoutManager = mLayoutManager
         return mView
     }*/
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    /*override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view!!, savedInstanceState)
         recyclerView?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-    }
+    }*/
 
     override fun highlightCardView(restaurantID: String) {
         Log.d("highlightCardView", "test")

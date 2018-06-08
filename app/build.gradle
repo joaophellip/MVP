@@ -4,11 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.cozo.cozomvp"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion 16
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,10 +23,16 @@ android {
 
 dependencies {
 
+    //Kotlin libraries
+    implementation 'org.jetbrains.anko:anko-common:0.8.3'
+
     // Firebase lib
-    implementation ('com.google.firebase:firebase-auth:16.0.1'){
+    implementation('com.google.firebase:firebase-auth:16.0.1') {
         exclude group: "com.android.support"
     }
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:7.6.1'
+    implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
 
     // Mosby is a Model-View-Presenter framework for android. License: Apache 2.0
     implementation 'com.hannesdorfmann.mosby3:mvp:3.1.0'
@@ -53,7 +59,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:25.4.0'
 
     // Google Play services
-    implementation ('com.google.android.gms:play-services-maps:15.0.1'){
+    implementation('com.google.android.gms:play-services-maps:15.0.1') {
         exclude group: "com.android.support"
     }
 
@@ -66,4 +72,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-
