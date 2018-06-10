@@ -16,15 +16,16 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerVie
 
     private var restaurantList: List<ListPresenterData> = ArrayList()
     private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
+    lateinit var mCardViewLayoutParams: ViewGroup.MarginLayoutParams
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
-        return RecyclerViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.cardview, parent, false))
+        return RecyclerViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.cardview, parent, false))
     }
 
     override fun getItemCount(): Int  = restaurantList.size
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        (holder as RecyclerViewHolder).bindView(position)
+        holder.bindView(position)
     }
 
     fun setRestaurantList(cards: List<ListPresenterData>) {
@@ -38,7 +39,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerVie
     fun currentRestID(position: Int) : String = mPositionMap[position]!!
 
     fun positionById(restID: String) : Int? {
-        // do a few error handling here...
         return when (mPositionMap.containsValue(restID)){
             true -> {
                 val mMap = mPositionMap.filterValues{
@@ -63,6 +63,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerVie
         @BindView(R.id.ratedBy) lateinit var mRatedBy: TextView
 
         init {
+            mCardViewLayoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams   //doing it everytime. optimize later
             ButterKnife.bind(this, itemView)
         }
 
