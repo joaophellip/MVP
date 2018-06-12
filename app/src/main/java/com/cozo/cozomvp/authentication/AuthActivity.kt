@@ -1,9 +1,10 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.authentication
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.cozo.cozomvp.MainActivity.MainActivity
+import com.cozo.cozomvp.R
+import com.cozo.cozomvp.mainActivity.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -24,7 +25,7 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
     val RC_SIGN_IN: Int = 123
     val TAG: String = "Authentication"
 
-    override fun createPresenter(): AuthPresenter {0
+    override fun createPresenter(): AuthPresenter {
         return AuthPresenter()
     }
 

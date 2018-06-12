@@ -1,4 +1,4 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.networkapi
 
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -20,18 +20,20 @@ interface APIServices{
     fun userMainLocation(@Query("user") user: String):
             Observable<NetworkModel.Location>
 
-    @GET ("restaurants/nearest/")
-    fun restaurantsNearest(@Query("radius") radius: Int,
+    @GET ("restaurants/nearest/location")
+    fun restaurantsNearestLocation(@Query("radius") radius: Int,
                            @Query("latitude") latitude: Double,
                            @Query("longitude") longitude: Double):
+            Observable<NetworkModel.ListNearestRestaurantsLocation>
+
+    @GET ("restaurants/nearest/menu")
+    fun restaurantsNearestMenu(@Query("radius") radius: Int,
+                                   @Query("latitude") latitude: Double,
+                                   @Query("longitude") longitude: Double):
             Observable<ResponseBody>
 
-    @GET ("restaurants/metadata")
-    fun restaurantsMetadata(@Query("id") id: List<String>):
-            Observable<NetworkModel.ListRestaurantsMetadata>
-
     companion object {
-        fun create(): APIServices{
+        fun create(): APIServices {
             // Variables used for testing API using an interceptor
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.HEADERS

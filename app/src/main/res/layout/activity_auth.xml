@@ -7,7 +7,7 @@
     android:id="@+id/authLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuthActivity">
+    tools:context=".authentication.AuthActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
