@@ -1,7 +1,7 @@
 package com.cozo.cozomvp.listFragment
 
-import com.cozo.cozomvp.networkAPI.ListPresenterData
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.ListPresenterData
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 interface ListFragmentView : MvpView {

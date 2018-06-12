@@ -1,10 +1,10 @@
 package com.cozo.cozomvp.mapFragment
 
 import android.util.Log
-import com.cozo.cozomvp.dataProvider.DataProvider
-import com.cozo.cozomvp.dataProvider.DataProviderInterface
-import com.cozo.cozomvp.networkAPI.MapPresenterData
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.dataprovider.DataProvider
+import com.cozo.cozomvp.dataprovider.DataProviderInterface
+import com.cozo.cozomvp.networkapi.MapPresenterData
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
 class MapFragmentPresenter : MvpBasePresenter<MapFragmentView>(), MapInterfaces.Presenter {

@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

@@ -1,4 +1,4 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.authentication
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

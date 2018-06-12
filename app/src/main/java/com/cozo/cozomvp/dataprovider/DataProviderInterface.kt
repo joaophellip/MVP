@@ -1,7 +1,7 @@
-package com.cozo.cozomvp.dataProvider
+package com.cozo.cozomvp.dataprovider
 
-import com.cozo.cozomvp.networkAPI.ListPresenterData
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.ListPresenterData
+import com.cozo.cozomvp.networkapi.NetworkModel
 
 interface DataProviderInterface {
 

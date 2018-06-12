@@ -1,11 +1,11 @@
-package com.cozo.cozomvp.dataProvider
+package com.cozo.cozomvp.dataprovider
 
 import android.graphics.BitmapFactory
 import android.util.Log
-import com.cozo.cozomvp.networkAPI.APIServices
-import com.cozo.cozomvp.networkAPI.CardMenuData
-import com.cozo.cozomvp.networkAPI.ListPresenterData
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.APIServices
+import com.cozo.cozomvp.networkapi.CardMenuData
+import com.cozo.cozomvp.networkapi.ListPresenterData
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

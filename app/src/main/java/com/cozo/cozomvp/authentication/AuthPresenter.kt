@@ -1,4 +1,4 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.authentication
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -49,12 +49,12 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
 
     override fun requestLinkWithGoogle(task: Task<GoogleSignInAccount>) {
 
-        mAuthModel = AuthModel( object : AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener{
+        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener {
             override fun onCompleted(providerData: MutableList<out UserInfo>) {
 
                 val mMapUserId: MutableMap<String, UserInfo> = mutableMapOf()
 
-                providerData.forEach{
+                providerData.forEach {
                     mMapUserId[it.providerId] = it
                 }
 
@@ -78,12 +78,13 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
             it.showLoading()
         }
 
-        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestSignOutListener{
+        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestSignOutListener {
             override fun onCompleted() {
                 ifViewAttached {
                     it.showLogOffActivity()
                 }
             }
+
             override fun onFailed() {
                 ifViewAttached {
                     it.showAuthenticationFail()

@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.networkAPI
+package com.cozo.cozomvp.networkapi
 
 import android.graphics.Bitmap
 

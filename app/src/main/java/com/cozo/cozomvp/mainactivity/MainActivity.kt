@@ -1,19 +1,22 @@
 package com.cozo.cozomvp.mainActivity
 
 import android.os.Bundle
-import com.cozo.cozomvp.*
+import com.cozo.cozomvp.R
 import com.cozo.cozomvp.listFragment.ListFragmentView
 import com.cozo.cozomvp.listFragment.LocalListFragment
 import com.cozo.cozomvp.mapFragment.LocalMapFragment
 import com.cozo.cozomvp.mapFragment.MapFragmentView
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
+
+
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
         MapFragmentView.MainActivityListener {
 
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
+
 
     override fun createPresenter(): MainPresenter {
         return MainPresenter()
@@ -22,6 +25,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         setContentView(R.layout.activity_main)
+
 
         // request presenter to provide user location, which is needed by both fragments
         presenter.provideUserLocation()

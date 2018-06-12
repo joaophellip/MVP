@@ -1,6 +1,6 @@
 package com.cozo.cozomvp.mapFragment
 
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.NetworkModel
 
 interface MapInterfaces {
 

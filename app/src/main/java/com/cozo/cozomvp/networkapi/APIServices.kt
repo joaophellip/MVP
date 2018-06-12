@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.networkAPI
+package com.cozo.cozomvp.networkapi
 
 import retrofit2.http.GET
 import retrofit2.http.Query

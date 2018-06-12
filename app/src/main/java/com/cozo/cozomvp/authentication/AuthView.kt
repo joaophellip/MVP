@@ -1,4 +1,4 @@
-package com.cozo.cozomvp
+package com.cozo.cozomvp.authentication
 
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
