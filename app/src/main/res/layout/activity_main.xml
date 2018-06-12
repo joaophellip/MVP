@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,16 +8,33 @@
     android:layout_height="match_parent"
     tools:context=".mainActivity.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/mapContainer"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/mapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    <FrameLayout
-        android:id="@+id/listContainer"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <FrameLayout
+            android:id="@+id/listContainer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@layout/my_navigation_items"
+        android:layout_gravity="start"
+
+        />
+
+</android.support.v4.widget.DrawerLayout>
