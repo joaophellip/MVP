@@ -1,16 +1,18 @@
 package com.cozo.cozomvp.mainActivity
 
 import android.os.Bundle
-import android.support.v4.view.GravityCompat
-import android.view.MenuItem
+import android.support.v4.widget.DrawerLayout
+import android.view.Gravity
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.listFragment.ListFragmentView
 import com.cozo.cozomvp.listFragment.LocalListFragment
 import com.cozo.cozomvp.mapFragment.LocalMapFragment
 import com.cozo.cozomvp.mapFragment.MapFragmentView
 import com.cozo.cozomvp.networkapi.NetworkModel
+import com.google.firebase.auth.FirebaseAuth
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.toast
 
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
@@ -18,7 +20,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
-    private val navigationClicksListener = NavigationClicksListener()
+
+    private lateinit var drawerLayout: DrawerLayout
 
 
     override fun createPresenter(): MainPresenter {
@@ -30,8 +33,15 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         setContentView(R.layout.activity_main)
 
 //      NAVIGATION DRAWER
-        setupDrawer()
+        drawerLayout = findViewById(R.id.drawerLayout)
 
+
+        val user = FirebaseAuth.getInstance().currentUser
+        toast("Bem vindo " + user!!.displayName!!)
+
+        navigation_drawer_button.setOnClickListener {
+            drawerLayout.openDrawer(Gravity.START)
+        }
 
         // request presenter to provide user location, which is needed by both fragments
         presenter.provideUserLocation()
@@ -67,30 +77,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
 // NAVIGATION DRAWER
-    private fun setupDrawer() {
-// We get the predefined support Actionbar, set the hamburger menu icon, and enable the icon
-        val actionBar = supportActionBar!!
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher_foreground)
-        actionBar.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun toggleDrawer(): Boolean {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-        return true
-    }
-
-    inner class NavigationClicksListener {
-
-        fun onNavigationItemSelectedDelegate(item: MenuItem) {
-            when (item.itemId) {
-                android.R.id.home -> toggleDrawer()
-            }
-        }
-    }
 
 
 }

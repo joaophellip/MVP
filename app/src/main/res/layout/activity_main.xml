@@ -12,11 +12,23 @@
         android:id="@+id/contentFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/navigation_drawer_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/ic_menu_black_36dp" />
+
         <FrameLayout
             android:id="@+id/mapContainer"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <FrameLayout
             android:id="@+id/listContainer"
