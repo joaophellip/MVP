@@ -12,4 +12,5 @@ interface MainView : MvpView {
     fun onLocationAvailable(location: NetworkModel.Location)
 
     fun goToSettingsActivity()
+    fun goToPaymentActivity()
 }

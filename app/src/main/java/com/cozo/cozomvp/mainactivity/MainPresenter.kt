@@ -42,6 +42,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         listFragment.highlightCardView(restID)
     }
 
+    override fun onPaymentMenuClicked() {
+        ifViewAttached {
+            it.goToPaymentActivity()
+        }
+    }
     override fun onSettingsMenuClicked() {
         ifViewAttached {
             it.goToSettingsActivity()

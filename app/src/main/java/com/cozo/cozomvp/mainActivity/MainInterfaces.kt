@@ -22,4 +22,5 @@ interface MainInterfaces {
     fun onMapMarkerClicked(restID: String, listFragment: LocalListFragment)
 
     fun onSettingsMenuClicked()
+    fun onPaymentMenuClicked()
 }
