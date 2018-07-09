@@ -162,6 +162,7 @@ class AuthModel : AuthInterfaces.Model {
         val user = mAuth.currentUser
         val profileUpdates = UserProfileChangeRequest.Builder()
                 .setDisplayName(account.displayName)
+                .setPhotoUri(account.photoUrl)
                 .build()
 
         user!!.updateProfile(profileUpdates)

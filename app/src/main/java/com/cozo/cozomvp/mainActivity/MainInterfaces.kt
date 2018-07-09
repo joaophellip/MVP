@@ -1,8 +1,8 @@
 package com.cozo.cozomvp.mainActivity
 
-import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.listFragment.LocalListFragment
 import com.cozo.cozomvp.mapFragment.LocalMapFragment
+import com.cozo.cozomvp.networkapi.NetworkModel
 
 interface MainInterfaces {
 
@@ -20,4 +20,6 @@ interface MainInterfaces {
 
     // informs map fragment that icon needs to be highlighted
     fun onMapMarkerClicked(restID: String, listFragment: LocalListFragment)
+
+    fun onSettingsMenuClicked()
 }

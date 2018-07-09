@@ -10,4 +10,6 @@ interface MainView : MvpView {
 
     // informs activity that location data has been received. Passes location as a parameter
     fun onLocationAvailable(location: NetworkModel.Location)
+
+    fun goToSettingsActivity()
 }

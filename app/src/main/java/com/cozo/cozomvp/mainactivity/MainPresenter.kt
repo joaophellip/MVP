@@ -42,4 +42,10 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         listFragment.highlightCardView(restID)
     }
 
+    override fun onSettingsMenuClicked() {
+        ifViewAttached {
+            it.goToSettingsActivity()
+        }
+    }
+
 }
