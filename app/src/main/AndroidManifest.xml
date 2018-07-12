@@ -40,7 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PaymentActivity"></activity>
+        <activity
+            android:name=".PaymentActivity"
+            android:parentActivityName="com.cozo.cozomvp.mainActivity.MainActivity" />
     </application>
 
 </manifest>

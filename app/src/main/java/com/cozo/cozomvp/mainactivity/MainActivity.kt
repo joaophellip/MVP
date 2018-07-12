@@ -11,7 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.listFragment.ListFragmentView
 import com.cozo.cozomvp.listFragment.LocalListFragment
 import com.cozo.cozomvp.mapFragment.LocalMapFragment
@@ -90,15 +89,15 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun goToPaymentActivity() {
-        val activityIntent: Intent = Intent(this, PaymentActivity::class.java)
+        val activityIntent = Intent(this, PaymentActivity::class.java)
         startActivity(activityIntent)
     }
     override fun goToSettingsActivity() {
-        val user = FirebaseAuth.getInstance()
+/*        val user = FirebaseAuth.getInstance()
         user.signOut()
         val activityIntent = Intent (this, AuthActivity::class.java)
         startActivity(activityIntent)
-        finish()
+        finish()    */
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
