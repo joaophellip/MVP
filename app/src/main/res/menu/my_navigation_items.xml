@@ -4,19 +4,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <group>
-        <item
-            android:id="@+id/menu_home"
-            android:icon="@mipmap/ic_launcher_round"
-            android:title="Home" />
-        <item
-            android:id="@+id/menu_payment"
-            android:title="Add payment" />
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+    <item
+        android:id="@+id/menu_payment"
+        android:icon="@drawable/ic_credit_card_black_24dp"
+        android:title="Add payment" />
 
-        <item
-            android:id="@+id/menu_settings"
-            android:title="Settings" />
-    </group>
-
+    <item
+        android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Settings" />
 
 </menu>

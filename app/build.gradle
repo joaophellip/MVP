@@ -26,7 +26,8 @@ android {
 dependencies {
 
     //Kotlin libraries
-    implementation 'org.jetbrains.anko:anko-common:0.8.3'
+    implementation "org.jetbrains.anko:anko:$anko_version"
+    compile "org.jetbrains.anko:anko-design:$anko_version"
 
     // Firebase lib
     implementation 'com.google.firebase:firebase-core:16.0.0'
@@ -43,6 +44,7 @@ dependencies {
 
     // ButterKnife is an Annotation library. License: Apache 2.0
     implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.android.support:support-vector-drawable:27.1.1'
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Retrofit is a library that serves as a REST client. It sits on top of OkHttp. License: Apache 2.0
@@ -75,6 +77,9 @@ dependencies {
     //testImplementation 'junit:junit:4.12'
     //androidTestImplementation 'com.android.support.test:runner:1.0.2'
     //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+//    Payment Activity
+    implementation 'com.braintreepayments:card-form:3.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

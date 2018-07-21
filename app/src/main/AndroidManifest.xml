@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mainActivity.MainActivity" />
+        <activity android:name=".mainActivity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -42,7 +43,15 @@
         </activity>
         <activity
             android:name=".PaymentActivity"
-            android:parentActivityName="com.cozo.cozomvp.mainActivity.MainActivity" />
+            android:parentActivityName=".mainActivity.MainActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".mainActivity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cozo.cozomvp.mainActivity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -8,9 +8,9 @@ import android.support.v4.widget.DrawerLayout
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.SettingsActivity
 import com.cozo.cozomvp.listFragment.ListFragmentView
 import com.cozo.cozomvp.listFragment.LocalListFragment
 import com.cozo.cozomvp.mapFragment.LocalMapFragment
@@ -89,20 +89,16 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun goToPaymentActivity() {
-        val activityIntent = Intent(this, PaymentActivity::class.java)
-        startActivity(activityIntent)
+        startActivity(Intent(this, PaymentActivity::class.java))
     }
     override fun goToSettingsActivity() {
-/*        val user = FirebaseAuth.getInstance()
-        user.signOut()
-        val activityIntent = Intent (this, AuthActivity::class.java)
-        startActivity(activityIntent)
-        finish()    */
+
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when  (item.itemId) {
-            R.id.menu_home -> Toast.makeText(this, "Clicked item one", Toast.LENGTH_SHORT).show()
+            R.id.menu_home -> {}
             R.id.menu_payment -> presenter.onPaymentMenuClicked()
             R.id.menu_settings -> presenter.onSettingsMenuClicked()
         }

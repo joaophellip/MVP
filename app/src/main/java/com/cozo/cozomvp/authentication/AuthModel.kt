@@ -172,7 +172,7 @@ class AuthModel : AuthInterfaces.Model {
                     }
                 }
         mAuth.currentUser!!.linkWithCredential(credential)
-                .addOnCompleteListener({ task ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         mOnRequestSignInWithGoogleListener.onCompleted(providerData)
@@ -184,7 +184,7 @@ class AuthModel : AuthInterfaces.Model {
 
                     }
                     // ...
-                })
+                }
     }
 
     override fun signOutModel(mGoogleSignInClient: GoogleSignInClient, mAuth: FirebaseAuth) {
