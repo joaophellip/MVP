@@ -7,7 +7,10 @@ interface ListInterfaces {
     interface Presenter {
 
         // triggered when user location data is available.
-        fun onLocationDataAvailable(location: NetworkModel.Location)
+        fun onUserLocationDataAvailable(location: NetworkModel.Location)
+
+        // triggered when chosen restaurant location data is available.
+        fun onRestLocationDataAvailable(location: NetworkModel.Location)
     }
 
 }

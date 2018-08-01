@@ -15,7 +15,7 @@
     <FrameLayout
         android:id="@+id/listContainer"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

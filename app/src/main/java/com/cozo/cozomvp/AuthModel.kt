@@ -1,6 +1,7 @@
 package com.cozo.cozomvp
 
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
@@ -44,7 +45,6 @@ class AuthModel : AuthInterfaces.Model {
         val isValid = phoneUtil.isValidNumber(brPhone)
         if (isValid) {
             val validPhoneNumber = "+" + brPhone.countryCode.toString() + brPhone.nationalNumber.toString()
-            Log.e(TAG, "authmodel")
 
             val mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -59,20 +59,22 @@ class AuthModel : AuthInterfaces.Model {
                 }
 
                 override fun onVerificationFailed(e: FirebaseException) {
-                    // This callback is invoked in an invalid request for verification is made,
-                    // for instance if the the phone number format is not valid.
                     Log.w(TAG, "onVerificationFailed", e)
-                    if (e is FirebaseAuthInvalidCredentialsException) {
-                        // Invalid request
-                        mOnRequestAuthListener.onAuthenticationFailed()
-                    } else if (e is FirebaseTooManyRequestsException) {
-                        mOnRequestAuthListener.onAuthenticationFailed()
-                        // The SMS quota for the project has been exceeded
-                        // ...
-// TODO: work on this if statement above
+                    when (e) {
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            // Invalid request
+                            mOnRequestAuthListener.onAuthenticationFailed()
+                        }
+                        is FirebaseTooManyRequestsException -> {
+                            mOnRequestAuthListener.onAuthenticationFailed()
+                            // The SMS quota for the project has been exceeded
+                            // ...
+                        }
+                        is FirebaseAuthException -> {
+                            // The app is not authorized to use Firebase Authentication
+                        }
                     }
                     // Show a message and update the UI
-                    // ...
                 }
                 override fun onCodeSent(verificationId: String?,
                                         token: PhoneAuthProvider.ForceResendingToken?) {
@@ -87,6 +89,7 @@ class AuthModel : AuthInterfaces.Model {
                     // ...
                 }
             }
+            Log.d("AuthDebug",validPhoneNumber)
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
                     validPhoneNumber,        // Phone number to verify
                     60,                 // Timeout duration

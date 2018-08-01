@@ -1,13 +1,45 @@
 package com.cozo.cozomvp.mainActivity
 
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import com.cozo.cozomvp.listFragment.LocalListFragment
+import com.cozo.cozomvp.mapFragment.LocalMapFragment
+import com.cozo.cozomvp.networkAPI.CardMenuData
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
+/*
+    Interface MainView contains the abstract methods implemented by MainActivity.kt and which are seen by the Presenter.
+ */
 interface MainView : MvpView {
 
-    // asks activity to highlight the cardview which is holding information about given restaurantID
-    //fun highlightCard(restaurantID: String)
+    /*
+Asks activity to add a RecyclerView object to container. Passes RecyclerView object as
+argument.
+ */
+    fun addRecyclerViewToContainer(mRecyclerView : RecyclerView)
 
-    // informs activity that location data has been received. Passes location as a parameter
-    fun onLocationAvailable(location: NetworkModel.Location)
+    /*
+Asks activity to hide a item details view. Passes View object as argument.
+  */
+    fun hideOrderDetailsMenu(mSharedView: View?)
+
+    /*
+    Asks activity to return a reference to the very activity.
+     */
+    fun onActivityRequired() : MainActivity
+
+    /*
+    Asks activity to return a reference to current LocalListFragment object is required.
+     */
+    fun onListFragmentRequired() : LocalListFragment
+
+    /*
+    Asks activity to return a reference to current LocalMapFragment object.
+     */
+    fun onMapFragmentRequired() : LocalMapFragment
+
+    /*
+    Asks activity to show a item details view. Passes View and CardMenuData objects as argument.
+     */
+    fun showOrderDetailsMenu(sharedView: View, data: CardMenuData)
 }

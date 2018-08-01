@@ -2,6 +2,7 @@ package com.cozo.cozomvp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.mainActivity.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -24,7 +25,7 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
     val RC_SIGN_IN: Int = 123
     val TAG: String = "Authentication"
 
-    override fun createPresenter(): AuthPresenter {0
+    override fun createPresenter(): AuthPresenter {
         return AuthPresenter()
     }
 
@@ -53,6 +54,7 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
 
 
     override fun showLoading() {
+        Log.d("AuthDebug","loading")
         progressBar.visibility = View.VISIBLE
     }
 

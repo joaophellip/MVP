@@ -3,45 +3,82 @@ package com.cozo.cozomvp.listFragment
 import android.util.Log
 import com.cozo.cozomvp.dataProvider.DataProvider
 import com.cozo.cozomvp.dataProvider.DataProviderInterface
-import com.cozo.cozomvp.networkAPI.CardMenuData
-import com.cozo.cozomvp.networkAPI.ListPresenterData
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.mainActivity.MainActivity
+import com.cozo.cozomvp.networkAPI.*
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
 class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Presenter {
 
     private var mDataProvider: DataProvider? = null
-    private var mListPresenterData : MutableList<ListPresenterData>? = null
+    private lateinit var mUserLocation : NetworkModel.Location
 
-    override  fun onLocationDataAvailable(location: NetworkModel.Location){
+    override  fun onUserLocationDataAvailable(location: NetworkModel.Location){
         getNearbyRestaurantsCardData(location)
+        mUserLocation = location
     }
 
-    // retrieves data for nearby restaurants from Provider and sends them to the list view.
+    override fun onRestLocationDataAvailable(location: NetworkModel.Location) {
+        getNearbyDeliveryPartnersCardData(location, mUserLocation)
+    }
+
+    // retrieves data for nearby restaurants from Data Provider and sends them to the list view.
     private fun getNearbyRestaurantsCardData(location: NetworkModel.Location){
         mDataProvider = DataProvider(object : DataProviderInterface.ListFragmentListener {
-            override fun onRestCardDataRequestCompleted(cards: List<ListPresenterData>) {
+            override fun onPartCardDataRequestCompleted(cards: MutableMap<String,CardInfoData>) {}
+            override fun onPartCardDataRequestFailed(e: Throwable) {}
+            override fun onRestCardDataRequestCompleted(cards: MutableMap<String,CardMenuData>) {
                 val menuList = mutableListOf<CardMenuData>()
-                cards.forEach {
+                /*cards.forEach {
                     mListPresenterData?.add(it)
                     menuList.add(it.cardMenu)
-                }
+                }*/
                 ifViewAttached {
-                    listSize = menuList.size
+                    restListSize = menuList.size
                     it.addRestaurantsDataToCards(cards)
                 }
             }
-
             override fun onRestCardDataRequestFailed(e: Throwable) {
-                //do something later
                 Log.d("MVPdebug", "error na chamada http do menu - expected")
+                //do something later
+            }
+            override fun getActivity(): MainActivity? {
+                var mActivity : MainActivity? = null
+                ifViewAttached {
+                    mActivity = it.onActivityRequired()
+                }
+                return mActivity
             }
         })
-        //call function to retrieve radius (here or in BL?)
         mDataProvider?.provideRestaurantsCardData(location,2000)
     }
 
+    // retrieves list of nearby delivery partners from Data Provider and sends them to the list view.
+    private fun getNearbyDeliveryPartnersCardData(restLocation: NetworkModel.Location, userLocation: NetworkModel.Location){
+        mDataProvider = DataProvider(object : DataProviderInterface.ListFragmentListener {
+            override fun onPartCardDataRequestCompleted(cards: MutableMap<String, CardInfoData>) {
+                ifViewAttached {
+                    partListSize = cards.size
+                    it.addPartnersDataToCards(cards)
+                }
+            }
+            override fun onPartCardDataRequestFailed(e: Throwable) {
+                //do something later
+            }
+            override fun onRestCardDataRequestCompleted(cards: MutableMap<String,CardMenuData>) {}
+            override fun onRestCardDataRequestFailed(e: Throwable) {}
+            override fun getActivity(): MainActivity? {
+                var mActivity : MainActivity? = null
+                ifViewAttached {
+                    mActivity = it.onActivityRequired()
+                }
+                return mActivity
+            }
+        })
+        mDataProvider?.provideDeliveryPartnersList(restLocation, userLocation)
+    }
+
     companion object {
-        var listSize : Int = 0
+        var restListSize : Int = 0
+        var partListSize : Int = 0
     }
 }
