@@ -1,8 +1,8 @@
-package com.cozo.cozomvp.mainActivity
+package com.cozo.cozomvp.mainactivity
 
 import android.view.View
-import com.cozo.cozomvp.networkAPI.CardMenuData
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.CardMenuData
+import com.cozo.cozomvp.networkapi.NetworkModel
 
 /*
     Interface MainInterfaces contains the abstract methods implemented by MainPresenter.kt and which are seen by the View.
@@ -56,5 +56,8 @@ interface MainInterfaces {
     associated with the card view as argument.
      */
     fun onRestCardViewHighlighted(restID: String)
+
+    fun onSettingsMenuClicked()
+    fun onPaymentMenuClicked()
 
 }

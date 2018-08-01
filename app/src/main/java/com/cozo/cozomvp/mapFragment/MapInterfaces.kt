@@ -1,6 +1,6 @@
-package com.cozo.cozomvp.mapFragment
+package com.cozo.cozomvp.mapfragment
 
-import com.cozo.cozomvp.networkAPI.NetworkModel
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.google.android.gms.maps.model.LatLng
 
 interface MapInterfaces {

@@ -1,0 +1,18 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:id="@+id/settings_general"
+        android:fragment="com.cozo.cozomvp.SettingsActivity$GeneralPreferenceFragment"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="@string/pref_header_general" />
+
+    <header
+        android:id="@+id/settings_logout"
+        android:fragment="com.cozo.cozomvp.SettingsActivity$LogOutPreferenceFragment"
+        android:icon="@drawable/ic_power_settings_new_black_24dp"
+        android:title="Log out"
+        />
+
+</preference-headers>

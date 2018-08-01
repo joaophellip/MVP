@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.listFragment
+package com.cozo.cozomvp.listfragment
 
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -11,7 +11,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.networkAPI.CardMenuData
+import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.transition.TransitionUtils
 
 class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {

@@ -6,7 +6,7 @@ import android.transition.TransitionInflater
 import android.transition.TransitionSet
 import android.view.View
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.mainActivity.DetailsLayout
+import com.cozo.cozomvp.mainactivity.DetailsLayout
 
 class HideDetailsTransitionSet(private val context: Context, private val transitionName: String, private val fromView: View, private val toView: DetailsLayout) : TransitionSet() {
 
