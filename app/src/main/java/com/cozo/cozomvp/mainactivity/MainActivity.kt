@@ -1,21 +1,28 @@
-package com.cozo.cozomvp.mainActivity
+package com.cozo.cozomvp.mainactivity
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.widget.RecyclerView
+import android.transition.Scene
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
-import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
-import com.cozo.cozomvp.listFragment.ListFragmentView
-import com.cozo.cozomvp.listFragment.LocalListFragment
-import com.cozo.cozomvp.mapFragment.LocalMapFragment
-import com.cozo.cozomvp.mapFragment.MapFragmentView
+import com.cozo.cozomvp.listfragment.ListFragmentView
+import com.cozo.cozomvp.listfragment.LocalListFragment
+import com.cozo.cozomvp.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.mapfragment.MapFragmentView
+import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
+import com.cozo.cozomvp.transition.TransitionUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,27 +30,72 @@ import org.jetbrains.anko.toast
 
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
-        MapFragmentView.MainActivityListener, NavigationView.OnNavigationItemSelectedListener {
+        MapFragmentView.MainActivityListener, DetailsInterface.MainActivityListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
+    private lateinit var containerLayout: ViewGroup
+    private lateinit var currentTransitionName: String
+    private var detailsScene: Scene? = null
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
     private val mAuth = FirebaseAuth.getInstance()!!
 
+    override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
+        containerLayout.addView(mRecyclerView)
+    }
 
     override fun createPresenter(): MainPresenter {
         return MainPresenter()
+    }
+
+    override fun hideOrderDetailsMenu(mSharedView: View?) {
+        if (mSharedView != null){
+            DetailsLayout.hideScene(this, containerLayout, mSharedView, "name")
+            detailsScene = null
+            containerLayout.removeAllViews()
+        } else {
+            // treat exception
+            Log.d("MVPdebug", "couldn't find view for transition $currentTransitionName")
+        }
+    }
+
+    override fun onActivityRequired(): MainActivity {
+        return this
+    }
+
+    override fun onBackPressed() {
+        if (detailsScene != null) {
+            val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
+            presenter.onBackPressed(childPosition)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onRestCardViewHighlighted(restID: String) {
+        presenter.onRestCardViewHighlighted(restID)
+    }
+
+    override fun onCompleteListFragment(listFragment: LocalListFragment){
+        mListFragment = listFragment
+    }
+
+    override fun onCompleteMapFragment(mapFragment: LocalMapFragment){
+        mMapFragment = mapFragment
     }
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         setContentView(R.layout.activity_main)
 
+        presenter.onActivityCreated()
+
         val user = mAuth.currentUser
         toast("Bem vindo " + user!!.displayName!!)
 
-//      NAVIGATION DRAWER
+        // NAVIGATION DRAWER
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.navigation_view)
         navigationView.setNavigationItemSelectedListener(this)
@@ -55,17 +107,14 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             drawerLayout.openDrawer(Gravity.START)
         }
 
-        // request presenter to provide user location, which is needed by both fragments
-        presenter.provideUserLocation()
-
-        // launch map fragment
+        // launches map fragment
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.mapContainer, LocalMapFragment.newInstance(), LocalMapFragment.TAG)
                 .addToBackStack(LocalMapFragment.TAG)
                 .commit()
 
-        // launch list fragment
+        // launches list fragment
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.listContainer, LocalListFragment.newInstance(), LocalListFragment.TAG)
@@ -73,26 +122,47 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 .commit()
     }
 
+    override fun onListFragmentRequired(): LocalListFragment {
+        return mListFragment
+    }
+
+    override fun onMapFragmentRequired(): LocalMapFragment {
+        return mMapFragment
+    }
+
     override fun onMapMarkerClicked(restID: String) {
-        presenter.onMapMarkerClicked(restID, mListFragment)
+        presenter.onMapMarkerClicked(restID)
     }
 
-    override fun onCardViewHighlighted(restID: String) {
-        presenter.onCardViewHighlighted(restID, mMapFragment)
+    override fun onOrderButtonClicked() {
+        val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
+        presenter.onOrderButtonClicked(childPosition)
     }
 
-    override fun onLocationAvailable(location: NetworkModel.Location) {
-        mListFragment = supportFragmentManager.findFragmentByTag(LocalListFragment.TAG) as LocalListFragment
-        mMapFragment = supportFragmentManager.findFragmentByTag(LocalMapFragment.TAG) as LocalMapFragment
-        presenter.relayLocationToListFragment(location, mListFragment)
-        presenter.relayLocationToMapFragment(location, mMapFragment)
+    override fun onPartnerCardViewClicked(partnerID: String) {
+        presenter.onPartnerCardViewClicked(partnerID)
+    }
+
+    override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, routes: MutableMap<String, List<NetworkModel.Leg>>) {
+        presenter.onPartnersCardDataReady(locations, routes)
+    }
+
+    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData, restID: String) {
+        currentTransitionName = transitionName
+        containerLayout = findViewById(R.id.recyclerContainer)  //initialize here?
+        presenter.onRestaurantCardViewClicked(restID, sharedView, data)
+    }
+
+    override fun showOrderDetailsMenu(sharedView: View, data: CardMenuData){
+        // shows up detailed view and sets listener for 'order' button
+        detailsScene = DetailsLayout.showScene(this, containerLayout, sharedView, currentTransitionName, data)
     }
 
     override fun goToPaymentActivity() {
         startActivity(Intent(this, PaymentActivity::class.java))
     }
-    override fun goToSettingsActivity() {
 
+    override fun goToSettingsActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
     }
 
@@ -105,6 +175,5 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
 
 }

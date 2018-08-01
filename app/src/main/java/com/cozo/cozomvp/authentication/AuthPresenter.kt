@@ -9,9 +9,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
 class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
 
-
     private lateinit var mAuthModel: AuthModel
-
 
     override fun requestAuth(phoneNumber: String) {
         ifViewAttached {

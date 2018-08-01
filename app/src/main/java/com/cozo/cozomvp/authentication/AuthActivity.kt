@@ -2,9 +2,10 @@ package com.cozo.cozomvp.authentication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.mainActivity.MainActivity
+import com.cozo.cozomvp.mainactivity.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -14,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_auth.*
-
 
 class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnClickListener {
 
@@ -52,8 +52,8 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
         }
     }
 
-
     override fun showLoading() {
+        Log.d("AuthDebug","loading")
         progressBar.visibility = View.VISIBLE
     }
 

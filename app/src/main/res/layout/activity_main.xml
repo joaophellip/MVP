@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mainActivity.MainActivity">
+    tools:context=".mainactivity.MainActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/contentFrame"
@@ -26,16 +26,14 @@
         <FrameLayout
             android:id="@+id/mapContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            android:layout_height="400dp"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <FrameLayout
             android:id="@+id/listContainer"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="500dp"
             app:layout_constraintBottom_toBottomOf="parent" />
-
 
     </android.support.constraint.ConstraintLayout>
 
