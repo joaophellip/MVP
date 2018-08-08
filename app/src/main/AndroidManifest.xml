@@ -34,7 +34,6 @@
 
         <activity android:name=".mainactivity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-
         <activity android:name=".authentication.AuthActivity" />
         <activity android:name=".EmptyActivity">
             <intent-filter>

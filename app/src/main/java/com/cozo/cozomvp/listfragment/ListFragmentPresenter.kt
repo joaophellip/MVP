@@ -28,13 +28,8 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
             override fun onPartCardDataRequestCompleted(cards: MutableMap<String,CardInfoData>) {}
             override fun onPartCardDataRequestFailed(e: Throwable) {}
             override fun onRestCardDataRequestCompleted(cards: MutableMap<String,CardMenuData>) {
-                val menuList = mutableListOf<CardMenuData>()
-                /*cards.forEach {
-                    mListPresenterData?.add(it)
-                    menuList.add(it.cardMenu)
-                }*/
                 ifViewAttached {
-                    restListSize = menuList.size
+                    restListSize = cards.size
                     it.addRestaurantsDataToCards(cards)
                 }
             }

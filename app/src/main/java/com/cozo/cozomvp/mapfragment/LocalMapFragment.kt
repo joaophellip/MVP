@@ -37,11 +37,22 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     private var mRoutes: MutableMap<String, ArrayList<LatLng>> = mutableMapOf()
     private var mPolyline: Polyline? = null
     private lateinit var mListenerMainActivity : MapFragmentView.MainActivityListener
+    private var isUserLocationAvailable = false
 
     override fun addMarkersBack(){
         mRestMarkerMap.forEach{
             it.value.isVisible = true
         }
+
+        val mListLocations: MutableList<LatLng> = mutableListOf()
+        mPartMarkerMap.forEach {
+            mListLocations.add(it.value.position)
+        }
+        mListLocations.add(currentRestLocation)
+        mListLocations.add(mUserDefaultLocation)
+        adjustZoomLevel(mListLocations)
+        mMap?.animateCamera(CameraUpdateFactory
+                .newLatLngZoom(mUserDefaultLocation, defaultMapZoom.toFloat()))
     }
 
     override fun addPartnerMarkersToMap(locations: MutableMap<String, NetworkModel.Location>) {
@@ -53,7 +64,13 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
             mPartMarkerMap[it.key] = mMarker!!
         }
 
-        adjustZoomLevel()
+        val mListLocations: MutableList<LatLng> = mutableListOf()
+        mPartMarkerMap.forEach {
+            mListLocations.add(it.value.position)
+        }
+        mListLocations.add(currentRestLocation)
+        mListLocations.add(mUserDefaultLocation)
+        adjustZoomLevel(mListLocations)
     }
 
     override fun addRestaurantMarkersToMap(locations: List<NetworkModel.RestLocationObjects>) {
@@ -68,9 +85,13 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
 
     override fun addUserMarkerToMap(location: NetworkModel.Location) {
         mUserDefaultLocation = LatLng(location.latitude,location.longitude)
+        isUserLocationAvailable = true
         mMap?.let {
+            // centers camera to user location
             it.moveCamera(CameraUpdateFactory
                     .newLatLngZoom(mUserDefaultLocation, defaultMapZoom.toFloat()))
+
+            // add marker to identify user location on map
             it.addMarker(MarkerOptions()
                     .position(mUserDefaultLocation)
                     .title("você está aqui"))
@@ -137,6 +158,19 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0
         mMap!!.setOnMarkerClickListener(this)
+
+        if (isUserLocationAvailable){
+            mMap?.let {
+                // centers camera to user location
+                it.moveCamera(CameraUpdateFactory
+                        .newLatLngZoom(mUserDefaultLocation, defaultMapZoom.toFloat()))
+
+                // add marker to identify user location on map
+                it.addMarker(MarkerOptions()
+                        .position(mUserDefaultLocation)
+                        .title("você está aqui"))
+            }
+        }
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
@@ -165,7 +199,6 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         (childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment).getMapAsync(this)
     }
 
-    //factor
     override fun removeAllButThisRestaurantMarker(restID: String) {
         mRestMarkerMap.forEach{
             if (it.key != restID) {
@@ -173,6 +206,11 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
             }
         }
         currentRestLocation = locationById(restID)
+
+        val mListLocations: MutableList<LatLng> = mutableListOf()
+        mListLocations.add(currentRestLocation)
+        mListLocations.add(mUserDefaultLocation)
+        adjustZoomLevel(mListLocations)
     }
 
     override fun removeAllButThisPartnerMarker(partnerID: String) {
@@ -203,9 +241,9 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     override fun savePartnerRoutes(routes: MutableMap<String, List<NetworkModel.Leg>>) {
         routes.forEach {
             val mRoute: ArrayList<LatLng> = arrayListOf()
-            it.value.forEach {
-                it.steps.forEach {
-                    mRoute.add(LatLng(it.end_location.lat,it.end_location.lng))
+            it.value.forEach {legs ->
+                legs.steps.forEach {steps ->
+                    mRoute.add(LatLng(steps.end_location.lat,steps.end_location.lng))
                 }
             }
             mRoutes[it.key] = mRoute
@@ -213,24 +251,30 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     }
 
     /*
-    Adjust map zoom level
+    Adjust map zoom level to fit all locations passed as argument
      */
-    private fun adjustZoomLevel(){
+    private fun adjustZoomLevel(mListLocations: MutableList<LatLng>){
         val builder:LatLngBounds.Builder = LatLngBounds.Builder()
-
-        mPartMarkerMap.forEach {
-            builder.include(it.value.position)
+        mListLocations.forEach {
+            builder.include(it)
         }
-
-        builder.include(currentRestLocation)
-        builder.include(mUserDefaultLocation)
-
         val bounds: LatLngBounds = builder.build()
 
-        val padding = 40
-        val cu:CameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+        val animationCallback = object : GoogleMap.CancelableCallback{
+            override fun onFinish() {
+                val mOffset:CameraUpdate = CameraUpdateFactory.scrollBy(0f,3*10f)
+                mMap?.animateCamera(mOffset)
+            }
+            override fun onCancel() {
+                //do something
+            }
+        }
 
-        mMap?.animateCamera(cu)
+        val mWidth = 280*3
+        val mHeight = 100*3
+        val cu:CameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, mWidth, mHeight, 0)
+        mMap?.animateCamera(cu,animationCallback)
+
     }
 
     /*

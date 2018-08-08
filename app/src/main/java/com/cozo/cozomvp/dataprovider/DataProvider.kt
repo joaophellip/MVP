@@ -147,8 +147,8 @@ class DataProvider() : DataProviderInterface.Model {
         }
     }
 
-    override fun provideUserLatLng(userID: String){
-        disposable = apiServe.userMainLocation(userID)
+    override fun provideUserLatLng(idToken: String){
+        disposable = apiServe.userMainLocation(idToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

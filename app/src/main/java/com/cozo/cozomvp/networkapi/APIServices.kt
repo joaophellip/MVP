@@ -17,7 +17,7 @@ interface APIServices{
 
     //need to get resources without context here for both @GET parameter and baseUrl. Later today check https://stackoverflow.com/questions/4391720/how-can-i-get-a-resource-content-from-a-static-context/4391811#4391811
     @GET("location/main")
-    fun userMainLocation(@Query("user") user: String):
+    fun userMainLocation(@Query("idToken") idToken: String):
             Observable<NetworkModel.Location>
 
     @GET ("restaurants/nearest/location")

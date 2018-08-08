@@ -23,11 +23,9 @@ import com.cozo.cozomvp.mapfragment.MapFragmentView
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
-import com.google.firebase.auth.FirebaseAuth
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
-
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
         MapFragmentView.MainActivityListener, DetailsInterface.MainActivityListener,
@@ -40,10 +38,15 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private var detailsScene: Scene? = null
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
-    private val mAuth = FirebaseAuth.getInstance()!!
+    private var isListFragmentReady = false
+    private var isMapFragmentReady = false
 
     override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
         containerLayout.addView(mRecyclerView)
+    }
+
+    override fun areFragmentsReady(): Boolean{
+        return isListFragmentReady && isMapFragmentReady
     }
 
     override fun createPresenter(): MainPresenter {
@@ -61,6 +64,22 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
+    override fun launchListFragment() {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.listContainer, LocalListFragment.newInstance(), LocalListFragment.TAG)
+                .addToBackStack(LocalListFragment.TAG)
+                .commit()
+    }
+
+    override fun launchMapFragment() {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.mapContainer, LocalMapFragment.newInstance(), LocalMapFragment.TAG)
+                .addToBackStack(LocalMapFragment.TAG)
+                .commit()
+    }
+
     override fun onActivityRequired(): MainActivity {
         return this
     }
@@ -69,8 +88,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         if (detailsScene != null) {
             val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
             presenter.onBackPressed(childPosition)
-        } else {
-            super.onBackPressed()
         }
     }
 
@@ -80,10 +97,14 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun onCompleteListFragment(listFragment: LocalListFragment){
         mListFragment = listFragment
+        isListFragmentReady = true
+        presenter.onFragmentReady()
     }
 
     override fun onCompleteMapFragment(mapFragment: LocalMapFragment){
         mMapFragment = mapFragment
+        isMapFragmentReady = true
+        presenter.onFragmentReady()
     }
 
     override fun onCreate(savedState: Bundle?) {
@@ -92,34 +113,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
         presenter.onActivityCreated()
 
-        val user = mAuth.currentUser
-        toast("Bem vindo " + user!!.displayName!!)
-
-        // NAVIGATION DRAWER
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.navigation_view)
-        navigationView.setNavigationItemSelectedListener(this)
-
-        userNameText = navigationView.getHeaderView(0).findViewById(R.id.user_name_text)
-        userNameText.text = user.displayName
-
-        navigation_drawer_button.setOnClickListener {
-            drawerLayout.openDrawer(Gravity.START)
-        }
-
-        // launches map fragment
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.mapContainer, LocalMapFragment.newInstance(), LocalMapFragment.TAG)
-                .addToBackStack(LocalMapFragment.TAG)
-                .commit()
-
-        // launches list fragment
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.listContainer, LocalListFragment.newInstance(), LocalListFragment.TAG)
-                .addToBackStack(LocalListFragment.TAG)
-                .commit()
     }
 
     override fun onListFragmentRequired(): LocalListFragment {
@@ -174,6 +167,23 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun displayMessage(message: String){
+        toast(message)
+    }
+
+    override fun setUpNavigationDrawer(userName: String) {
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navigationView: NavigationView = findViewById(R.id.navigation_view)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        userNameText = navigationView.getHeaderView(0).findViewById(R.id.user_name_text)
+        userNameText.text = userName
+
+        navigation_drawer_button.setOnClickListener {
+            drawerLayout.openDrawer(Gravity.START)
+        }
     }
 
 }

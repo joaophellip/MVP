@@ -13,15 +13,30 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
 interface MainView : MvpView {
 
     /*
-Asks activity to add a RecyclerView object to container. Passes RecyclerView object as
-argument.
- */
+    Asks activity to add a RecyclerView object to container. Passes RecyclerView object as
+    argument.
+     */
     fun addRecyclerViewToContainer(mRecyclerView : RecyclerView)
 
     /*
-Asks activity to hide a item details view. Passes View object as argument.
-  */
+    Asks activity whether both list and map fragments are ready to be used.
+     */
+    fun areFragmentsReady() : Boolean
+
+    /*
+    Asks activity to hide a item details view. Passes View object as argument.
+     */
     fun hideOrderDetailsMenu(mSharedView: View?)
+
+    /*
+    Asks activity to launch a new map fragment.
+     */
+    fun launchMapFragment()
+
+    /*
+    Asks activity to launch a new list fragment.
+     */
+    fun launchListFragment()
 
     /*
     Asks activity to return a reference to the very activity.
@@ -37,6 +52,16 @@ Asks activity to hide a item details view. Passes View object as argument.
     Asks activity to return a reference to current LocalMapFragment object.
      */
     fun onMapFragmentRequired() : LocalMapFragment
+
+    /*
+    Asks activity to display a message as Toast
+     */
+    fun displayMessage(message: String)
+
+    /*
+    Asks activity to create a navigation drawer
+     */
+    fun setUpNavigationDrawer(userName: String)
 
     /*
     Asks activity to show a item details view. Passes View and CardMenuData objects as argument.

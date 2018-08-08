@@ -21,6 +21,13 @@ interface MainInterfaces {
     fun onBackPressed(listPosition: Int)
 
     /*
+    Informs presenter that both list and map fragments are ready to be used.
+     */
+    fun onFragmentReady(){
+
+    }
+
+    /*
     Informs presenter that a restaurant map marker was clicked by user. Passes restaurant ID
     associated with the marker as argument.
      */

@@ -32,6 +32,24 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
     private lateinit var mRootView: ViewGroup
     private var isCardViewShownRestaurant: Boolean = true
 
+    override fun addPartnersDataToCards(cards: MutableMap<String, CardInfoData>) {
+        mPartnersRecyclerAdapter.setPartnerList(cards)
+        mRecyclerView.adapter = mPartnersRecyclerAdapter
+        isCardViewShownRestaurant = false
+        val mLocations: MutableMap<String, NetworkModel.Location> = mutableMapOf()
+        val mRoutes: MutableMap<String, List<NetworkModel.Leg>> = mutableMapOf()
+        cards.forEach {
+            mLocations[it.key] = it.value.info?.location!!
+            mRoutes[it.key] = it.value.info?.route!!
+        }
+        mListenerMainActivity.onPartnersCardDataReady(mLocations, mRoutes)
+    }
+
+    override fun addRestaurantsDataToCards(cards: MutableMap<String, CardMenuData>) {
+        mRestaurantsRecyclerAdapter.setRestaurantList(cards)
+        mRecyclerView.adapter = mRestaurantsRecyclerAdapter
+    }
+
     override fun onAttach(context: Context?) {
         //https://developer.android.com/training/basics/fragments/communicating
         super.onAttach(context)
@@ -127,24 +145,6 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
 
     override fun onPartnerCardViewClicked(partnerID: String) {
         mListenerMainActivity.onPartnerCardViewClicked(partnerID)
-    }
-
-    override fun addRestaurantsDataToCards(cards: MutableMap<String, CardMenuData>) {
-        mRestaurantsRecyclerAdapter.setRestaurantList(cards)
-        mRecyclerView.adapter = mRestaurantsRecyclerAdapter
-    }
-
-    override fun addPartnersDataToCards(cards: MutableMap<String, CardInfoData>) {
-        mPartnersRecyclerAdapter.setPartnerList(cards)
-        mRecyclerView.adapter = mPartnersRecyclerAdapter
-        isCardViewShownRestaurant = false
-        val mLocations: MutableMap<String, NetworkModel.Location> = mutableMapOf()
-        val mRoutes: MutableMap<String, List<NetworkModel.Leg>> = mutableMapOf()
-        cards.forEach {
-            mLocations[it.key] = it.value.info?.location!!
-            mRoutes[it.key] = it.value.info?.route!!
-        }
-        mListenerMainActivity.onPartnersCardDataReady(mLocations, mRoutes)
     }
 
     override fun highlightRestCardView(restID: String) {

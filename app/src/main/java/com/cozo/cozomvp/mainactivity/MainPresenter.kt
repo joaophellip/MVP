@@ -7,17 +7,25 @@ import com.cozo.cozomvp.listfragment.LocalListFragment
 import com.cozo.cozomvp.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
 class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private var mDataProvider: DataProvider? = null
+    private val mAuth = FirebaseAuth.getInstance()!!
+    private lateinit var mUserLocation: NetworkModel.Location
+    private val mUser: FirebaseUser? = mAuth.currentUser
 
-    /*
-    Retrieves user geo location (latitude, longitude) from Data Provider and sends it to the view.
-      */
     override fun onActivityCreated() {
-        retrieveUserLocation()
+        ifViewAttached {
+            // retrieves user location from model using Firebase TokenID for authentication
+            mUser?.getIdToken(true)?.addOnSuccessListener { result ->
+                val idToken: String? = result.token
+                retrieveUserLocation(idToken!!)
+            }
+        }
     }
 
     /*
@@ -34,6 +42,23 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
             it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
         }
+    }
+
+    override fun onFragmentReady(){
+        ifViewAttached {
+            if (it.areFragmentsReady()) {
+                // relays location to fragments
+                relayUserLocationToListFragment(mUserLocation)
+                relayUserLocationToMapFragment(mUserLocation)
+
+                // displays welcome message to user
+                it.displayMessage("Bem vindo " + mUser?.displayName!!)
+
+                // sets up navigation drawer
+                it.setUpNavigationDrawer(mUser.displayName!!)
+            }
+        }
+
     }
 
     /*
@@ -122,7 +147,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    private fun retrieveUserLocation(){
+    private fun retrieveUserLocation(idToken: String){
         mDataProvider = DataProvider(object : DataProviderInterface.MainActivityListener {
             override fun getActivity(): MainActivity? {
                 var mActivity : MainActivity? = null
@@ -132,15 +157,23 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 return mActivity
             }
             override fun onUserLocationRequestCompleted(location: NetworkModel.Location) {
-                relayUserLocationToListFragment(location)
-                relayUserLocationToMapFragment(location)
+                ifViewAttached {
+                    // stores location
+                    mUserLocation = location
+
+                    // launches map fragment
+                    it.launchMapFragment()
+
+                    // launches list fragment
+                    it.launchListFragment()
+                }
             }
             override fun onUserLocationRequestFailed(e: Throwable) {
                 //do something later
             }
         })
         // call function to retrieve userID (here or in BL?)
-        mDataProvider?.provideUserLatLng("UserFoo")
+        mDataProvider?.provideUserLatLng(idToken)
     }
 
     private fun relayChosenRestaurantLocationToListFragment(location: NetworkModel.Location) {
