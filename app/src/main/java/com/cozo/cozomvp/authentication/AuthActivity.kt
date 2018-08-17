@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_auth.*
+import org.jetbrains.anko.toast
 
 class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnClickListener {
 
@@ -121,6 +122,9 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
         if (requestCode == RC_SIGN_IN) {
             task = GoogleSignIn.getSignedInAccountFromIntent(data)
             presenter.requestLinkWithGoogle(task)
+        }
+        else {
+            toast("Não funciona assim")
         }
     }
 

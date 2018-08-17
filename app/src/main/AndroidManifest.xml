@@ -28,7 +28,8 @@
 
         <activity android:name=".mainactivity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".authentication.AuthActivity" />
+        <activity android:name=".authentication.AuthActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".EmptyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

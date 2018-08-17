@@ -106,6 +106,8 @@ class AuthModel : AuthInterfaces.Model {
                         // the GoogleSignInAccount will be non-null.
 
                         val user = mAuth.currentUser
+                        Log.d(TAG, "ProviderData: " + user!!.providers)
+                        Log.d(TAG, "ProviderData: " + user!!.providerData)
                         val providerData: MutableList<out UserInfo> = user!!.providerData
                         val mMapUserId: MutableMap<String, UserInfo> = mutableMapOf()
 
@@ -113,8 +115,9 @@ class AuthModel : AuthInterfaces.Model {
                             mMapUserId[it.providerId] = it
                         }
 
-                        when(mMapUserId.containsKey("google.com")) {
+                        when(user.providers?.contains("google.com")) {
                             true -> {
+                                Log.d(TAG, "signInWithCredential:success 21" )
                                 mOnRequestAuthListener.onAuthAndLinkedCompleted()
 
                             }
@@ -148,6 +151,8 @@ class AuthModel : AuthInterfaces.Model {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.statusCode)
+            mAuth.signOut()
+            mOnRequestSignInWithGoogleListener.onFailed()
         }
     }
 

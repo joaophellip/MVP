@@ -63,7 +63,7 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
 
             override fun onFailed() {
                 ifViewAttached {
-                    it.showAuthenticationFail()
+                    it.showLinkFail()
                 }
             }
         })
