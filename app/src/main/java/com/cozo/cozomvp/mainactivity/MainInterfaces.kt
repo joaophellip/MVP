@@ -5,7 +5,7 @@ import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 
 /*
-    Interface MainInterfaces contains the abstract methods implemented by MainPresenter.kt and which are seen by the View.
+Interface MainInterfaces contains the abstract methods implemented by MainPresenter.kt and which are seen by the View.
  */
 interface MainInterfaces {
 
@@ -55,6 +55,11 @@ interface MainInterfaces {
                                 routes: MutableMap<String, List<NetworkModel.Leg>>)
 
     /*
+    Informs presenter that payment menu was clicked.
+     */
+    fun onPaymentMenuClicked()
+
+    /*
     Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
     ID, the menu data, and the View object as argument.
      */
@@ -66,7 +71,9 @@ interface MainInterfaces {
      */
     fun onRestCardViewHighlighted(restID: String)
 
+    /*
+    Informs presenter that settings menu was clicked.
+     */
     fun onSettingsMenuClicked()
-    fun onPaymentMenuClicked()
 
 }

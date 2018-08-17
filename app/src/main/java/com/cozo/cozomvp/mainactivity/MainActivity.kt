@@ -37,16 +37,16 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
-    private lateinit var containerLayout: ViewGroup
     private lateinit var currentTransitionName: String
-    private var detailsScene: Scene? = null
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
+    private var containerLayout: ViewGroup? = null
+    private var detailsScene: Scene? = null
     private var isListFragmentReady = false
     private var isMapFragmentReady = false
 
     override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
-        containerLayout.addView(mRecyclerView)
+        containerLayout?.addView(mRecyclerView)
     }
 
     override fun areFragmentsReady(): Boolean{
@@ -59,10 +59,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun hideOrderDetailsMenu(mSharedView: View?) {
         if (mSharedView != null){
-            DetailsLayout.hideScene(this, containerLayout, mSharedView, "name")
+            DetailsLayout.hideScene(this, containerLayout!!, mSharedView, "name")
             detailsScene = null
-            containerLayout.removeAllViews()
-        } else {
+            containerLayout?.removeAllViews()
+        }
+        else {
             // treat exception
             Log.d("MVPdebug", "couldn't find view for transition $currentTransitionName")
         }
@@ -91,6 +92,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                     presenter.onLocationServiceReady()
                     //createLocationRequest()
                 }
+                else {
+                    
+                }
             }
         }
     }
@@ -113,7 +117,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // permission was granted
                     presenter.onLocationServiceReady()
-                    //createLocationRequest()
                 } else {
                     // permission denied
                     Log.d("locationDebug","permission denied")
@@ -174,7 +177,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData, restID: String) {
         currentTransitionName = transitionName
-        containerLayout = findViewById(R.id.recyclerContainer)  //initialize here?
+        //transitionName vem de uma classe chama TransitionUtils
+        if (containerLayout == null) {
+            containerLayout = findViewById(R.id.recyclerContainer)
+        }
         presenter.onRestaurantCardViewClicked(restID, sharedView, data)
     }
 
@@ -195,8 +201,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun showOrderDetailsMenu(sharedView: View, data: CardMenuData){
-        // shows up detailed view and sets listener for 'order' button
-        detailsScene = DetailsLayout.showScene(this, containerLayout, sharedView, currentTransitionName, data)
+        // shows up detailed view
+        detailsScene = DetailsLayout.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
     }
 
     override fun goToPaymentActivity() {

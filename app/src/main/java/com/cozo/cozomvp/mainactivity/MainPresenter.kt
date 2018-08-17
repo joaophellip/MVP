@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.mainactivity
 
-import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface

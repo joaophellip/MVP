@@ -8,7 +8,7 @@ import com.cozo.cozomvp.networkapi.CardMenuData
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 /*
-    Interface MainView contains the abstract methods implemented by MainActivity.kt and which are seen by the Presenter.
+Interface MainView contains the abstract methods implemented by MainActivity.kt and which are seen by the Presenter.
  */
 interface MainView : MvpView {
 
@@ -27,6 +27,16 @@ interface MainView : MvpView {
     Asks activity to display a message as Toast
      */
     fun displayMessage(message: String)
+
+    /*
+    Asks activity to show payment activity
+     */
+    fun goToPaymentActivity()
+
+    /*
+    Asks activity to show settings activity
+     */
+    fun goToSettingsActivity()
 
     /*
     Asks activity to hide a item details view. Passes View object as argument.
@@ -73,6 +83,4 @@ interface MainView : MvpView {
      */
     fun showOrderDetailsMenu(sharedView: View, data: CardMenuData)
 
-    fun goToSettingsActivity()
-    fun goToPaymentActivity()
 }

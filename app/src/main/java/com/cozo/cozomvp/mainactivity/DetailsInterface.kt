@@ -1,5 +1,8 @@
 package com.cozo.cozomvp.mainactivity
 
+/*
+Interface DetailsInterface contains the abstract methods implemented by MainActivity.kt and which are seen by DetailsLayout.
+ */
 interface DetailsInterface {
 
     interface MainActivityListener {
