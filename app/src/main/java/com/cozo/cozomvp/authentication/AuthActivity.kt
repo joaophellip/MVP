@@ -77,7 +77,9 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
 
     override fun showLinkFail() {
         progressBar.visibility = View.INVISIBLE
-        subTitleText.text = "Link Denied. Please Try again"
+        titleText.text = "Tell us who you are"
+        subTitleText.text = "We need you to choose a google account for safety reasons. Please try again"
+
     }
 
     override fun showMainActivity() {

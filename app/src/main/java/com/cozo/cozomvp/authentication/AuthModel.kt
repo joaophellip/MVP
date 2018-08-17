@@ -107,13 +107,6 @@ class AuthModel : AuthInterfaces.Model {
 
                         val user = mAuth.currentUser
                         Log.d(TAG, "ProviderData: " + user!!.providers)
-                        Log.d(TAG, "ProviderData: " + user!!.providerData)
-                        val providerData: MutableList<out UserInfo> = user!!.providerData
-                        val mMapUserId: MutableMap<String, UserInfo> = mutableMapOf()
-
-                        providerData.forEach{
-                            mMapUserId[it.providerId] = it
-                        }
 
                         when(user.providers?.contains("google.com")) {
                             true -> {

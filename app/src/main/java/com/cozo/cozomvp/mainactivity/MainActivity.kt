@@ -91,9 +91,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 if (resultCode == RESULT_OK) {
                     presenter.onLocationServiceReady()
                     //createLocationRequest()
+                    Log.d("Permission", "1")
                 }
                 else {
-                    
+                    Log.d("Permission", "2")
                 }
             }
         }
@@ -119,6 +120,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                     presenter.onLocationServiceReady()
                 } else {
                     // permission denied
+                    linear_layout_permission_box.visibility = View.VISIBLE
                     Log.d("locationDebug","permission denied")
                 }
                 return
@@ -147,6 +149,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         val isFirstTimeLogged: Boolean = intent.getBooleanExtra("IS_FIRST_TIME_LOGGED",false)
 
         presenter.onActivityCreated(isFirstTimeLogged)
+
+        permission_button.setOnClickListener{
+            linear_layout_permission_box.visibility = View.GONE
+            requestUserPermissionForLocation()
+        }
 
     }
 
@@ -194,6 +201,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             presenter.onLocationServiceReady()
             //createLocationRequest()
         } else {
+            Log.d("permission", "ask for permission")
+//            TODO: tratar caso de "não perguntar novamente"
             ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
