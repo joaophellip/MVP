@@ -1,8 +1,12 @@
 package com.cozo.cozomvp.mainactivity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.RecyclerView
@@ -80,6 +84,17 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 .commit()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode){
+            MY_GPS_RESOLUTION_STATUS_CODE -> {
+                if (resultCode == RESULT_OK) {
+                    presenter.onLocationServiceReady()
+                    //createLocationRequest()
+                }
+            }
+        }
+    }
+
     override fun onActivityRequired(): MainActivity {
         return this
     }
@@ -91,8 +106,23 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
-    override fun onRestCardViewHighlighted(restID: String) {
-        presenter.onRestCardViewHighlighted(restID)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted
+                    presenter.onLocationServiceReady()
+                    //createLocationRequest()
+                } else {
+                    // permission denied
+                    Log.d("locationDebug","permission denied")
+                }
+                return
+            }
+            else -> {} //ignore all other requests
+        }
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onCompleteListFragment(listFragment: LocalListFragment){
@@ -111,7 +141,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         super.onCreate(savedState)
         setContentView(R.layout.activity_main)
 
-        presenter.onActivityCreated()
+        val isFirstTimeLogged: Boolean = intent.getBooleanExtra("IS_FIRST_TIME_LOGGED",false)
+
+        presenter.onActivityCreated(isFirstTimeLogged)
 
     }
 
@@ -144,6 +176,22 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         currentTransitionName = transitionName
         containerLayout = findViewById(R.id.recyclerContainer)  //initialize here?
         presenter.onRestaurantCardViewClicked(restID, sharedView, data)
+    }
+
+    override fun onRestCardViewHighlighted(restID: String) {
+        presenter.onRestCardViewHighlighted(restID)
+    }
+
+    override fun requestUserPermissionForLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            presenter.onLocationServiceReady()
+            //createLocationRequest()
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+        }
     }
 
     override fun showOrderDetailsMenu(sharedView: View, data: CardMenuData){
@@ -184,6 +232,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         navigation_drawer_button.setOnClickListener {
             drawerLayout.openDrawer(Gravity.START)
         }
+    }
+
+    companion object {
+        var MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0
+        var MY_GPS_RESOLUTION_STATUS_CODE = 1
     }
 
 }

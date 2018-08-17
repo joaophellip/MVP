@@ -29,6 +29,8 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
         return AuthPresenter()
     }
 
+    override fun onBackPressed() {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
@@ -79,6 +81,7 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
 
     override fun showMainActivity() {
         val activityIntent = Intent (this,MainActivity::class.java)
+        activityIntent.putExtra("IS_FIRST_TIME_LOGGED", true)
         startActivity(activityIntent)
         finish()
     }

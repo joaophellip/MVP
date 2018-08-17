@@ -12,7 +12,7 @@ interface MainInterfaces {
     /*
     Informs presenter that view activity was created.
      */
-    fun onActivityCreated()
+    fun onActivityCreated(isFirstTimeLogged : Boolean)
 
     /*
     Informs presenter that back button has been pressed in main activity. Passes position within
@@ -26,6 +26,8 @@ interface MainInterfaces {
     fun onFragmentReady(){
 
     }
+
+    fun onLocationServiceReady()
 
     /*
     Informs presenter that a restaurant map marker was clicked by user. Passes restaurant ID

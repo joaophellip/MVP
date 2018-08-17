@@ -31,7 +31,7 @@ interface DataProviderInterface {
     interface Model{
 
         // retrieves user coordinates (latitude/longitude) and sends it back to presenter.
-        fun provideUserLatLng(idToken: String)
+        fun provideUserLatLng(idToken: String, isUserDeviceLocationNeeded: Boolean = false)
 
         // retrieves restaurants' coordinates (latitude/longitude) and sends them back to presenter.
         fun provideRestaurantsLatLng(location: NetworkModel.Location, radius: Int)

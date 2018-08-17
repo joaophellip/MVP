@@ -24,6 +24,11 @@ interface MainView : MvpView {
     fun areFragmentsReady() : Boolean
 
     /*
+    Asks activity to display a message as Toast
+     */
+    fun displayMessage(message: String)
+
+    /*
     Asks activity to hide a item details view. Passes View object as argument.
      */
     fun hideOrderDetailsMenu(mSharedView: View?)
@@ -54,9 +59,9 @@ interface MainView : MvpView {
     fun onMapFragmentRequired() : LocalMapFragment
 
     /*
-    Asks activity to display a message as Toast
+    Asks activity to request permission for accessing user location
      */
-    fun displayMessage(message: String)
+    fun requestUserPermissionForLocation()
 
     /*
     Asks activity to create a navigation drawer

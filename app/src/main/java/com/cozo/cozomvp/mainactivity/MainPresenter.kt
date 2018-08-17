@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
@@ -10,6 +11,7 @@ import com.cozo.cozomvp.networkapi.NetworkModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import retrofit2.HttpException
 
 class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
@@ -18,12 +20,20 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     private lateinit var mUserLocation: NetworkModel.Location
     private val mUser: FirebaseUser? = mAuth.currentUser
 
-    override fun onActivityCreated() {
+    override fun onActivityCreated(isFirstTimeLogged: Boolean) {
         ifViewAttached {
-            // retrieves user location from model using Firebase TokenID for authentication
-            mUser?.getIdToken(true)?.addOnSuccessListener { result ->
-                val idToken: String? = result.token
-                retrieveUserLocation(idToken!!)
+            when(isFirstTimeLogged) {
+                true -> {
+                    // ask permission for user to get device location
+                    it.requestUserPermissionForLocation()
+                }
+                false -> {
+                    // tries to retrieve user location from model using Firebase TokenID for backend authentication
+                    mUser?.getIdToken(true)?.addOnSuccessListener { result ->
+                        val idToken: String? = result.token
+                        retrieveUserLocation(idToken!!)
+                    }
+                }
             }
         }
     }
@@ -59,6 +69,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             }
         }
 
+    }
+
+    override fun onLocationServiceReady() {
+        // retrieves user location from model
+        retrieveUserLocation("", true)
     }
 
     /*
@@ -147,7 +162,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    private fun retrieveUserLocation(idToken: String){
+    private fun retrieveUserLocation(idToken: String, isUserDeviceLocationNeeded: Boolean = false){
         mDataProvider = DataProvider(object : DataProviderInterface.MainActivityListener {
             override fun getActivity(): MainActivity? {
                 var mActivity : MainActivity? = null
@@ -169,11 +184,22 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 }
             }
             override fun onUserLocationRequestFailed(e: Throwable) {
-                //do something later
+                when (e) {
+                    is HttpException -> {
+                        when(e.code()){
+                            404 -> {
+                                // user hadn't saved any preferable place to be ordered to
+                                // ask permission for user to get device location
+                                ifViewAttached {
+                                    it.requestUserPermissionForLocation()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         })
-        // call function to retrieve userID (here or in BL?)
-        mDataProvider?.provideUserLatLng(idToken)
+        mDataProvider?.provideUserLatLng(idToken,isUserDeviceLocationNeeded)
     }
 
     private fun relayChosenRestaurantLocationToListFragment(location: NetworkModel.Location) {

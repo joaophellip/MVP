@@ -1,10 +1,16 @@
 package com.cozo.cozomvp.dataprovider
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.networkapi.*
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -36,6 +42,9 @@ class DataProvider() : DataProviderInterface.Model {
     }   // companion object?
     private var mRestaurantsMap: MutableMap<String,CardMenuData> = mutableMapOf()
     private var mPartnersMap: MutableMap<String,CardInfoData> = mutableMapOf()
+    private var mLocationPermission = false
+    private lateinit var mLocationCallback: LocationCallback
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     constructor(listener: DataProviderInterface.MainActivityListener) : this(){
         this.mListenerMainActivity = listener
@@ -147,35 +156,44 @@ class DataProvider() : DataProviderInterface.Model {
         }
     }
 
-    override fun provideUserLatLng(idToken: String){
-        disposable = apiServe.userMainLocation(idToken)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result ->
-                            mListenerMainActivity.onUserLocationRequestCompleted(result)
-                        },
-                        { error ->
-                            when (error) {
-                                is HttpException -> {
-                                    //"HttpException".showToast(this)
-                                    val codeString = error.code()
-                                    val errorString = error.response().errorBody()?.string()
-                                    Log.d("Retrofit", "error code is $codeString. $errorString")
-                                }
-                                is UnknownHostException -> {
-                                    //"UnknownHostException. Please check your internet connection".showToast(this)
-                                    val errorString = error.toString()
-                                    Log.d("Retrofit", "error is $errorString")
-                                }
-                                else -> {
-                                    //"Unknown Error. Try again".showToast(this)
-                                    Log.d("Retrofit", "unknown error")
-                                }
+    override fun provideUserLatLng(idToken: String, isUserDeviceLocationNeeded: Boolean){
+        if (isUserDeviceLocationNeeded){
+            //get location from device
+            createLocationRequest()
+        }
+        else {
+            // get location from API
+            disposable = apiServe.userMainLocation(idToken)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            { result ->
+                                mListenerMainActivity.onUserLocationRequestCompleted(result)
+                            },
+                            { error ->
+                                mListenerMainActivity.onUserLocationRequestFailed(error)
+                                /*when (error) {
+                                    is HttpException -> {
+                                        when(error.code()){
+                                            404 -> {}
+                                        }
+                                        val codeString = error.code()
+                                        val errorString = error.response().errorBody()?.string()
+                                        Log.d("Retrofit", "error code is $codeString. $errorString")
+                                    }
+                                    is UnknownHostException -> {
+                                        //"UnknownHostException. Please check your internet connection".showToast(this)
+                                        val errorString = error.toString()
+                                        Log.d("Retrofit", "error is $errorString")
+                                    }
+                                    else -> {
+                                        //"Unknown Error. Try again".showToast(this)
+                                        Log.d("Retrofit", "unknown error")
+                                    }
+                                }*/
                             }
-                            mListenerMainActivity.onUserLocationRequestFailed(error)
-                        }
-                )
+                    )
+        }
     }
     override fun provideRestaurantsLatLng(location: NetworkModel.Location, radius: Int){
         disposable = apiServe.restaurantsNearestLocation(radius,location.latitude,location.longitude)
@@ -349,6 +367,57 @@ class DataProvider() : DataProviderInterface.Model {
         mSocket.on("updated partners list available", onUpdatedListAvailable)
         mSocket.on("updated locations available", onUpdatedLocationsAvailable)
         mSocket.connect()
+    }
+
+    //refactor later
+    private fun createLocationRequest(){
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity!!)
+        val mLocationRequest: LocationRequest = LocationRequest().apply {
+            interval = 60000
+            fastestInterval = 60000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest)
+        val client: SettingsClient = LocationServices.getSettingsClient(mActivity!!)
+
+        client.checkLocationSettings(builder.build()).addOnCompleteListener { mTask ->
+            if (mTask.isSuccessful) {
+                // All location settings are satisfied. Initializes location requests here.
+                mLocationCallback = object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult?) {
+                        locationResult ?: return
+                        for (location in locationResult.locations){
+                            // only cares about the first location provided by app. Ignores the next ones
+                            if (!mLocationPermission) {
+                                mLocationPermission = true
+                                mListenerMainActivity.onUserLocationRequestCompleted(NetworkModel.Location(location.latitude,location.longitude))
+                            }
+                        }
+                    }
+                }
+                //think on how to decouple this (avoid model to check permissions from activity
+                val hasPermissionBeenGranted: Boolean = (ContextCompat.checkSelfPermission(mActivity!!, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED)
+                if(hasPermissionBeenGranted){
+                    mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
+                }
+            }
+            else {
+                val mException: ApiException = mTask.exception as ApiException
+                when (mException.statusCode) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                        // do this at activity class because callback is there...refactor later
+                        val mResolvableException = mException as ResolvableApiException
+                        mResolvableException.startResolutionForResult(mActivity!!, MY_GPS_RESOLUTION_STATUS_CODE)
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        var MY_GPS_RESOLUTION_STATUS_CODE = 1
     }
 
 }
