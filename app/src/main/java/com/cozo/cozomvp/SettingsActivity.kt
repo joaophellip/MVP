@@ -131,7 +131,9 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                     user.signOut()
                     startActivity(Intent(activity, AuthActivity::class.java))
                 }
-                noButton {}
+                noButton {
+                    startActivity(Intent(activity, SettingsActivity::class.java))
+                }
             }.show().setCanceledOnTouchOutside(false)
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
