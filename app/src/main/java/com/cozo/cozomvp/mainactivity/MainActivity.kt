@@ -94,6 +94,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                     Log.d("Permission", "1")
                 }
                 else {
+                    linear_layout_permission_box.visibility = View.VISIBLE
                     Log.d("Permission", "2")
                 }
             }
