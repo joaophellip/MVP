@@ -19,9 +19,13 @@ import com.hannesdorfmann.mosby3.mvp.MvpFragment
 import org.jetbrains.anko.displayMetrics
 import java.lang.Math.ceil
 import org.jetbrains.anko.forEachChild
+import android.support.v7.widget.helper.ItemTouchHelper
+import com.cozo.cozomvp.transition.TransitionUtils
+
 
 class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>(), ListFragmentView,
-        RestaurantRecyclerViewAdapter.OnPlaceClickListener, PartnersRecyclerViewAdapter.OnPlaceClickListener {
+        RestaurantRecyclerViewAdapter.OnPlaceClickListener, PartnersRecyclerViewAdapter.OnPlaceClickListener,
+        SwipeController.OnSwipeClickListener {
 
     @BindView(R.id.recyclerView) lateinit var mRecyclerView: RecyclerView
 
@@ -71,6 +75,12 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+        //Adds Swipe Controller to recyclerView
+        val mSwipeController = SwipeController(this)
+        val mItemTouchHelper = ItemTouchHelper(mSwipeController)
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
+
         mRestaurantsRecyclerAdapter = RestaurantRecyclerViewAdapter(this)
         mPartnersRecyclerAdapter = PartnersRecyclerViewAdapter(this)
         mRootView = view as ViewGroup
@@ -141,6 +151,12 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
 
     override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData, restID: String) {
         mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data, restID)
+    }
+
+    override fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, position: Int) {
+        val restID: String = mRestaurantsRecyclerAdapter.currentRestID(position)
+        val data: CardMenuData? = mRestaurantsRecyclerAdapter.cardData(restID)
+        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data!!, restID)
     }
 
     override fun onPartnerCardViewClicked(partnerID: String) {
