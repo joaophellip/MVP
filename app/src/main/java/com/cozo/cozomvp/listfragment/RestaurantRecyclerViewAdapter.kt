@@ -2,7 +2,9 @@ package com.cozo.cozomvp.listfragment
 
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,7 +18,7 @@ import com.cozo.cozomvp.transition.TransitionUtils
 
 class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {
 
-    lateinit var listener: OnPlaceClickListener
+    private lateinit var listener: OnPlaceClickListener
     lateinit var mCardViewLayoutParams: ViewGroup.MarginLayoutParams
     private var restaurantList: MutableMap<String, CardMenuData> = mutableMapOf()
     private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
@@ -39,17 +41,10 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
         holder.bindView(position)
     }
 
-    fun setRestaurantList(cards: MutableMap<String, CardMenuData>) {
-        restaurantList = cards
-        /*var counter = 0
-        //restaurantList.forEach {
-            //notifyItemInserted(counter)
-            //mPositionMap[counter] = it.key
-            //counter += counter
-        //}
-        */
-        restaurantList.entries.forEachIndexed { index, mutableEntry ->
-            mPositionMap[index] = mutableEntry.key
+    fun cardData(restID: String) : CardMenuData? {
+        return when (restaurantList.containsKey(restID)){
+            true -> restaurantList[restID]
+            false -> null
         }
     }
 
@@ -69,6 +64,21 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
             false -> -1
         }
     }
+
+    fun setRestaurantList(cards: MutableMap<String, CardMenuData>) {
+        restaurantList = cards
+        /*var counter = 0
+        //restaurantList.forEach {
+            //notifyItemInserted(counter)
+            //mPositionMap[counter] = it.key
+            //counter += counter
+        //}
+        */
+        restaurantList.entries.forEachIndexed { index, mutableEntry ->
+            mPositionMap[index] = mutableEntry.key
+        }
+    }
+
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
@@ -97,7 +107,7 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
             this.mFoodAveragePrepTime.text = formattedPrepTime
             this.mFoodRating.rating = restaurantList.entries.elementAt(position).value.menu?.rating!!
             this.mRatedBy.text = ratedBy
-            this.mRoot.setOnClickListener {_ -> listener.onRestaurantCardViewClicked(this.mRoot, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList.entries.elementAt(position).value, restaurantList.entries.elementAt(position).key)}
+            this.mRoot.setOnClickListener {_ -> listener.onRestaurantCardViewClicked(this.mRoot, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList.entries.elementAt(position).value, restaurantList.entries.elementAt(position).key) }
 
             // sets raised elevation to first card by default
             when (position) {
