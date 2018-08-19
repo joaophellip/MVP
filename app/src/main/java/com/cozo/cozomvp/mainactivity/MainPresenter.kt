@@ -21,6 +21,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onActivityCreated(isFirstTimeLogged: Boolean) {
         ifViewAttached {
+
             when(isFirstTimeLogged) {
                 true -> {
                     // ask permission for user to get device location

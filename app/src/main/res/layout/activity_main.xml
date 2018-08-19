@@ -23,6 +23,38 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/ic_menu_button" />
 
+        <LinearLayout
+            android:id="@+id/linear_layout_permission_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="48dp"
+            android:layout_marginTop="48dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.131">
+
+            <TextView
+                android:id="@+id/permission_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Access your location is important for your deliverer to know where to deliver your order. We will use this information only for this matter."
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/permission_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Grant Location"
+                android:background="@color/cyan_400"/>
+
+
+        </LinearLayout>
+
         <FrameLayout
             android:id="@+id/mapContainer"
             android:layout_width="match_parent"
