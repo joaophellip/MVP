@@ -31,13 +31,20 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
 
     private lateinit var mUserDefaultLocation: LatLng
     private lateinit var currentRestLocation: LatLng
+    private lateinit var mListenerMainActivity : MapFragmentView.MainActivityListener
     private var mMap: GoogleMap? = null
     private var mRestMarkerMap: MutableMap<String,Marker> = mutableMapOf()
     private var mPartMarkerMap: MutableMap<String,Marker> = mutableMapOf()
     private var mRoutes: MutableMap<String, ArrayList<LatLng>> = mutableMapOf()
     private var mPolyline: Polyline? = null
-    private lateinit var mListenerMainActivity : MapFragmentView.MainActivityListener
     private var isUserLocationAvailable = false
+    private var areGesturesEnabled = true
+    private var animateCameraCallback = object: GoogleMap.CancelableCallback{
+        override fun onFinish() {
+            mMap?.uiSettings?.setAllGesturesEnabled(areGesturesEnabled)
+        }
+        override fun onCancel() {}
+    }
 
     override fun addMarkersBack(){
         mRestMarkerMap.forEach{
@@ -50,9 +57,10 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         }
         mListLocations.add(currentRestLocation)
         mListLocations.add(mUserDefaultLocation)
+        areGesturesEnabled = true
         adjustZoomLevel(mListLocations)
         mMap?.animateCamera(CameraUpdateFactory
-                .newLatLngZoom(mUserDefaultLocation, defaultMapZoom.toFloat()))
+                .newLatLngZoom(mUserDefaultLocation, defaultMapZoom.toFloat()), animateCameraCallback)
     }
 
     override fun addPartnerMarkersToMap(locations: MutableMap<String, NetworkModel.Location>) {
@@ -70,6 +78,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         }
         mListLocations.add(currentRestLocation)
         mListLocations.add(mUserDefaultLocation)
+        areGesturesEnabled = true
         adjustZoomLevel(mListLocations)
     }
 
@@ -210,6 +219,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         val mListLocations: MutableList<LatLng> = mutableListOf()
         mListLocations.add(currentRestLocation)
         mListLocations.add(mUserDefaultLocation)
+        areGesturesEnabled = false
         adjustZoomLevel(mListLocations)
     }
 
@@ -263,11 +273,10 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         val animationCallback = object : GoogleMap.CancelableCallback{
             override fun onFinish() {
                 val mOffset:CameraUpdate = CameraUpdateFactory.scrollBy(0f,3*10f)
-                mMap?.animateCamera(mOffset)
+
+                mMap?.animateCamera(mOffset, animateCameraCallback)
             }
-            override fun onCancel() {
-                //do something
-            }
+            override fun onCancel() {}
         }
 
         val mWidth = 280*3
