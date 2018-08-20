@@ -15,4 +15,13 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="TechniqueToolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">@color/blue_50</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
 </resources>

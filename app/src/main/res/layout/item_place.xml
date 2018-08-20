@@ -5,118 +5,61 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="bottom">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:cardCornerRadius="8dp"
         android:background="@color/white"
         android:layout_gravity="bottom">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/headerImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:textSize="22sp"
-                android:transitionName="titleTransition"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:visibility="invisible"
-                app:srcCompat="@android:drawable/ic_input_add" />
-
-            <LinearLayout
-                android:id="@+id/descriptionLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/clock"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_clock" />
-
-                <TextView
-                    android:id="@+id/hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1" />
-
-                <ImageView
-                    android:id="@+id/priceImage"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_price" />
-
-                <TextView
-                    android:id="@+id/priceTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end" />
-
-                <ImageView
-                    android:id="@+id/scooter"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_scooter" />
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end" />
-
-            </LinearLayout>
-
+                android:textStyle="bold"
+                android:transitionName="titleTransition"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headerImage" />
 
             <TextView
                 android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ellipsize="end"
-                android:maxLines="3" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical|start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/takeMe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="center"
-            android:textColor="@color/white" />
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 
