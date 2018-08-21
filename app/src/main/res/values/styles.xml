@@ -23,5 +23,16 @@
         <item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
+    <!-- Splash Screen theme. -->
+
+    <style
+        name="SplashTheme"
+        parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <style name="HeaderBar">
+        <item name="android:background">@color/white100</item>
+    </style>
 
 </resources>

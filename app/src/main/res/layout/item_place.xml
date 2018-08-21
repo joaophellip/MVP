@@ -83,15 +83,17 @@
                     <Button
                         android:background="@drawable/ic_add_black_24dp"
                         android:layout_width="70dp"
-                        android:layout_height="70dp" />
+                        android:layout_height="70dp"/>
                 </LinearLayout>
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:text="Escolher Entregador"
                     android:elevation="18dp"
+                    android:textColor="@color/white100"
                     android:pointerIcon="arrow"
-                    tools:targetApi="n" />
+                    tools:targetApi="n"
+                    android:background="@drawable/ripple_effect"/>
 
 
 

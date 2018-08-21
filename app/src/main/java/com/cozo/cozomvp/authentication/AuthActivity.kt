@@ -17,7 +17,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import org.jetbrains.anko.toast
 
-class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnClickListener {
+class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mAuth: FirebaseAuth
@@ -43,7 +43,6 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         mAuth = FirebaseAuth.getInstance()
 
-        signOut_Button.setOnClickListener(this)
 
         authButton.setOnClickListener{
             val phoneNumber = phoneNumberEditText.text.toString()
@@ -127,12 +126,6 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView, View.OnCl
         }
         else {
             toast("Não funciona assim")
-        }
-    }
-
-    override fun onClick(p0: View?) {
-        when (p0) {
-            signOut_Button -> presenter.requestSignOut(mGoogleSignInClient, mAuth)
         }
     }
 
