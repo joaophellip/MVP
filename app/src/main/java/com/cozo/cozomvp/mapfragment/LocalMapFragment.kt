@@ -219,7 +219,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         val mListLocations: MutableList<LatLng> = mutableListOf()
         mListLocations.add(currentRestLocation)
         mListLocations.add(mUserDefaultLocation)
-        areGesturesEnabled = false
+        areGesturesEnabled = true
         adjustZoomLevel(mListLocations)
     }
 
@@ -261,7 +261,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     }
 
     /*
-    Adjust map zoom level to fit all locations passed as argument
+    Adjust map zoom level to fit all locations passed as argument.
      */
     private fun adjustZoomLevel(mListLocations: MutableList<LatLng>){
         val builder:LatLngBounds.Builder = LatLngBounds.Builder()
@@ -273,14 +273,13 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         val animationCallback = object : GoogleMap.CancelableCallback{
             override fun onFinish() {
                 val mOffset:CameraUpdate = CameraUpdateFactory.scrollBy(0f,3*10f)
-
                 mMap?.animateCamera(mOffset, animateCameraCallback)
             }
             override fun onCancel() {}
         }
 
-        val mWidth = 280*3
-        val mHeight = 100*3
+        val mWidth: Int = 280*3
+        val mHeight: Int = 100*3
         val cu:CameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, mWidth, mHeight, 0)
         mMap?.animateCamera(cu,animationCallback)
 

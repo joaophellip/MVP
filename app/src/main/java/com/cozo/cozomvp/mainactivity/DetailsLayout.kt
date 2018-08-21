@@ -3,7 +3,6 @@ package com.cozo.cozomvp.mainactivity
 import android.app.Activity
 import android.content.Context
 import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.CardView
 import android.transition.Scene
 import android.transition.Transition
@@ -12,6 +11,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
@@ -50,27 +50,12 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
 
             val set : Transition = ShowDetailsTransitionSet(activity, transitionName, sharedView, detailsLayout)
 
-            //adds swipe functionality when transition ends
-            set.addListener(object: Transition.TransitionListener{
-                override fun onTransitionEnd(transition: Transition?) {
-                    val test = detailsLayout as View
-                    test.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                        Log.d("onTransitionEnd","scrolled not working")
-                    }
-                }
-                override fun onTransitionResume(transition: Transition?) {}
-                override fun onTransitionPause(transition: Transition?) {}
-                override fun onTransitionCancel(transition: Transition?) {}
-                override fun onTransitionStart(transition: Transition?) {}
-            })
-
             val scene = Scene(container, detailsLayout as View)
             TransitionManager.go(scene, set)
 
-            //set FAB button
-            /*val orderFab: FloatingActionButton = detailsLayout.findViewById(R.id.floatingActionButton)
-            orderFab.setOnClickListener{ _ -> mListenerMainActivity.onOrderButtonClicked()
-            }*/
+            //set Order Button
+            val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
+            orderButton.setOnClickListener { mListenerMainActivity.onOrderButtonClicked() }
 
             return scene
         }
