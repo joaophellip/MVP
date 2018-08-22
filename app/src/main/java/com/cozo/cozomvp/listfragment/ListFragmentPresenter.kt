@@ -45,7 +45,7 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
                 return mActivity
             }
         })
-        mDataProvider?.provideRestaurantsCardData(location,2000)
+        mDataProvider?.provideRestaurantsCardData(location,10000)
     }
 
     // retrieves list of nearby delivery partners from Data Provider and sends them to the list view.

@@ -22,7 +22,6 @@ import org.jetbrains.anko.forEachChild
 import android.support.v7.widget.helper.ItemTouchHelper
 import com.cozo.cozomvp.transition.TransitionUtils
 
-
 class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>(), ListFragmentView,
         RestaurantRecyclerViewAdapter.OnPlaceClickListener, PartnersRecyclerViewAdapter.OnPlaceClickListener,
         SwipeController.OnSwipeClickListener {

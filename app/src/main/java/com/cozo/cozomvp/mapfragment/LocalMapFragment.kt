@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.mapfragment
 
+import android.bluetooth.le.AdvertiseCallback
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -25,9 +26,13 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.maps.CameraUpdate
+import java.lang.Math.round
 
 class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), MapFragmentView, OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener{
+
+    private var mWidth: Int = 0
+    private var mHeight: Int = 0
 
     private lateinit var mUserDefaultLocation: LatLng
     private lateinit var currentRestLocation: LatLng
@@ -58,9 +63,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         mListLocations.add(currentRestLocation)
         mListLocations.add(mUserDefaultLocation)
         areGesturesEnabled = true
-        adjustZoomLevel(mListLocations)
-        mMap?.animateCamera(CameraUpdateFactory
-                .newLatLngZoom(mUserDefaultLocation, defaultMapZoom.toFloat()), animateCameraCallback)
+        adjustZoomLevel(mListLocations, false)
     }
 
     override fun addPartnerMarkersToMap(locations: MutableMap<String, NetworkModel.Location>) {
@@ -90,6 +93,13 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
                     .icon(vectorToBitmap(R.drawable.ic_restaurant_test_18dp, ContextCompat.getColor(this.context!!,R.color.blue_700))))
             mRestMarkerMap[it.id] = mMarker!!
         }
+        val mListLocations: MutableList<LatLng> = mutableListOf()
+        mRestMarkerMap.forEach {
+            mListLocations.add(it.value.position)
+        }
+        mListLocations.add(mUserDefaultLocation)
+        areGesturesEnabled = true
+        adjustZoomLevel(mListLocations)
     }
 
     override fun addUserMarkerToMap(location: NetworkModel.Location) {
@@ -161,13 +171,18 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mView : View? = inflater.inflate(R.layout.fragment_map, container, false)
         mListenerMainActivity.onCompleteMapFragment(this)
+
+        mView?.viewTreeObserver?.addOnGlobalLayoutListener {
+            mWidth = mView.width
+            mHeight = mView.height
+        }
+
         return mView
     }
 
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0
         mMap!!.setOnMarkerClickListener(this)
-
         if (isUserLocationAvailable){
             mMap?.let {
                 // centers camera to user location
@@ -220,7 +235,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         mListLocations.add(currentRestLocation)
         mListLocations.add(mUserDefaultLocation)
         areGesturesEnabled = true
-        adjustZoomLevel(mListLocations)
+        adjustZoomLevel(mListLocations, true)
     }
 
     override fun removeAllButThisPartnerMarker(partnerID: String) {
@@ -263,26 +278,35 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     /*
     Adjust map zoom level to fit all locations passed as argument.
      */
-    private fun adjustZoomLevel(mListLocations: MutableList<LatLng>){
+    private fun adjustZoomLevel(mListLocations: MutableList<LatLng>, shiftOnY: Boolean = false){
         val builder:LatLngBounds.Builder = LatLngBounds.Builder()
         mListLocations.forEach {
             builder.include(it)
         }
         val bounds: LatLngBounds = builder.build()
 
-        val animationCallback = object : GoogleMap.CancelableCallback{
+        val shiftOnYCallback = object : GoogleMap.CancelableCallback{
             override fun onFinish() {
-                val mOffset:CameraUpdate = CameraUpdateFactory.scrollBy(0f,3*10f)
+                val mCardViewItemPlaceHeight: Int = 400*3
+                val mCardViewHeight: Int = 300*3
+                val scrollXBy: Float = ((mCardViewItemPlaceHeight - mCardViewHeight)/2).toFloat()
+                val mOffset:CameraUpdate = CameraUpdateFactory.scrollBy(0f,scrollXBy)
                 mMap?.animateCamera(mOffset, animateCameraCallback)
             }
             override fun onCancel() {}
         }
 
-        val mWidth: Int = 280*3
-        val mHeight: Int = 100*3
-        val cu:CameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, mWidth, mHeight, 0)
-        mMap?.animateCamera(cu,animationCallback)
+        //set margin as 25% of the map dimensions
+        val horizontalMargin: Int = round(0.25*mWidth).toInt()
+        val verticalMargin: Int = round(0.25*mHeight).toInt()
 
+        val cu:CameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, mWidth - horizontalMargin, mHeight - verticalMargin, 0)
+        if (shiftOnY) {
+            mMap?.animateCamera(cu,shiftOnYCallback)
+        }
+        else {
+            mMap?.animateCamera(cu)
+        }
     }
 
     /*

@@ -79,7 +79,6 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
         }
     }
 
-
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         @BindView(R.id.foodImage) lateinit var mFoodImage: ImageView

@@ -78,7 +78,7 @@ class MapFragmentPresenter : MvpBasePresenter<MapFragmentView>(), MapInterfaces.
                 Log.d("MVPdebug","error while requesting location to backend")
             }
         })
-        mDataProvider?.provideRestaurantsLatLng(location,2000)
+        mDataProvider?.provideRestaurantsLatLng(location,10000)
     }
 
     // retrieves route for provided locations and sends it to the map view.
