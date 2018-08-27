@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.mapfragment
 
-import android.bluetooth.le.AdvertiseCallback
 import android.content.Context
 import android.os.Bundle
 import android.util.Log

@@ -8,7 +8,6 @@ import android.transition.Scene
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button

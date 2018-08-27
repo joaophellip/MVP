@@ -1,5 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+// this block determines which plugins, tasks classes, and other classes are available for use in
+// the rest of the build script.
 buildscript {
     ext.kotlin_version = '1.2.61'
     ext.anko_version='0.10.5'
@@ -8,19 +10,21 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.google.gms:google-services:4.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:3.1.4'    // Gradle plug-in to build Android apps
+        classpath 'com.google.gms:google-services:4.0.1'    // Google-Services plug-in
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"   // Kotlin plug-in
     }
 }
 
+// this block determines which repositories will be used for a remote dependency other than a local
+// library or file tree.
 allprojects {
     repositories {
-        google()
-        jcenter()
+        google()    // for accessing Google's Maven repository
+        jcenter()   // Android Studio default location for remote repositories
     }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+    delete rootProject.buildDir //delete the build directory
 }
