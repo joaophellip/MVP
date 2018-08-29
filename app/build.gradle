@@ -91,6 +91,12 @@ dependencies {
 
     // Card Form is a ready made card form layout to be shown in Payment activity. License: MIT
     implementation 'com.braintreepayments:card-form:3.3.0'
+
+    // Required -- JUnit 4 framework
+    testImplementation 'junit:junit:4.12'
+
+    // Optional -- Mockito framework
+    testImplementation 'org.mockito:mockito-core:1.10.19'
 }
 
 // Add dependencies for basic libs for the google api services. Can't be added with other plug-ins
