@@ -25,7 +25,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import io.socket.emitter.Emitter
 
-class DataProvider() : DataProviderInterface.Model {
+class DataProvider : DataProviderInterface.Model {
 
     private lateinit var mListenerMainActivity : DataProviderInterface.MainActivityListener
     private lateinit var mListenerListFragment : DataProviderInterface.ListFragmentListener
@@ -46,15 +46,15 @@ class DataProvider() : DataProviderInterface.Model {
     private lateinit var mLocationCallback: LocationCallback
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
-    constructor(listener: DataProviderInterface.MainActivityListener) : this(){
+    constructor(listener: DataProviderInterface.MainActivityListener) {
         this.mListenerMainActivity = listener
         mActivity = listener.getActivity()
     }
-    constructor(listener: DataProviderInterface.ListFragmentListener) : this(){
+    constructor(listener: DataProviderInterface.ListFragmentListener) {
         this.mListenerListFragment = listener
         mActivity = listener.getActivity()
     }
-    constructor(listener: DataProviderInterface.MapFragmentListener) : this(){
+    constructor(listener: DataProviderInterface.MapFragmentListener) {
         this.mListenerMapFragment = listener
         mActivity = listener.getActivity()
     }

@@ -21,20 +21,17 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
                     it.showMainActivity()
                 }
             }
-
             override fun onRequestLinkWithGoogleNeeded() {
                 ifViewAttached {
                     it.startLinkWithGoogle()
                 }
 //                TODO: check params
             }
-
             override fun onAuthenticationFailed() {
                 ifViewAttached {
                     it.showAuthenticationFail()
                 }
             }
-
             override fun onInvalidNumber() {
                 ifViewAttached {
                     it.showInvalidNumber()

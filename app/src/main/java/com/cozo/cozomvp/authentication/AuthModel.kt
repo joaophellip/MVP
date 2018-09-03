@@ -32,7 +32,9 @@ class AuthModel : AuthInterfaces.Model {
     var mAuth = FirebaseAuth.getInstance()
     val TAG: String = "Authentication"
 
+    //DI for PhoneNumberUtil, PhoneAuthProvider
     override fun authenticateNumber(phoneNumber: String) {
+
         val phoneUtil = PhoneNumberUtil.getInstance()
         val brPhone: Phonenumber.PhoneNumber = phoneUtil.parse(phoneNumber, "BR")
         val isValid = phoneUtil.isValidNumber(brPhone)
@@ -50,7 +52,6 @@ class AuthModel : AuthInterfaces.Model {
                     Log.d(TAG, "onVerificationCompleted:$credential")
                     signInWithPhoneAuthCredential(credential)
                 }
-
                 override fun onVerificationFailed(e: FirebaseException) {
                     Log.w(TAG, "onVerificationFailed", e)
                     when (e) {
@@ -82,71 +83,30 @@ class AuthModel : AuthInterfaces.Model {
                     // ...
                 }
             }
-            Log.d("AuthDebug",validPhoneNumber)
+
+             val test = PhoneAuthProvider.getInstance()
+
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                    validPhoneNumber,        // Phone number to verify
-                    60,                 // Timeout duration
-                    TimeUnit.SECONDS,   // Unit of timeout
-                    AuthActivity(),               // Activity (for callback binding)
-                    mCallbacks)        // OnVerificationStateChangedCallbacks
+                    validPhoneNumber,       // Phone number to verify
+                    60,                     // Timeout duration
+                    TimeUnit.SECONDS,       // Unit of timeout
+                    AuthActivity(),         // Activity (for callback binding)
+                    mCallbacks)             // OnVerificationStateChangedCallbacks
+
         } else {
             mOnRequestAuthListener.onInvalidNumber()
         }
-    }
-
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(AuthActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success")
-
-//                          CHECK IF USER IS ALREADY LINKED WITH GOOGLE
-                        // Check for existing Google Sign In account, if the user is already signed in
-                        // the GoogleSignInAccount will be non-null.
-
-                        val user = mAuth.currentUser
-                        Log.d(TAG, "ProviderData: " + user!!.providers)
-
-                        when(user.providers?.contains("google.com")) {
-                            true -> {
-                                Log.d(TAG, "signInWithCredential:success 21" )
-                                mOnRequestAuthListener.onAuthAndLinkedCompleted()
-
-                            }
-                            false -> {
-                                Log.d(TAG, "signInWithCredential:success 22" )
-                                mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
-                            }
-                        }
-
-                    } else {
-                        // Sign in failed, display a message and update the UI
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                            mOnRequestAuthListener.onAuthenticationFailed()
-                        }
-                    }
-                }
     }
 
     override fun linkAccountWithGoogle(completedTask: Task<GoogleSignInAccount>) {
         handleSignInResult(completedTask)
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
+    override fun signOutModel(mGoogleSignInClient: GoogleSignInClient, mAuth: FirebaseAuth) {
+        mGoogleSignInClient.signOut()
+        mAuth.signOut()
 
-            // Signed in successfully, show authenticated UI.
-            firebaseAuthWithGoogle(account)
-        } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.statusCode)
-            mAuth.signOut()
-            mOnRequestSignInWithGoogleListener.onFailed()
-        }
+        mOnRequestSignOutListener.onCompleted()
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
@@ -181,10 +141,54 @@ class AuthModel : AuthInterfaces.Model {
                 }
     }
 
-    override fun signOutModel(mGoogleSignInClient: GoogleSignInClient, mAuth: FirebaseAuth) {
-        mGoogleSignInClient.signOut()
-        mAuth.signOut()
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
 
-        mOnRequestSignOutListener.onCompleted()
+            // Signed in successfully, show authenticated UI.
+            firebaseAuthWithGoogle(account)
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.statusCode)
+            mAuth.signOut()
+            mOnRequestSignInWithGoogleListener.onFailed()
+        }
+    }
+
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(AuthActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success")
+
+//                          CHECK IF USER IS ALREADY LINKED WITH GOOGLE
+                        // Check for existing Google Sign In account, if the user is already signed in
+                        // the GoogleSignInAccount will be non-null.
+
+                        val user = mAuth.currentUser
+                        Log.d(TAG, "ProviderData: " + user!!.providers)
+
+                        when(user.providers?.contains("google.com")) {
+                            true -> {
+                                Log.d(TAG, "signInWithCredential:success 21" )
+                                mOnRequestAuthListener.onAuthAndLinkedCompleted()
+                            }
+                            false -> {
+                                Log.d(TAG, "signInWithCredential:success 22" )
+                                mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
+                            }
+                        }
+
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                            mOnRequestAuthListener.onAuthenticationFailed()
+                        }
+                    }
+                }
     }
 }
+

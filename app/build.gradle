@@ -23,7 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/authActivity'] } }
 }
 
 // Dependencies for external libraries
@@ -62,7 +61,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     // SocketIO is a client library that is ported from the Socket IO JavaScript client library. License MIT
-    implementation ('io.socket:socket.io-client:1.0.0') {
+    implementation('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is already provided by Android
         exclude group: 'org.json', module: 'json'
     }
@@ -97,6 +96,11 @@ dependencies {
 
     // Optional -- Mockito framework
     testImplementation 'org.mockito:mockito-core:1.10.19'
+
+    // Espresso Framework for Instrumented testing
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }
 
 // Add dependencies for basic libs for the google api services. Can't be added with other plug-ins

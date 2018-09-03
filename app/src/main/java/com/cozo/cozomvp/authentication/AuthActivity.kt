@@ -2,7 +2,6 @@ package com.cozo.cozomvp.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.MainActivity
@@ -43,7 +42,6 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         mAuth = FirebaseAuth.getInstance()
 
-
         authButton.setOnClickListener{
             val phoneNumber = phoneNumberEditText.text.toString()
             if (phoneNumber != "") {
@@ -55,7 +53,6 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView {
     }
 
     override fun showLoading() {
-        Log.d("AuthDebug","loading")
         progressBar.visibility = View.VISIBLE
     }
 

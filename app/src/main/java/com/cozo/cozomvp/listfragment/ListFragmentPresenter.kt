@@ -24,6 +24,8 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
 
     // retrieves data for nearby restaurants from Data Provider and sends them to the list view.
     private fun getNearbyRestaurantsCardData(location: NetworkModel.Location){
+        // refactor DataProvider object to be constant instead of anonymous!!!!!!!!!!!!!!!! By Lucas
+        // Divida Técnica ??? Parece que sim
         mDataProvider = DataProvider(object : DataProviderInterface.ListFragmentListener {
             override fun onPartCardDataRequestCompleted(cards: MutableMap<String,CardInfoData>) {}
             override fun onPartCardDataRequestFailed(e: Throwable) {}
