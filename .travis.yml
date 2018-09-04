@@ -3,15 +3,23 @@ android:
   components:
     - android-27
     - build-tools-27.0.3
+    - sys-img-armeabi-v7a-android-22
 
 before_install:
- - chmod +x gradlew   
+ - chmod +x gradlew
     
 env:
   global:
    # install timeout in minutes (2 minutes by default)
     - ADB_INSTALL_TIMEOUT=8
 
-# Run assemble and unit tests
+# Emulator Management: Create virtual device, start emulator, and wait until it is ready
+before_script:
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+    
+# Run assemble and instrumented tests
 script:
-  - ./gradlew clean assembleDebug assembleRelease testDebug
+  - ./gradlew clean assembleDebug assembleRelease connectedAndroidTest
