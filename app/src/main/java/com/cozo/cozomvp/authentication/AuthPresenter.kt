@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
-class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
+class AuthPresenter(private var validationService: ValidationService) : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
 
     private lateinit var mAuthModel: AuthModel
 
@@ -15,7 +15,7 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
         ifViewAttached {
             it.showLoading() }
 
-        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestAuthListener {
+        mAuthModel = AuthModel(validationService, object : AuthInterfaces.Presenter.OnRequestAuthListener {
             override fun onAuthAndLinkedCompleted() {
                 ifViewAttached {
                     it.showMainActivity()
@@ -44,7 +44,7 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
 
     override fun requestLinkWithGoogle(task: Task<GoogleSignInAccount>) {
 
-        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener {
+        mAuthModel = AuthModel(validationService, object : AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener {
             override fun onCompleted(providerData: MutableList<out UserInfo>) {
 
                 val mMapUserId: MutableMap<String, UserInfo> = mutableMapOf()
@@ -73,7 +73,7 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
             it.showLoading()
         }
 
-        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestSignOutListener {
+        mAuthModel = AuthModel(validationService, object : AuthInterfaces.Presenter.OnRequestSignOutListener {
             override fun onCompleted() {
                 ifViewAttached {
                     it.showLogOffActivity()

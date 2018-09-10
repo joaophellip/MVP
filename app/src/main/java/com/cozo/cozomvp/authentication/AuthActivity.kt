@@ -11,7 +11,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.UserInfo
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import org.jetbrains.anko.toast
@@ -23,10 +25,10 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView {
     private lateinit var task: Task<GoogleSignInAccount>
     private lateinit var phoneNumber: String
     val RC_SIGN_IN: Int = 123
-    val TAG: String = "Authentication"
 
     override fun createPresenter(): AuthPresenter {
-        return AuthPresenter()
+        val validationService = PhoneValidationServiceImpl(PhoneNumberUtil.getInstance(), PhoneAuthProvider.getInstance(), FirebaseAuth.getInstance())
+        return AuthPresenter(validationService)
     }
 
     override fun onBackPressed() {}
