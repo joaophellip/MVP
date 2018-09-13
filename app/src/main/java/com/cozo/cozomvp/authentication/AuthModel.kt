@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 class AuthModel : AuthInterfaces.Model {
 
-    constructor(validationService: ValidationService?, onRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener?) {
+    constructor(validationService: ValidationService, onRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener) {
         this.mOnRequestAuthListener = onRequestAuthListener
         this.mValidationService = validationService
     }
@@ -27,14 +27,14 @@ class AuthModel : AuthInterfaces.Model {
         this.mValidationService = validationService
     }
 
-    var mOnRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener? = null
+    lateinit var mOnRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener
     lateinit var mOnRequestSignOutListener: AuthInterfaces.Presenter.OnRequestSignOutListener
     lateinit var mOnRequestSignInWithGoogleListener: AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener
-    private var mValidationService: ValidationService?
+    private var mValidationService: ValidationService
 
     override fun authenticateNumber(phoneNumber: String) {
         val signInData = ValidationData(phoneNumber)
-        mValidationService?.signUserIn(signInData, this)
+        mValidationService.signUserIn(signInData, this)
     }
 
     override fun linkAccountWithGoogle(completedTask: Task<GoogleSignInAccount>) {
@@ -133,17 +133,17 @@ class PhoneValidationServiceImpl : ValidationService{
                                     val user: FirebaseUser? = firebaseAuth.currentUser
                                     when(user?.providers?.contains("google.com")) {
                                         true -> {
-                                            authModel.mOnRequestAuthListener?.onAuthAndLinkedCompleted()
+                                            authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()
                                         }
                                         false -> {
-                                            authModel.mOnRequestAuthListener?.onRequestLinkWithGoogleNeeded()
+                                            authModel.mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
                                         }
                                     }
 
                                 } else {
                                     // Sign in failed, display a message and update the UI
                                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                                        authModel.mOnRequestAuthListener?.onAuthenticationFailed()
+                                        authModel.mOnRequestAuthListener.onAuthenticationFailed()
                                     }
                                 }
                             }
