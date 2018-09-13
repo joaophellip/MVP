@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 class AuthModel : AuthInterfaces.Model {
 
-    constructor(validationService: ValidationService, onRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener) {
+    constructor(validationService: ValidationService?, onRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener?) {
         this.mOnRequestAuthListener = onRequestAuthListener
         this.mValidationService = validationService
     }
@@ -27,14 +27,14 @@ class AuthModel : AuthInterfaces.Model {
         this.mValidationService = validationService
     }
 
-    lateinit var mOnRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener
+    var mOnRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener? = null
     lateinit var mOnRequestSignOutListener: AuthInterfaces.Presenter.OnRequestSignOutListener
     lateinit var mOnRequestSignInWithGoogleListener: AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener
-    private var mValidationService: ValidationService
+    private var mValidationService: ValidationService?
 
     override fun authenticateNumber(phoneNumber: String) {
         val signInData = ValidationData(phoneNumber)
-        mValidationService.signUserIn(signInData, this)
+        mValidationService?.signUserIn(signInData, this)
     }
 
     override fun linkAccountWithGoogle(completedTask: Task<GoogleSignInAccount>) {
@@ -45,11 +45,12 @@ class AuthModel : AuthInterfaces.Model {
         mGoogleSignInClient.signOut()
         mAuth.signOut()
         mOnRequestSignOutListener.onCompleted()
+
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val accountData = ValidationData(account)
-        mValidationService.linkWithAccount(accountData, this)
+        mValidationService?.linkWithAccount(accountData, this)
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
@@ -57,9 +58,22 @@ class AuthModel : AuthInterfaces.Model {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account)
         } catch (e: ApiException) {
-            mValidationService.signUserOut(this)
+            mValidationService?.signUserOut(this)
         }
     }
+}
+
+open class ValidationData{
+
+    constructor(phoneNumber : String){
+        this.phoneNumber = phoneNumber
+    }
+    constructor(account: GoogleSignInAccount){
+        this.account = account
+    }
+
+    lateinit var phoneNumber : String
+    lateinit var account : GoogleSignInAccount
 }
 
 interface ValidationService{
@@ -119,17 +133,17 @@ class PhoneValidationServiceImpl : ValidationService{
                                     val user: FirebaseUser? = firebaseAuth.currentUser
                                     when(user?.providers?.contains("google.com")) {
                                         true -> {
-                                            authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()
+                                            authModel.mOnRequestAuthListener?.onAuthAndLinkedCompleted()
                                         }
                                         false -> {
-                                            authModel.mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
+                                            authModel.mOnRequestAuthListener?.onRequestLinkWithGoogleNeeded()
                                         }
                                     }
 
                                 } else {
                                     // Sign in failed, display a message and update the UI
                                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                                        authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                                        authModel.mOnRequestAuthListener?.onAuthenticationFailed()
                                     }
                                 }
                             }
@@ -140,10 +154,10 @@ class PhoneValidationServiceImpl : ValidationService{
                     when (e) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             // Invalid request
-                            authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                            authModel.mOnRequestAuthListener?.onAuthenticationFailed()
                         }
                         is FirebaseTooManyRequestsException -> {
-                            authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                            authModel.mOnRequestAuthListener?.onAuthenticationFailed()
                             // The SMS quota for the project has been exceeded
                             // ...
                         }
@@ -171,9 +185,8 @@ class PhoneValidationServiceImpl : ValidationService{
                     TimeUnit.SECONDS,       // Unit of timeout
                     AuthActivity(),         // Activity (for callback binding)
                     mCallbacks)             // OnVerificationStateChangedCallbacks
-
         } else {
-            authModel.mOnRequestAuthListener.onInvalidNumber()
+            authModel.mOnRequestAuthListener?.onInvalidNumber()
         }
     }
 
@@ -181,17 +194,4 @@ class PhoneValidationServiceImpl : ValidationService{
         firebaseAuth.signOut()
         authModel.mOnRequestSignInWithGoogleListener.onFailed()
     }
-}
-
-open class ValidationData{
-
-    constructor(phoneNumber : String){
-        this.phoneNumber = phoneNumber
-    }
-    constructor(account: GoogleSignInAccount){
-        this.account = account
-    }
-
-    lateinit var phoneNumber : String
-    lateinit var account : GoogleSignInAccount
 }

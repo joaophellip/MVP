@@ -23,7 +23,6 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView {
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mAuth: FirebaseAuth
     private lateinit var task: Task<GoogleSignInAccount>
-    private lateinit var phoneNumber: String
     val RC_SIGN_IN: Int = 123
 
     override fun createPresenter(): AuthPresenter {
