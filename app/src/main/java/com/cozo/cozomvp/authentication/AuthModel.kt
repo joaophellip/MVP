@@ -3,6 +3,7 @@ package com.cozo.cozomvp.authentication
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -128,27 +129,27 @@ class PhoneValidationServiceImpl : ValidationService{
             val mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                     firebaseAuth.signInWithCredential(credential)
-                            .addOnCompleteListener(AuthActivity()) { task ->
-                                if (task.isSuccessful) {
-                                    val user: FirebaseUser? = firebaseAuth.currentUser
-                                    when(user?.providers?.contains("google.com")) {
-                                        true -> {
-                                            authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()
+                            .addOnCompleteListener(AuthActivity(), object : OnCompleteListener<AuthResult>{
+                                override fun onComplete(task: Task<AuthResult>) {
+                                    if (task.isSuccessful) {
+                                        val user: FirebaseUser? = firebaseAuth.currentUser
+                                        when(user?.providers?.contains("google.com")) {
+                                            true -> {
+                                                authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()
+                                            }
+                                            false -> {
+                                                authModel.mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
+                                            }
                                         }
-                                        false -> {
-                                            authModel.mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
-                                        }
-                                    }
 
-                                } else {
-                                    // Sign in failed, display a message and update the UI
-                                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                                        authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                                    } else {
+                                        // Sign in failed, display a message and update the UI
+                                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                                            authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                                        }
                                     }
                                 }
-                            }
-
-
+                            })
                 }
                 override fun onVerificationFailed(e: FirebaseException) {
                     when (e) {
