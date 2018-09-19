@@ -32,6 +32,9 @@ interface APIServices{
                                    @Query("longitude") longitude: Double):
             Observable<ResponseBody>
 
+    @GET ("restaurants/items")
+    fun restaurantsItems(@Query("restaurantID") restaurantID: String): Observable<ResponseBody>
+
     companion object {
         fun create(): APIServices {
             // Variables used for testing API using an interceptor

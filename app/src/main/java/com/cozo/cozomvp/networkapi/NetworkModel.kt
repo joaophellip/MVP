@@ -28,7 +28,13 @@ object NetworkModel{
             val pictureRefID: String,
             val price: Float,
             val rating: Float,
-            val ratedBy: Int)
+            val ratedBy: Int,
+            val restaurantName: String,
+            val restaurantID: String)
+
+    data class ListRestaurantItem(
+            val items: List<MenuMetadata>
+    )
 
     // data model for SocketIO onListAvailable
     data class ListDeliveryPartnersInfo(val objects: List<PartInfoObjects>)

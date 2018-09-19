@@ -268,7 +268,9 @@ class DataProvider : DataProviderInterface.Model {
                                                         restaurant.metadata.pictureRefID,
                                                         restaurant.metadata.price,
                                                         restaurant.metadata.rating,
-                                                        restaurant.metadata.ratedBy)
+                                                        restaurant.metadata.ratedBy,
+                                                        restaurant.metadata.restaurantName,
+                                                        restaurant.metadata.restaurantID)
                                             } else {
                                                 val mRestaurantMenu = CardMenuData(null, NetworkModel.MenuMetadata(
                                                         restaurant.metadata.ingredients,
@@ -277,7 +279,9 @@ class DataProvider : DataProviderInterface.Model {
                                                         restaurant.metadata.pictureRefID,
                                                         restaurant.metadata.price,
                                                         restaurant.metadata.rating,
-                                                        restaurant.metadata.ratedBy))
+                                                        restaurant.metadata.ratedBy,
+                                                        restaurant.metadata.restaurantName,
+                                                        restaurant.metadata.restaurantID))
                                                 mRestaurantsMap[restaurant.id] = mRestaurantMenu
                                             }
                                         }
@@ -322,6 +326,25 @@ class DataProvider : DataProviderInterface.Model {
         val gson = Gson()
         val data = gson.toJson(SocketIOEmitData(restLocation, userLocation))
         mSocket.emit("ready to receive partners list", data)
+    }
+    override fun provideRestaurantItems(restaurantID: String) {
+        disposable = apiServe.restaurantsItems(restaurantID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { body ->
+                    val gson = Gson()
+                    
+                }
+                .subscribe(
+                        {result ->
+                            mListenerListFragment.onRestItemsDataRequestCompleted(result.items)
+
+                        },
+                        {error ->
+                            mListenerListFragment.onRestItemsDataRequestFailed(error)
+
+                        }
+                )
     }
     override fun provideRoute(from: LatLng, to: LatLng){
         val fromParam = "${from.latitude},${from.longitude}"

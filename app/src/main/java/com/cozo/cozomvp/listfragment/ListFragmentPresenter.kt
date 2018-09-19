@@ -75,6 +75,10 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
         mDataProvider?.provideDeliveryPartnersList(restLocation, userLocation)
     }
 
+    private fun getRestaurantItems(restaurantID: String){
+
+    }
+
     companion object {
         var restListSize : Int = 0
         var partListSize : Int = 0

@@ -25,6 +25,8 @@ interface DataProviderInterface {
         fun onRestCardDataRequestFailed(e: Throwable)
         fun onPartCardDataRequestCompleted(cards: MutableMap<String, CardInfoData>)
         fun onPartCardDataRequestFailed(e: Throwable)
+        fun onRestItemsDataRequestCompleted(items: List<NetworkModel.MenuMetadata>)
+        fun onRestItemsDataRequestFailed(e: Throwable)
         fun getActivity() : MainActivity?
     }
 
@@ -41,6 +43,8 @@ interface DataProviderInterface {
 
         // retrieves delivery partners' list (card data plus pairs of latitude/longitude) and send them back to presenter.
         fun provideDeliveryPartnersList(restLocation: NetworkModel.Location, userLocation: NetworkModel.Location)
+
+        fun provideRestaurantItems(restaurantID: String)
 
         // retrieves route and sends it back to presenter.
         fun provideRoute(from: LatLng, to: LatLng)
