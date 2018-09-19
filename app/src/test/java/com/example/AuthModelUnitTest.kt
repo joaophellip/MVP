@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit
 import com.cozo.cozomvp.authentication.AuthInterfaces
 import com.cozo.cozomvp.authentication.AuthModel
 import com.cozo.cozomvp.authentication.PhoneValidationServiceImpl
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -68,6 +69,15 @@ class AuthModelUnitTest{
 
         // Mock method signInWithCredential from FirebaseAuth
         `when`(mockedFirebaseAuth.signInWithCredential(any(PhoneAuthCredential::class.java))).thenReturn(mockedTask)
+
+        //
+        doAnswer {
+            val callback = it.arguments[1] as OnCompleteListener<AuthResult>
+
+            callback.onComplete(mockedTask)
+
+            return@doAnswer null
+        }.`when`(mockedTask).addOnCompleteListener(any(AuthActivity::class.java), any())
 
         // Instantiate validationService as PhoneValidationServiceImpl
         val validationService = PhoneValidationServiceImpl(mockedPhoneNumberUtil, mockedPhoneAuthProvider, mockedFirebaseAuth)
