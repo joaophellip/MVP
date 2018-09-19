@@ -27,6 +27,14 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
         // refactor DataProvider object to be constant instead of anonymous!!!!!!!!!!!!!!!! By Lucas
         // Divida Técnica ??? Parece que sim
         mDataProvider = DataProvider(object : DataProviderInterface.ListFragmentListener {
+            override fun onRestItemsDataRequestCompleted(items: List<NetworkModel.MenuMetadata>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onRestItemsDataRequestFailed(e: Throwable) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
             override fun onPartCardDataRequestCompleted(cards: MutableMap<String,CardInfoData>) {}
             override fun onPartCardDataRequestFailed(e: Throwable) {}
             override fun onRestCardDataRequestCompleted(cards: MutableMap<String,CardMenuData>) {
@@ -53,6 +61,14 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
     // retrieves list of nearby delivery partners from Data Provider and sends them to the list view.
     private fun getNearbyDeliveryPartnersCardData(restLocation: NetworkModel.Location, userLocation: NetworkModel.Location){
         mDataProvider = DataProvider(object : DataProviderInterface.ListFragmentListener {
+            override fun onRestItemsDataRequestCompleted(items: List<NetworkModel.MenuMetadata>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onRestItemsDataRequestFailed(e: Throwable) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
             override fun onPartCardDataRequestCompleted(cards: MutableMap<String, CardInfoData>) {
                 ifViewAttached {
                     partListSize = cards.size
@@ -73,10 +89,6 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
             }
         })
         mDataProvider?.provideDeliveryPartnersList(restLocation, userLocation)
-    }
-
-    private fun getRestaurantItems(restaurantID: String){
-
     }
 
     companion object {

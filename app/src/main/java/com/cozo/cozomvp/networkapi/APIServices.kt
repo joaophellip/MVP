@@ -33,7 +33,7 @@ interface APIServices{
             Observable<ResponseBody>
 
     @GET ("restaurants/items")
-    fun restaurantsItems(@Query("restaurantID") restaurantID: String): Observable<ResponseBody>
+    fun restaurantsItems(@Query("restaurantID") restaurantID: String): Observable<NetworkModel.ListRestaurantItem>
 
     companion object {
         fun create(): APIServices {
