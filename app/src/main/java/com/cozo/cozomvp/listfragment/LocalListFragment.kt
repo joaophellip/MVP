@@ -24,16 +24,15 @@ import android.support.v7.widget.helper.ItemTouchHelper
 class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>(), ListFragmentView,
         RestaurantRecyclerViewAdapter.OnPlaceClickListener, PartnersRecyclerViewAdapter.OnPlaceClickListener,
         SwipeController.OnSwipeClickListener {
-
     @BindView(R.id.recyclerView) lateinit var mRecyclerView: RecyclerView
 
     private var recyclerViewDx : Int = 0
+
     lateinit var mRestaurantsRecyclerAdapter: RestaurantRecyclerViewAdapter
     private lateinit var mPartnersRecyclerAdapter: PartnersRecyclerViewAdapter
     private lateinit var mListenerMainActivity : ListFragmentView.MainActivityListener
     private lateinit var mRootView: ViewGroup
     private var isCardViewShownRestaurant: Boolean = true
-
     override fun addPartnersDataToCards(cards: MutableMap<String, CardInfoData>) {
         mPartnersRecyclerAdapter.setPartnerList(cards)
         mRecyclerView.adapter = mPartnersRecyclerAdapter
@@ -68,6 +67,10 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
 
     override fun currentRestID(listPosition: Int): String {
         return mRestaurantsRecyclerAdapter.currentRestID(listPosition)
+    }
+
+    override fun dishOrderCreation(listPosition: Int) {
+        presenter.dishNew(this.currentRestID(listPosition))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

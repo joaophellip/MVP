@@ -8,10 +8,45 @@ import com.cozo.cozomvp.networkapi.*
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
-class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Presenter {
+class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Presenter,
+        DataProviderInterface.ListFragmentListener {
+
+    override fun onRestCardDataRequestCompleted(cards: MutableMap<String, CardMenuData>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onRestCardDataRequestFailed(e: Throwable) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onPartCardDataRequestCompleted(cards: MutableMap<String, CardInfoData>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onPartCardDataRequestFailed(e: Throwable) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onRestItemsDataRequestCompleted(items: List<NetworkModel.MenuMetadata>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onRestItemsDataRequestFailed(e: Throwable) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getActivity(): MainActivity? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private var mDataProvider: DataProvider? = null
+
     private lateinit var mUserLocation : NetworkModel.Location
+
+    override fun dishNew(restID: String) {
+        mDataProvider = DataProvider(this)
+        mDataProvider?.provideRestaurantItems(restID)
+    }
 
     override  fun onUserLocationDataAvailable(location: NetworkModel.Location){
         getNearbyRestaurantsCardData(location)

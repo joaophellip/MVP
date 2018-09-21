@@ -29,6 +29,8 @@ interface MainInterfaces {
 
     fun onLocationServiceReady()
 
+    fun onItemAddedToCart(position: Int)
+
     /*
     Informs presenter that a restaurant map marker was clicked by user. Passes restaurant ID
     associated with the marker as argument.

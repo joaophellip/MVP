@@ -13,8 +13,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import retrofit2.HttpException
 
 class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
-
     private var mDataProvider: DataProvider? = null
+
     private val mAuth = FirebaseAuth.getInstance()!!
     private lateinit var mUserLocation: NetworkModel.Location
     private val mUser: FirebaseUser? = mAuth.currentUser
@@ -69,6 +69,12 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             }
         }
 
+    }
+
+    override fun onItemAddedToCart(position: Int) {
+        ifViewAttached {
+            it.onListFragmentRequired().dishOrderCreation(position)
+        }
     }
 
     override fun onLocationServiceReady() {

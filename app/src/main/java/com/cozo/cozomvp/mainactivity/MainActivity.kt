@@ -34,8 +34,8 @@ import org.jetbrains.anko.toast
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
         MapFragmentView.MainActivityListener, DetailsInterface.MainActivityListener,
         NavigationView.OnNavigationItemSelectedListener {
-
     private lateinit var mListFragment : LocalListFragment
+
     private lateinit var mMapFragment : LocalMapFragment
     private lateinit var currentTransitionName: String
     private lateinit var drawerLayout: DrawerLayout
@@ -44,7 +44,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private var detailsScene: Scene? = null
     private var isListFragmentReady = false
     private var isMapFragmentReady = false
-
     override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
         containerLayout?.addView(mRecyclerView)
     }
@@ -110,6 +109,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
             presenter.onBackPressed(childPosition)
         }
+    }
+
+    override fun onItemAddedToCart() {
+        val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
+        presenter.onItemAddedToCart(childPosition)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

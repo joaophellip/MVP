@@ -11,6 +11,9 @@ interface ListInterfaces {
 
         // triggered when chosen restaurant location data is available.
         fun onRestLocationDataAvailable(location: NetworkModel.Location)
+
+        fun dishNew(restID: String)
+
     }
 
 }

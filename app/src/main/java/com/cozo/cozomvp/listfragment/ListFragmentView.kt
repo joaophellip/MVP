@@ -18,6 +18,8 @@ interface ListFragmentView : MvpView {
 
     fun currentRestID(listPosition: Int) : String
 
+    fun dishOrderCreation(listPosition: Int)
+
     // highlight the cardview that is holding information about given restaurantID. Centers card in the screen.
     fun highlightRestCardView(restID: String)
 
