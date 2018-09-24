@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
         <Button
             android:id="@+id/navigation_drawer_button"
             android:layout_width="30dp"
@@ -65,6 +67,15 @@
             android:id="@+id/listContainer"
             android:layout_width="match_parent"
             android:layout_height="500dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <FrameLayout
+            android:id="@+id/checkoutContainer"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/ripple_effect"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
