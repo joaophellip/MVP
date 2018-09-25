@@ -89,8 +89,6 @@ object NetworkModel{
             val ratedBy: Int)
 }
 
-//Check the diff btwn object->dataclass vs dataclass only
-
 /**
  * This is the model for storing the mapping inside fragment of map
  */

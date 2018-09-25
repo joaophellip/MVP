@@ -327,7 +327,7 @@ class DataProvider : DataProviderInterface.Model {
         val data = gson.toJson(SocketIOEmitData(restLocation, userLocation))
         mSocket.emit("ready to receive partners list", data)
     }
-    // https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
+
     override fun provideRestaurantItems(restaurantID: String) {
         disposable = apiServe.restaurantsItems(restaurantID)
                 .subscribeOn(Schedulers.io())

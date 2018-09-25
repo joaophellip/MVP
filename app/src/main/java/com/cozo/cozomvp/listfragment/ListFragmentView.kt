@@ -16,6 +16,9 @@ interface ListFragmentView : MvpView {
     // adds restaurants data to card views.
     fun addRestaurantsDataToCards(cards: MutableMap<String, CardMenuData>)
 
+    // adds items from same restaurant to card views.
+    fun addItemsDataToCards(items: List<NetworkModel.MenuMetadata>)
+
     fun currentRestID(listPosition: Int) : String
 
     fun dishOrderCreation(listPosition: Int)
@@ -54,6 +57,11 @@ interface ListFragmentView : MvpView {
         reference to the class as argument.
          */
         fun onCompleteListFragment(listFragment: LocalListFragment)
+
+        /*
+        Informs activity that cardview item was clicked. Passes item data as argument.
+         */
+        fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData)
 
         /*
         Informs activity that RecyclerView object is ready to show delivery partners data. Passes

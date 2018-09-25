@@ -8,8 +8,21 @@ import com.cozo.cozomvp.networkapi.*
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
-class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Presenter,
+class ListPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Presenter,
         DataProviderInterface.ListFragmentListener {
+
+    private var mDataProvider: DataProvider? = null
+
+    private lateinit var mUserLocation : NetworkModel.Location
+
+    override fun dishNew(restID: String) {
+        mDataProvider = DataProvider(this)
+        mDataProvider?.provideRestaurantItems(restID)
+    }
+
+    override fun getActivity(): MainActivity? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun onRestCardDataRequestCompleted(cards: MutableMap<String, CardMenuData>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -28,24 +41,13 @@ class ListFragmentPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfac
     }
 
     override fun onRestItemsDataRequestCompleted(items: List<NetworkModel.MenuMetadata>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        ifViewAttached {
+            it.addItemsDataToCards(items)
+        }
     }
 
     override fun onRestItemsDataRequestFailed(e: Throwable) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getActivity(): MainActivity? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private var mDataProvider: DataProvider? = null
-
-    private lateinit var mUserLocation : NetworkModel.Location
-
-    override fun dishNew(restID: String) {
-        mDataProvider = DataProvider(this)
-        mDataProvider?.provideRestaurantItems(restID)
     }
 
     override  fun onUserLocationDataAvailable(location: NetworkModel.Location){
