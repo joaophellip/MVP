@@ -54,6 +54,11 @@ interface MainView : MvpView {
     fun launchListFragment()
 
     /*
+    Asks activity to launch a new checkout fragment.
+     */
+    fun launchCheckoutFragment()
+
+    /*
     Asks activity to return a reference to the very activity.
      */
     fun onActivityRequired() : MainActivity

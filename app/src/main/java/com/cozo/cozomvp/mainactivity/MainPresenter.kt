@@ -181,6 +181,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
                     // launches list fragment
                     it.launchListFragment()
+
+                    // launches checkout fragment
+                    it.launchCheckoutFragment()
                 }
             }
             override fun onUserLocationRequestFailed(e: Throwable) {

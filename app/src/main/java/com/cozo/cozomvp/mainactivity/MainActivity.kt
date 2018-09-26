@@ -85,6 +85,14 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 .commit()
     }
 
+    override fun launchCheckoutFragment() {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.checkoutContainer, LocalCheckoutFragment.newInstance(), LocalCheckoutFragment.TAG)
+                .addToBackStack(LocalCheckout.TAG)
+                .commit()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode){
             MY_GPS_RESOLUTION_STATUS_CODE -> {
