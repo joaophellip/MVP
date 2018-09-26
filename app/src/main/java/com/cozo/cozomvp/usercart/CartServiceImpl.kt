@@ -6,16 +6,20 @@ class CartServiceImpl : ICartService {
 
     private val items: MutableMap<Int, OrderModel> = mutableMapOf()
 
+    fun clear() {
+        items.clear()
+    }
+
     override fun addOrder(order: OrderModel): Boolean {
         if (items.isEmpty()) {
-            items[order.id] = order
+            items.put(order.id, order)
             return true
         } else {
             val first = items.entries.first().value
             if (first.item.restaurantID != order.item.restaurantID) {
                 return false
             }
-            items[order.id] = order
+            items.put(order.id, order)
             return true
         }
     }
@@ -34,16 +38,12 @@ class CartServiceImpl : ICartService {
 
     override fun updateOrderQuantity(id: Int, quantity: Int) {
         val order = items[id]
-        if (order?.quantity!! + quantity < 1) {
-            order?.quantity = 1
-        } else {
-           order?.quantity = order?.quantity!! + quantity
-        }
+        order!!.quantity = quantity
     }
 
     override fun updateOrderNote(id: Int, note: String) {
         val order = items[id]
-        order?.notes = note
+        order!!.notes = note
     }
 
     override fun applyDiscountCode(code: String) {
@@ -52,9 +52,9 @@ class CartServiceImpl : ICartService {
 
     override fun getOrders(): List<OrderModel> {
         val list = mutableListOf<OrderModel>()
-        items.forEach { _, orderModel ->
-            list[list.size] = orderModel
-        }
+        for (order in items.values)
+            list.add(order)
+
         return list
     }
 
