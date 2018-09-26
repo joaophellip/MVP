@@ -27,6 +27,7 @@ import com.cozo.cozomvp.mapfragment.MapFragmentView
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
+import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
@@ -111,9 +112,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
-    override fun onItemAddedToCart() {
+    override fun onItemAddedToCart(order: OrderModel) {
         val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
-        presenter.onItemAddedToCart(childPosition)
+        presenter.onItemAddedToCart(childPosition, order)
     }
 
     override fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {

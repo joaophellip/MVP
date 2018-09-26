@@ -62,6 +62,8 @@ class CartServiceImpl : ICartService {
 
         private var COUNT = 1
 
+        val myInstance = CartServiceImpl()
+
         fun createOrder (item: NetworkModel.MenuMetadata, quantity: Int, note: String): OrderModel {
             val price = item.price * quantity
             val order = OrderModel(COUNT, item, price, quantity, note)

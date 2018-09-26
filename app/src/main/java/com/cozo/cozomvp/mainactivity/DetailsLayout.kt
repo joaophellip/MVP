@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
@@ -19,6 +20,7 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.transition.HideDetailsTransitionSet
 import com.cozo.cozomvp.transition.ShowDetailsTransitionSet
+import com.cozo.cozomvp.usercart.CartServiceImpl
 
 class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(context, attrs) {
 
@@ -27,6 +29,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
     @BindView(R.id.title) lateinit var textViewTitle: TextView
     @BindView(R.id.description) lateinit var textViewDescription: TextView
     @BindView(R.id.txtQuantity) lateinit var quantityTextView: TextView
+    @BindView(R.id.notesText) lateinit var notesText: EditText
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -65,8 +68,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
             //set Order Button
             val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
             orderButton.setOnClickListener {
-                //mListenerMainActivity.onOrderButtonClicked()
-                mListenerMainActivity.onItemAddedToCart()
+                mListenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data.menu!!,getQuantity(detailsLayout), detailsLayout.notesText.text.toString()))
             }
 
             return scene
@@ -94,6 +96,10 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
                 auxQuantity--
                 detailsLayout.quantityTextView.text = auxQuantity.toString()
             }
+        }
+
+        private fun getQuantity(detailsLayout: DetailsLayout) : Int{
+            return detailsLayout.quantityTextView.text.toString().toInt()
         }
     }
 }
