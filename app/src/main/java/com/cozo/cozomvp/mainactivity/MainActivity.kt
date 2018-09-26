@@ -37,6 +37,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private lateinit var mListFragment : LocalListFragment
 
     private lateinit var mMapFragment : LocalMapFragment
+
     private lateinit var currentTransitionName: String
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
@@ -47,7 +48,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
         containerLayout?.addView(mRecyclerView)
     }
-
     override fun areFragmentsReady(): Boolean{
         return isListFragmentReady && isMapFragmentReady
     }
@@ -109,6 +109,19 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
             presenter.onBackPressed(childPosition)
         }
+    }
+
+    override fun onItemAddedToCart() {
+        val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
+        presenter.onItemAddedToCart(childPosition)
+    }
+
+    override fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {
+        currentTransitionName = transitionName
+        if (containerLayout == null) {
+            containerLayout = findViewById(R.id.recyclerContainer)
+        }
+        presenter.onRestaurantCardViewClicked(data.menu?.restaurantID!!, sharedView, data)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -191,13 +204,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onPartnersCardDataReady(locations, routes)
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData, restID: String) {
+    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {
         currentTransitionName = transitionName
-        //transitionName vem de uma classe chama TransitionUtils
         if (containerLayout == null) {
             containerLayout = findViewById(R.id.recyclerContainer)
         }
-        presenter.onRestaurantCardViewClicked(restID, sharedView, data)
+        presenter.onRestaurantCardViewClicked(data.menu!!.restaurantID, sharedView, data)
     }
 
     override fun onRestCardViewHighlighted(restID: String) {

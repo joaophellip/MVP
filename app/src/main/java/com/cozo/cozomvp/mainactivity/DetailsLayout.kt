@@ -64,7 +64,10 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
 
             //set Order Button
             val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
-            orderButton.setOnClickListener { mListenerMainActivity.onOrderButtonClicked() }
+            orderButton.setOnClickListener {
+                //mListenerMainActivity.onOrderButtonClicked()
+                mListenerMainActivity.onItemAddedToCart()
+            }
 
             return scene
         }

@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.listfragment
+package com.cozo.cozomvp.listfragment.recyclerview
 
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -27,7 +27,7 @@ class PartnersRecyclerViewAdapter() : RecyclerView.Adapter<PartnersRecyclerViewA
         fun onPartnerCardViewClicked(partnerID: String)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnersRecyclerViewAdapter.RecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         return RecyclerViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.cardview_partner, parent, false))
     }
 
