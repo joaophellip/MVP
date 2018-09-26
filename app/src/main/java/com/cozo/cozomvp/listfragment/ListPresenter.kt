@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.listfragment
 
-import android.util.Log
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
 import com.cozo.cozomvp.mainactivity.MainActivity
@@ -16,8 +15,7 @@ class ListPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Prese
     private lateinit var mUserLocation : NetworkModel.Location
 
     override fun dishNew(restID: String) {
-        mDataProvider = DataProvider(this)
-        mDataProvider?.provideRestaurantItems(restID)
+        getRestaurantItemsCardData(restID)
     }
 
     override fun getActivity(): MainActivity? {
@@ -28,10 +26,10 @@ class ListPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Prese
         return mActivity
     }
 
-    override fun onRestCardDataRequestCompleted(cards: MutableMap<String, CardMenuData>) {
+    override fun onRestCardDataRequestCompleted(items: List<NetworkModel.MenuMetadata>) {
         ifViewAttached {
-            restListSize = cards.size
-            it.addRestaurantsDataToCards(cards)
+            restListSize = items.size
+            it.addRestaurantsDataToCards(items)
         }
     }
 
@@ -69,14 +67,23 @@ class ListPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Prese
         getNearbyDeliveryPartnersCardData(location, mUserLocation)
     }
 
-    // retrieves data for nearby restaurants from Data Provider and sends them to the list view.
+    // retrieves data for all items from a given restaurant from Data Provider and sends them to
+    // list fragment.
+    private fun getRestaurantItemsCardData(restID: String){
+        mDataProvider = DataProvider(this)
+        mDataProvider?.provideRestaurantItems(restID)
+    }
+
+    // retrieves data for nearby restaurants from Data Provider and sends them to the list fragment.
     private fun getNearbyRestaurantsCardData(location: NetworkModel.Location){
         mDataProvider = DataProvider(this)
         mDataProvider?.provideRestaurantsCardData(location,10000)
     }
 
-    // retrieves list of nearby delivery partners from Data Provider and sends them to the list view.
-    private fun getNearbyDeliveryPartnersCardData(restLocation: NetworkModel.Location, userLocation: NetworkModel.Location){
+    // retrieves list of nearby delivery partners from Data Provider and sends them to list
+    // fragment.
+    private fun getNearbyDeliveryPartnersCardData(restLocation: NetworkModel.Location,
+                                                  userLocation: NetworkModel.Location){
         mDataProvider = DataProvider(this)
         mDataProvider?.provideDeliveryPartnersList(restLocation, userLocation)
     }

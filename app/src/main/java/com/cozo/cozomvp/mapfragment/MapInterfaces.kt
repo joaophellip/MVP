@@ -21,8 +21,6 @@ interface MapInterfaces {
         // triggered when back button has been pressed
         fun onBackPressed()
 
-        // retrieves user geo location (latitude, longitude) from Data Provider and sends it to the view.
-        fun provideRoute(from: LatLng, to: LatLng)
     }
 
 }

@@ -58,8 +58,8 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         mListenerMainActivity.onPartnersCardDataReady(mLocations, mRoutes)
     }
 
-    override fun addRestaurantsDataToCards(cards: MutableMap<String, CardMenuData>) {
-        mRestaurantsRecyclerAdapter.setRestaurantList(cards)
+    override fun addRestaurantsDataToCards(items: List<NetworkModel.MenuMetadata>) {
+        mRestaurantsRecyclerAdapter.setRestaurantList(items)
         mRecyclerView.adapter = mRestaurantsRecyclerAdapter
     }
 
@@ -168,14 +168,14 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         presenter.onRestLocationDataAvailable(location)
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData, restID: String) {
-        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data, restID)
+    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData) {
+        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data)
     }
 
     override fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, position: Int) {
         val restID: String = mRestaurantsRecyclerAdapter.currentRestID(position)
         val data: CardMenuData? = mRestaurantsRecyclerAdapter.cardData(restID)
-        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data!!, restID)
+        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data!!)
     }
 
     override fun onPartnerCardViewClicked(partnerID: String) {

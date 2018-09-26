@@ -12,13 +12,14 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.CardMenuData
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
 
 class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {
 
     private lateinit var listener: OnPlaceClickListener
     lateinit var mCardViewLayoutParams: ViewGroup.MarginLayoutParams
-    private var restaurantList: MutableMap<String, CardMenuData> = mutableMapOf()
+    private var restaurantList: List<CardMenuData> = listOf()
     private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
 
     constructor(listener: OnPlaceClickListener) : this(){
@@ -26,7 +27,7 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
     }
 
     interface OnPlaceClickListener {
-        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData, restID: String)
+        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
@@ -40,10 +41,12 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
     }
 
     fun cardData(restID: String) : CardMenuData? {
-        return when (restaurantList.containsKey(restID)){
-            true -> restaurantList[restID]
-            false -> null
+        restaurantList.forEach {
+            if (restID == it.menu?.restaurantID){
+                return it
+            }
         }
+        return null
     }
 
     fun currentRestID(position: Int) : String = mPositionMap[position]!!
@@ -63,29 +66,21 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
         }
     }
 
-    fun setRestaurantList(cards: MutableMap<String, CardMenuData>) {
-        restaurantList = cards
-        /*var counter = 0
-        //restaurantList.forEach {
-            //notifyItemInserted(counter)
-            //mPositionMap[counter] = it.key
-            //counter += counter
-        //}
-        */
-        restaurantList.entries.forEachIndexed { index, mutableEntry ->
-            mPositionMap[index] = mutableEntry.key
+    fun setRestaurantList(items: List<NetworkModel.MenuMetadata>) {
+        restaurantList = items.map { it ->
+            CardMenuData(null, it)
         }
     }
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        @BindView(R.id.foodImage) lateinit var mFoodImage: ImageView
-        @BindView(R.id.foodTitle) lateinit var mFoodTitle: TextView
-        @BindView(R.id.foodPrice) lateinit var mFoodPrice: TextView
-        @BindView(R.id.averagePrepTime) lateinit var mFoodAveragePrepTime: TextView
-        @BindView(R.id.foodRating) lateinit var mFoodRating: RatingBar
-        @BindView(R.id.ratedBy) lateinit var mRatedBy: TextView
-        @BindView(R.id.cardViewRoot) lateinit var mRoot: CardView
+        @BindView(R.id.foodImage) lateinit var foodImage: ImageView
+        @BindView(R.id.foodTitle) lateinit var foodTitle: TextView
+        @BindView(R.id.foodPrice) lateinit var foodPrice: TextView
+        @BindView(R.id.averagePrepTime) lateinit var foodAveragePrepTime: TextView
+        @BindView(R.id.foodRating) lateinit var foodRating: RatingBar
+        @BindView(R.id.ratedBy) lateinit var ratedBy: TextView
+        @BindView(R.id.cardViewRoot) lateinit var root: CardView
 
         init {
             mCardViewLayoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams   //doing it every time. optimize later
@@ -93,18 +88,16 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
         }
 
         fun bindView(position: Int){
-            //adjust formatting later on to use xml file instead of local variables
-            val ratedBy = "( ${restaurantList.entries.elementAt(position).value.menu?.ratedBy} )"
-            val formattedPrice = "R$ " + String.format("%02.2f", restaurantList.entries.elementAt(position).value.menu?.price).replace(".",",")
-            val formattedPrepTime = "${restaurantList.entries.elementAt(position).value.menu?.prepTime} min"
 
-            this.mFoodImage.setImageBitmap(restaurantList.entries.elementAt(position).value.image)
-            this.mFoodTitle.text = restaurantList.entries.elementAt(position).value.menu?.name
-            this.mFoodPrice.text = formattedPrice
-            this.mFoodAveragePrepTime.text = formattedPrepTime
-            this.mFoodRating.rating = restaurantList.entries.elementAt(position).value.menu?.rating!!
-            this.mRatedBy.text = ratedBy
-            this.mRoot.setOnClickListener {_ -> listener.onRestaurantCardViewClicked(this.mRoot, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList.entries.elementAt(position).value, restaurantList.entries.elementAt(position).key) }
+            this.foodTitle.text = restaurantList[position].menu?.name
+            this.foodPrice.text = itemView.context.getString(R.string.price, String.format("%02.2f", restaurantList[position].menu?.price).replace(".",","))
+            this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,restaurantList[position].menu?.prepTime)
+            this.foodRating.rating = restaurantList[position].menu?.rating!!
+            this.ratedBy.text = itemView.context.getString(R.string.ratedBy,restaurantList[position].menu?.ratedBy)
+            this.root.setOnClickListener {_ -> listener.onRestaurantCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList[position])}
+
+            // launch asynchronous process to download image
+            ImageDownload(itemView.context, this.foodImage, restaurantList[position])
 
             // sets raised elevation to first card by default
             when (position) {

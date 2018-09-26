@@ -11,7 +11,6 @@ import com.cozo.cozomvp.networkapi.*
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -37,10 +36,6 @@ class DataProvider : DataProviderInterface.Model {
     private val apiServe by lazy {
         APIServices.create()
     }   // companion object?
-    private val mapsServe by lazy {
-        MapsAPIService.create()
-    }   // companion object?
-    private var mRestaurantsMap: MutableMap<String,CardMenuData> = mutableMapOf()
     private var mPartnersMap: MutableMap<String,CardInfoData> = mutableMapOf()
     private var mLocationPermission = false
     private lateinit var mLocationCallback: LocationCallback
@@ -232,72 +227,7 @@ class DataProvider : DataProviderInterface.Model {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { result ->
-                            // Unzips file that contains images and json file. Reference: http://www.thecoderscorner.com/team-blog/java-and-jvm/12-reading-a-zip-file-from-java-using-zipinputstream/
-                            ZipInputStream(result.byteStream()).use{
-                                var entry : ZipEntry?
-                                val bufSize = 8192
-                                val buffer = ByteArray(bufSize)
-                                do {
-                                    entry = it.nextEntry
-                                    if (entry == null) break
-                                    // For each file, try reading bytes to byte array, and convert it to either a bitmap representation if image or a string if text.
-                                    var bytesRead : Int
-                                    var bytesReadTotal = 0
-                                    val outputStream = ByteArrayOutputStream()
-                                    try {
-                                        bytesRead = it.read(buffer,0, bufSize)
-                                        while(bytesRead > 0) {
-                                            bytesReadTotal += bytesRead
-                                            outputStream.write(buffer,0,bytesRead)
-                                            bytesRead = it.read(buffer,0, bufSize)
-                                        }
-                                    } catch (e: IOException){
-                                        Log.d("bytes","Error while reading bytes.")
-                                    }
-                                    // Expects Data.json file to be the first file within zip. The order has to be assured by backend service.
-                                    if (entry.name == "Data.json") {
-                                        // Extracts data from Data.json
-                                        val gson = Gson()
-                                        val result2 = gson.fromJson(outputStream.toString(), NetworkModel.ListNearestRestaurantMenu::class.java)
-                                        for (restaurant in result2.objects){
-                                            if (mRestaurantsMap.containsKey(restaurant.id)){
-                                                mRestaurantsMap[restaurant.id]?.menu = NetworkModel.MenuMetadata(
-                                                        restaurant.metadata.ingredients,
-                                                        restaurant.metadata.name,
-                                                        restaurant.metadata.prepTime,
-                                                        restaurant.metadata.pictureRefID,
-                                                        restaurant.metadata.price,
-                                                        restaurant.metadata.rating,
-                                                        restaurant.metadata.ratedBy,
-                                                        restaurant.metadata.restaurantName,
-                                                        restaurant.metadata.restaurantID)
-                                            } else {
-                                                val mRestaurantMenu = CardMenuData(null, NetworkModel.MenuMetadata(
-                                                        restaurant.metadata.ingredients,
-                                                        restaurant.metadata.name,
-                                                        restaurant.metadata.prepTime,
-                                                        restaurant.metadata.pictureRefID,
-                                                        restaurant.metadata.price,
-                                                        restaurant.metadata.rating,
-                                                        restaurant.metadata.ratedBy,
-                                                        restaurant.metadata.restaurantName,
-                                                        restaurant.metadata.restaurantID))
-                                                mRestaurantsMap[restaurant.id] = mRestaurantMenu
-                                            }
-                                        }
-                                    } else {
-                                        val mRestID : String = entry.name.substringBefore("/",entry.name)
-                                        if (mRestaurantsMap.containsKey(mRestID)){
-                                            mRestaurantsMap[mRestID]?.image = BitmapFactory.decodeByteArray(outputStream.toByteArray(),0,outputStream.toByteArray().size)
-                                        } else {
-                                            val mRestaurantMenu = CardMenuData(BitmapFactory.decodeByteArray(outputStream.toByteArray(),0,outputStream.toByteArray().size),
-                                                    null)
-                                            mRestaurantsMap[mRestID] = mRestaurantMenu
-                                        }
-                                    }
-                                } while (true)
-                                mListenerListFragment.onRestCardDataRequestCompleted(mRestaurantsMap)
-                            }
+                            mListenerListFragment.onRestCardDataRequestCompleted(result.items)
                         },
                         { error ->
                             when (error) {
@@ -327,7 +257,6 @@ class DataProvider : DataProviderInterface.Model {
         val data = gson.toJson(SocketIOEmitData(restLocation, userLocation))
         mSocket.emit("ready to receive partners list", data)
     }
-
     override fun provideRestaurantItems(restaurantID: String) {
         disposable = apiServe.restaurantsItems(restaurantID)
                 .subscribeOn(Schedulers.io())
@@ -335,43 +264,10 @@ class DataProvider : DataProviderInterface.Model {
                 .subscribe(
                         {result ->
                             mListenerListFragment.onRestItemsDataRequestCompleted(result.items)
-
                         },
                         {error ->
                             mListenerListFragment.onRestItemsDataRequestFailed(error)
 
-                        }
-                )
-    }
-    override fun provideRoute(from: LatLng, to: LatLng){
-        val fromParam = "${from.latitude},${from.longitude}"
-        val toParam = "${to.latitude},${to.longitude}"
-        disposable = mapsServe.getRoute(fromParam, toParam)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { _ ->
-                            mListenerMapFragment.onRouteRequestCompleted()
-                        },
-                        { error ->
-                            when (error) {
-                                is HttpException -> {
-                                    //"HttpException".showToast(this)
-                                    val codeString = error.code()
-                                    val errorString = error.response().errorBody()?.string()
-                                    Log.d("Retrofit", "error code is $codeString. $errorString")
-                                }
-                                is UnknownHostException -> {
-                                    //"UnknownHostException. Please check your internet connection".showToast(this)
-                                    val errorString = error.toString()
-                                    Log.d("Retrofit", "error is $errorString")
-                                }
-                                else -> {
-                                    //"Unknown Error. Try again".showToast(this)
-                                    Log.d("Retrofit", "unknown error")
-                                }
-                            }
-                            mListenerMapFragment.onRouteRequestFailed(error)
                         }
                 )
     }

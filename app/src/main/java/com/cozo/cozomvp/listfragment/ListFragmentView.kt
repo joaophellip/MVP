@@ -14,7 +14,7 @@ interface ListFragmentView : MvpView {
     fun addPartnersDataToCards(cards: MutableMap<String, CardInfoData>)
 
     // adds restaurants data to card views.
-    fun addRestaurantsDataToCards(cards: MutableMap<String, CardMenuData>)
+    fun addRestaurantsDataToCards(items: List<NetworkModel.MenuMetadata>)
 
     // adds items from same restaurant to card views.
     fun addItemsDataToCards(items: List<NetworkModel.MenuMetadata>)
@@ -80,8 +80,7 @@ interface ListFragmentView : MvpView {
         Informs activity that cardview item containing a restaurant menu was clicked. Passes View object,
          transitionName, menu data, and the restaurant ID as argument.
          */
-        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String,
-                                        data: CardMenuData, restID: String)
+        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData)
 
         /*
         Informs activity that cardview item containing a restaurant menu was highlighted. Passes

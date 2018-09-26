@@ -21,7 +21,7 @@ interface DataProviderInterface {
     }
 
     interface ListFragmentListener{
-        fun onRestCardDataRequestCompleted(cards: MutableMap<String, CardMenuData>)
+        fun onRestCardDataRequestCompleted(items: List<NetworkModel.MenuMetadata>)
         fun onRestCardDataRequestFailed(e: Throwable)
         fun onPartCardDataRequestCompleted(cards: MutableMap<String, CardInfoData>)
         fun onPartCardDataRequestFailed(e: Throwable)
@@ -45,8 +45,5 @@ interface DataProviderInterface {
         fun provideDeliveryPartnersList(restLocation: NetworkModel.Location, userLocation: NetworkModel.Location)
 
         fun provideRestaurantItems(restaurantID: String)
-
-        // retrieves route and sends it back to presenter.
-        fun provideRoute(from: LatLng, to: LatLng)
     }
 }

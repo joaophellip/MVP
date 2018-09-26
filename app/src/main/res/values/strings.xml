@@ -74,5 +74,9 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <!-- Strings for cardview -->
+    <string name="ratedBy">( %1$d )</string>
+    <string name="prepTime">%1$d min</string>
+    <string name="price">R$ %1$s</string>
 </resources>
 

@@ -195,12 +195,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onPartnersCardDataReady(locations, routes)
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData, restID: String) {
+    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {
         currentTransitionName = transitionName
         if (containerLayout == null) {
             containerLayout = findViewById(R.id.recyclerContainer)
         }
-        presenter.onRestaurantCardViewClicked(restID, sharedView, data)
+        presenter.onRestaurantCardViewClicked(data.menu!!.restaurantID, sharedView, data)
     }
 
     override fun onRestCardViewHighlighted(restID: String) {

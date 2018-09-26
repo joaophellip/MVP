@@ -55,16 +55,13 @@ class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListe
 
         fun bindView(position: Int){
 
-            //adjust formatting later on to use xml file instead of local variables
-            val ratedBy = "( ${itemList[position].menu?.ratedBy} )"
-            val formattedPrice = "R$ " + String.format("%02.2f", itemList[position].menu?.price).replace(".",",")
-            val formattedPrepTime = "${itemList[position].menu?.prepTime} min"
             this.foodTitle.text = itemList[position].menu?.name
-            this.foodPrice.text = formattedPrice
-            this.foodAveragePrepTime.text = formattedPrepTime
+            this.foodPrice.text = itemView.context.getString(R.string.price, String.format("%02.2f", itemList[position].menu?.price).replace(".",","))
+            this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,itemList[position].menu?.prepTime)
             this.foodRating.rating = itemList[position].menu?.rating!!
-            this.ratedBy.text = ratedBy
-            this.root.setOnClickListener {_ -> listener.onItemCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, itemList[position]) }
+            this.ratedBy.text = itemView.context.getString(R.string.ratedBy,itemList[position].menu?.ratedBy)
+            this.root.setOnClickListener {_ -> listener.onItemCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, itemList[position])}
+
             // launch asynchronous process to download image
             ImageDownload(itemView.context, this.foodImage,itemList[position])
         }
