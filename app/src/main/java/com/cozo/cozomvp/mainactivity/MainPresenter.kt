@@ -7,6 +7,8 @@ import com.cozo.cozomvp.listfragment.LocalListFragment
 import com.cozo.cozomvp.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
+import com.cozo.cozomvp.usercart.CartServiceImpl
+import com.cozo.cozomvp.usercart.OrderModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
@@ -71,8 +73,12 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     }
 
-    override fun onItemAddedToCart(position: Int) {
+    override fun onItemAddedToCart(position: Int, order: OrderModel) {
         ifViewAttached {
+            // add order to CartService singleton
+            CartServiceImpl.myInstance.addOrder(order)
+
+            // informs list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
         }
     }

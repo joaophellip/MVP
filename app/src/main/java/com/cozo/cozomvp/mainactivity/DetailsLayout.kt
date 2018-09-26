@@ -19,6 +19,7 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.transition.HideDetailsTransitionSet
 import com.cozo.cozomvp.transition.ShowDetailsTransitionSet
+import com.cozo.cozomvp.usercart.CartServiceImpl
 
 class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(context, attrs) {
 
@@ -65,8 +66,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
             //set Order Button
             val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
             orderButton.setOnClickListener {
-                //mListenerMainActivity.onOrderButtonClicked()
-                mListenerMainActivity.onItemAddedToCart()
+                mListenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data.menu!!,getQuantity(detailsLayout),""))
             }
 
             return scene
@@ -94,6 +94,10 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
                 auxQuantity--
                 detailsLayout.quantityTextView.text = auxQuantity.toString()
             }
+        }
+
+        private fun getQuantity(detailsLayout: DetailsLayout) : Int{
+            return detailsLayout.quantityTextView.text.toString().toInt()
         }
     }
 }
