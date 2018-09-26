@@ -26,6 +26,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
     @BindView(R.id.headerImage) lateinit var imageViewPlaceDetails: ImageView
     @BindView(R.id.title) lateinit var textViewTitle: TextView
     @BindView(R.id.description) lateinit var textViewDescription: TextView
+    @BindView(R.id.txtQuantity) lateinit var quantityTextView: TextView
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -36,6 +37,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
         textViewTitle.text = data.menu?.name
         imageViewPlaceDetails.setImageBitmap(data.image)
         textViewDescription.text = data.menu?.ingredients
+        quantityTextView.text = "1"
     }
 
     companion object {
@@ -51,6 +53,14 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
 
             val scene = Scene(container, detailsLayout as View)
             TransitionManager.go(scene, set)
+
+            //set Minus Button
+            val minusButton: Button = detailsLayout.findViewById(R.id.MinusButton)
+            minusButton.setOnClickListener { decrementQuantity(detailsLayout) }
+
+            //set Plus Button
+            val plusButton: Button = detailsLayout.findViewById(R.id.PlusButton)
+            plusButton.setOnClickListener { incrementQuantity(detailsLayout)}
 
             //set Order Button
             val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
@@ -68,6 +78,22 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
             val scene = Scene(container, detailsLayout as View)
             TransitionManager.go(scene, set)
             return scene
+        }
+
+        private fun incrementQuantity(detailsLayout: DetailsLayout){
+            var auxQuantity : Int = detailsLayout.quantityTextView.text.toString().toInt()
+            if(auxQuantity < 10){
+                auxQuantity++
+                detailsLayout.quantityTextView.text = auxQuantity.toString()
+            }
+        }
+
+        private fun decrementQuantity(detailsLayout: DetailsLayout){
+            var auxQuantity : Int = detailsLayout.quantityTextView.text.toString().toInt()
+            if(auxQuantity > 1){
+                auxQuantity--
+                detailsLayout.quantityTextView.text = auxQuantity.toString()
+            }
         }
     }
 }

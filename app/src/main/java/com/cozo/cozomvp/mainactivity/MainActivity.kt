@@ -182,6 +182,15 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onMapMarkerClicked(restID)
     }
 
+    override fun onMinusButtonClicked() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    }
+
+    override fun onPlusButtonClicked() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onOrderButtonClicked() {
         val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
         presenter.onOrderButtonClicked(childPosition)
@@ -262,8 +271,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     companion object {
+
         var MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0
         var MY_GPS_RESOLUTION_STATUS_CODE = 1
     }
-
 }
+

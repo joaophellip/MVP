@@ -16,6 +16,10 @@ interface DetailsInterface {
         Informs main activity that addItemToCart button was clicked by user.
          */
         fun onItemAddedToCart()
+
+        fun onMinusButtonClicked()
+
+        fun onPlusButtonClicked()
     }
 
 }
