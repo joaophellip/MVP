@@ -92,6 +92,13 @@
                         android:background="@drawable/ic_add_black_24dp" />
                 </LinearLayout>
 
+                <EditText
+                    android:id="@+id/notesText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Adicione um comentário ao seu pedido..."
+                    android:layout_margin="14dp"/>
+
                 <Button
                     android:id="@+id/OrderButton"
                     android:layout_width="match_parent"

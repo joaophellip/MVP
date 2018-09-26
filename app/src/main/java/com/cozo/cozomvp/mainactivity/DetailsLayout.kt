@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
@@ -28,6 +29,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
     @BindView(R.id.title) lateinit var textViewTitle: TextView
     @BindView(R.id.description) lateinit var textViewDescription: TextView
     @BindView(R.id.txtQuantity) lateinit var quantityTextView: TextView
+    @BindView(R.id.notesText) lateinit var notesText: EditText
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -66,7 +68,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
             //set Order Button
             val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
             orderButton.setOnClickListener {
-                mListenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data.menu!!,getQuantity(detailsLayout),""))
+                mListenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data.menu!!,getQuantity(detailsLayout), detailsLayout.notesText.text.toString()))
             }
 
             return scene
