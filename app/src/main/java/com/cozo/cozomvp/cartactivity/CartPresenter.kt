@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.cartactivity
 
+import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
@@ -7,18 +8,22 @@ class CartPresenter: MvpBasePresenter<CartView>(), ICartPresenter {
 
     override fun onViewCreated() {
         ifViewAttached { it ->
-            it.updateViewData(listOf())
+            it.updateViewData(CartServiceImpl.myInstance.getOrders())
         }
     }
 
-    override fun onOrderUpdate() {
-        // Update total price
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onOrderUpdate(orderID: Int, quantity: Int, notes: String) {
+        CartServiceImpl.myInstance.updateOrderNote(orderID, notes)
+        CartServiceImpl.myInstance.updateOrderQuantity(orderID, quantity)
+        ifViewAttached { it ->
+            it.updateViewData(CartServiceImpl.myInstance.getOrders())
+        }
     }
 
     override fun onOrderDeleted(order: OrderModel) {
+        CartServiceImpl.myInstance.removeOrder(order.id)
         ifViewAttached { it ->
-            it.updateViewData(listOf())
+            it.updateViewData(CartServiceImpl.myInstance.getOrders())
         }
     }
 

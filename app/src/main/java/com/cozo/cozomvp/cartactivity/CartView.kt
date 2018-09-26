@@ -9,4 +9,6 @@ interface CartView: MvpView {
 
     fun returnToParentActivity()
 
+    fun editOrder(order: OrderModel)
+
 }

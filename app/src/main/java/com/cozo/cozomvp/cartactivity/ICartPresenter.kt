@@ -6,7 +6,7 @@ interface ICartPresenter {
 
     fun onViewCreated()
 
-    fun onOrderUpdate()
+    fun onOrderUpdate(orderID: Int, quantity: Int, notes: String)
 
     fun onOrderDeleted(order: OrderModel)
 
