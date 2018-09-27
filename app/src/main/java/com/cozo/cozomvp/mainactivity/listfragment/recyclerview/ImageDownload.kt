@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.listfragment.recyclerview
+package com.cozo.cozomvp.mainactivity.listfragment.recyclerview
 
 import android.content.Context
 import android.graphics.Bitmap
