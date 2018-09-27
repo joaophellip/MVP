@@ -4,7 +4,7 @@ import com.cozo.cozomvp.usercart.OrderModel
 
 interface ICartPresenter {
 
-    fun onViewCreated()
+    fun onFragmentReady()
 
     fun onOrderUpdate(orderID: Int, quantity: Int, notes: String)
 

@@ -6,7 +6,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
 class CartPresenter: MvpBasePresenter<CartView>(), ICartPresenter {
 
-    override fun onViewCreated() {
+    override fun onFragmentReady() {
         ifViewAttached { it ->
             it.updateViewData(CartServiceImpl.myInstance.getOrders())
         }

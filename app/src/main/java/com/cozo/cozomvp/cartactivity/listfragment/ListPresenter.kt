@@ -1,4 +1,7 @@
 package com.cozo.cozomvp.cartactivity.listfragment
 
-class ListPresenter {
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import com.hannesdorfmann.mosby3.mvp.MvpPresenter
+
+class ListPresenter : MvpBasePresenter<ListView>() {
 }

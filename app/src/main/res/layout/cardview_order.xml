@@ -1,6 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardViewRoot"
+    android:layout_width="match_parent"
+    android:layout_height="128dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="12dp"
+    android:layout_alignParentBottom="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_anchorGravity="top"
+    app:cardCornerRadius="4dp">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/foodImage"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/default_item_image"
+            android:scaleType="fitXY"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/default_item_name"
+            app:layout_constraintStart_toEndOf="@+id/foodImage" />
+
+
+        <LinearLayout
+            android:id="@+id/itemQuantityControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/itemName"
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/MinusButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_remove_black_24dp" />
+
+            <TextView
+                android:id="@+id/txtQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/default_item_quantity"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/PlusButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_add_black_24dp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/deleteItemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_delete"
+            app:layout_constraintStart_toEndOf="@id/itemQuantityControl"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
