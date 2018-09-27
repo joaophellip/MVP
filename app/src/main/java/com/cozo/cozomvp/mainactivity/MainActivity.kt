@@ -20,10 +20,12 @@ import android.widget.TextView
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
-import com.cozo.cozomvp.listfragment.ListFragmentView
-import com.cozo.cozomvp.listfragment.LocalListFragment
-import com.cozo.cozomvp.mapfragment.LocalMapFragment
-import com.cozo.cozomvp.mapfragment.MapFragmentView
+import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
+import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutView
+import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
+import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
+import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.mainactivity.mapfragment.MapFragmentView
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
@@ -32,11 +34,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
-        MapFragmentView.MainActivityListener, DetailsInterface.MainActivityListener,
+        MapFragmentView.MainActivityListener, CheckoutView.MainActivityListener,
+        DetailsInterface.MainActivityListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
+    private lateinit var mCheckoutFragment: CheckoutFragment
     private lateinit var currentTransitionName: String
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
@@ -44,6 +48,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private var detailsScene: Scene? = null
     private var isListFragmentReady = false
     private var isMapFragmentReady = false
+    private var isCheckoutFragmentReady = false
 
     override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
         containerLayout?.addView(mRecyclerView)
@@ -88,8 +93,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun launchCheckoutFragment() {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.checkoutContainer, LocalCheckoutFragment.newInstance(), LocalCheckoutFragment.TAG)
-                .addToBackStack(LocalCheckout.TAG)
+                .replace(R.id.checkoutContainer, CheckoutFragment.newInstance(), CheckoutFragment.TAG)
+                .addToBackStack(CheckoutFragment.TAG)
                 .commit()
     }
 
@@ -137,6 +142,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             else -> {} //ignore all other requests
         }
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onCompleteCheckoutFragment(checkoutFragment: CheckoutFragment) {
+        mCheckoutFragment = checkoutFragment
+        isCheckoutFragmentReady = true
     }
 
     override fun onCompleteListFragment(listFragment: LocalListFragment){

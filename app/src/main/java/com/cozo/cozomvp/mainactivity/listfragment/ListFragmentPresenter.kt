@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.listfragment
+package com.cozo.cozomvp.mainactivity.listfragment
 
 import android.util.Log
 import com.cozo.cozomvp.dataprovider.DataProvider

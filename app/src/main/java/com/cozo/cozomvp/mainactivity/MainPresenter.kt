@@ -3,8 +3,8 @@ package com.cozo.cozomvp.mainactivity
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
-import com.cozo.cozomvp.listfragment.LocalListFragment
-import com.cozo.cozomvp.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
+import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.google.firebase.auth.FirebaseAuth
