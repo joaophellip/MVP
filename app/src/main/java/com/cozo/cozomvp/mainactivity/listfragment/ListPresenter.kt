@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.listfragment
+package com.cozo.cozomvp.mainactivity.listfragment
 
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface

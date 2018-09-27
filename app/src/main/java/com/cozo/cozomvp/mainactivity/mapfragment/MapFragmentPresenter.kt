@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.mapfragment
+package com.cozo.cozomvp.mainactivity.mapfragment
 
 import android.util.Log
 import com.cozo.cozomvp.dataprovider.DataProvider
@@ -6,7 +6,6 @@ import com.cozo.cozomvp.dataprovider.DataProviderInterface
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.networkapi.MapPresenterData
 import com.cozo.cozomvp.networkapi.NetworkModel
-import com.google.android.gms.maps.model.LatLng
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
 class MapFragmentPresenter : MvpBasePresenter<MapFragmentView>(), MapInterfaces.Presenter {

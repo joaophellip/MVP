@@ -11,5 +11,7 @@ interface CheckoutView : MvpView {
         reference to the class as argument.
          */
         fun onCompleteCheckoutFragment(checkoutFragment: CheckoutFragment)
+
+        fun displayContainer()
     }
 }

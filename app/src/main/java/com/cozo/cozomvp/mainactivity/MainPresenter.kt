@@ -3,8 +3,8 @@ package com.cozo.cozomvp.mainactivity
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
-import com.cozo.cozomvp.listfragment.LocalListFragment
-import com.cozo.cozomvp.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
+import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.usercart.CartServiceImpl
@@ -80,6 +80,20 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
             // informs list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
+
+            // informs checkout fragment that item was added to cart
+
+            if(checkCheckoutStatus()){
+                it.onCheckoutFragmentRequired().updateContainer()
+            }
+        }
+    }
+
+    private fun checkCheckoutStatus() : Boolean{
+        if(CartServiceImpl.myInstance.getOrders().size > 0){
+            return true
+        } else{
+            return false
         }
     }
 

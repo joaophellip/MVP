@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.listfragment
+package com.cozo.cozomvp.mainactivity.listfragment
 
 import android.content.Context
 import android.os.Bundle
@@ -20,10 +20,10 @@ import org.jetbrains.anko.displayMetrics
 import java.lang.Math.ceil
 import org.jetbrains.anko.forEachChild
 import android.support.v7.widget.helper.ItemTouchHelper
-import com.cozo.cozomvp.listfragment.recyclerview.PartnersRecyclerViewAdapter
-import com.cozo.cozomvp.listfragment.recyclerview.RestaurantItemsRecyclerViewAdapter
-import com.cozo.cozomvp.listfragment.recyclerview.RestaurantRecyclerViewAdapter
-import com.cozo.cozomvp.listfragment.recyclerview.SwipeController
+import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.PartnersRecyclerViewAdapter
+import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.RestaurantItemsRecyclerViewAdapter
+import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.RestaurantRecyclerViewAdapter
+import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.SwipeController
 
 class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFragmentView,
         RestaurantRecyclerViewAdapter.OnPlaceClickListener, PartnersRecyclerViewAdapter.OnPlaceClickListener,
