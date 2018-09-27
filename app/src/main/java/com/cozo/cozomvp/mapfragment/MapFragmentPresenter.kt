@@ -47,10 +47,6 @@ class MapFragmentPresenter : MvpBasePresenter<MapFragmentView>(), MapInterfaces.
         }
     }
 
-    override fun provideRoute(from: LatLng, to: LatLng){
-        getRouteFromAPI(from, to)
-    }
-
     // retrieves locations for nearby restaurants from Data Provider and sends them to the map view.
     private fun getNearbyRestaurantsLocations(location: NetworkModel.Location){
         mDataProvider = DataProvider(object : DataProviderInterface.MapFragmentListener{
@@ -79,29 +75,6 @@ class MapFragmentPresenter : MvpBasePresenter<MapFragmentView>(), MapInterfaces.
             }
         })
         mDataProvider?.provideRestaurantsLatLng(location,10000)
-    }
-
-    // retrieves route for provided locations and sends it to the map view.
-    private fun getRouteFromAPI(from: LatLng, to: LatLng){
-        mDataProvider = DataProvider(object : DataProviderInterface.MapFragmentListener{
-            override fun getActivity(): MainActivity? {
-                var mActivity : MainActivity? = null
-                ifViewAttached {
-                    mActivity = it.onActivityRequired()
-                }
-                return mActivity
-            }
-            override fun onRouteRequestCompleted() {
-                Log.d("MVPdebug","deu certo o Route")
-            }
-            override fun onRouteRequestFailed(e: Throwable) {
-                //do something later
-                Log.d("MVPdebug","error while requesting route to backend")
-            }
-            override fun onRestLocationsRequestCompleted(locations: List<NetworkModel.RestLocationObjects>) {}
-            override fun onRestLocationsRequestFailed(e: Throwable) {}
-        })
-        mDataProvider?.provideRoute(from, to)
     }
 
 }

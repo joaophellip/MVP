@@ -3,6 +3,7 @@ package com.cozo.cozomvp.mainactivity
 import android.view.View
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
+import com.cozo.cozomvp.usercart.OrderModel
 
 /*
 Interface MainInterfaces contains the abstract methods implemented by MainPresenter.kt and which are seen by the View.
@@ -28,6 +29,8 @@ interface MainInterfaces {
     }
 
     fun onLocationServiceReady()
+
+    fun onItemAddedToCart(position: Int, order: OrderModel)
 
     /*
     Informs presenter that a restaurant map marker was clicked by user. Passes restaurant ID

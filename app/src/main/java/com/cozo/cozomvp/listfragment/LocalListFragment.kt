@@ -20,19 +20,30 @@ import org.jetbrains.anko.displayMetrics
 import java.lang.Math.ceil
 import org.jetbrains.anko.forEachChild
 import android.support.v7.widget.helper.ItemTouchHelper
+import com.cozo.cozomvp.listfragment.recyclerview.PartnersRecyclerViewAdapter
+import com.cozo.cozomvp.listfragment.recyclerview.RestaurantItemsRecyclerViewAdapter
+import com.cozo.cozomvp.listfragment.recyclerview.RestaurantRecyclerViewAdapter
+import com.cozo.cozomvp.listfragment.recyclerview.SwipeController
 
-class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>(), ListFragmentView,
+class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFragmentView,
         RestaurantRecyclerViewAdapter.OnPlaceClickListener, PartnersRecyclerViewAdapter.OnPlaceClickListener,
-        SwipeController.OnSwipeClickListener {
+        SwipeController.OnSwipeClickListener, RestaurantItemsRecyclerViewAdapter.OnPlaceClickListener {
 
     @BindView(R.id.recyclerView) lateinit var mRecyclerView: RecyclerView
 
     private var recyclerViewDx : Int = 0
+
     lateinit var mRestaurantsRecyclerAdapter: RestaurantRecyclerViewAdapter
     private lateinit var mPartnersRecyclerAdapter: PartnersRecyclerViewAdapter
+    private lateinit var restaurantItemsRecyclerAdapter: RestaurantItemsRecyclerViewAdapter
     private lateinit var mListenerMainActivity : ListFragmentView.MainActivityListener
     private lateinit var mRootView: ViewGroup
     private var isCardViewShownRestaurant: Boolean = true
+
+    override fun addItemsDataToCards(items: List<NetworkModel.MenuMetadata>) {
+        restaurantItemsRecyclerAdapter.setItemList(items)
+        mRecyclerView.adapter = restaurantItemsRecyclerAdapter
+    }
 
     override fun addPartnersDataToCards(cards: MutableMap<String, CardInfoData>) {
         mPartnersRecyclerAdapter.setPartnerList(cards)
@@ -47,8 +58,8 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
         mListenerMainActivity.onPartnersCardDataReady(mLocations, mRoutes)
     }
 
-    override fun addRestaurantsDataToCards(cards: MutableMap<String, CardMenuData>) {
-        mRestaurantsRecyclerAdapter.setRestaurantList(cards)
+    override fun addRestaurantsDataToCards(items: List<NetworkModel.MenuMetadata>) {
+        mRestaurantsRecyclerAdapter.setRestaurantList(items)
         mRecyclerView.adapter = mRestaurantsRecyclerAdapter
     }
 
@@ -62,12 +73,16 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
         }
     }
 
-    override fun createPresenter(): ListFragmentPresenter {
-        return ListFragmentPresenter()
+    override fun createPresenter(): ListPresenter {
+        return ListPresenter()
     }
 
     override fun currentRestID(listPosition: Int): String {
         return mRestaurantsRecyclerAdapter.currentRestID(listPosition)
+    }
+
+    override fun dishOrderCreation(listPosition: Int) {
+        presenter.dishNew(this.currentRestID(listPosition))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,6 +96,8 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
 
         mRestaurantsRecyclerAdapter = RestaurantRecyclerViewAdapter(this)
         mPartnersRecyclerAdapter = PartnersRecyclerViewAdapter(this)
+        restaurantItemsRecyclerAdapter = RestaurantItemsRecyclerViewAdapter(this)
+
         mRootView = view as ViewGroup
     }
 
@@ -102,7 +119,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
                 val mCardWidth: Int = mRestaurantsRecyclerAdapter.mCardViewLayoutParams.leftMargin + mRestaurantsRecyclerAdapter.mCardViewLayoutParams.rightMargin + mRestaurantsRecyclerAdapter.mCardViewLayoutParams.width
                 val mTargetPosition: Int = when(recyclerViewDx){
                     0 -> 1
-                    (mCardWidth*ListFragmentPresenter.restListSize  - recyclerView!!.width) -> ListFragmentPresenter.restListSize
+                    (mCardWidth*ListPresenter.restListSize  - recyclerView!!.width) -> ListPresenter.restListSize
                     else -> ceil(recyclerView.width.toDouble()/mCardWidth - 1 + recyclerViewDx.toDouble()/mCardWidth).toInt()
                 }
 
@@ -135,6 +152,10 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
         return mListenerMainActivity.onActivityRequired()
     }
 
+    override fun onItemCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData) {
+        mListenerMainActivity.onItemCardViewClicked(sharedView, transitionName, data)
+    }
+
     override fun onUserLocationDataAvailable(location: NetworkModel.Location) {
         presenter.onUserLocationDataAvailable(location)
     }
@@ -147,14 +168,14 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListFragmentPresenter>()
         presenter.onRestLocationDataAvailable(location)
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData, restID: String) {
-        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data, restID)
+    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData) {
+        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data)
     }
 
     override fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, position: Int) {
         val restID: String = mRestaurantsRecyclerAdapter.currentRestID(position)
         val data: CardMenuData? = mRestaurantsRecyclerAdapter.cardData(restID)
-        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data!!, restID)
+        mListenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data!!)
     }
 
     override fun onPartnerCardViewClicked(partnerID: String) {

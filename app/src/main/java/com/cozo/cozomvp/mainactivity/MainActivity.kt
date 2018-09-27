@@ -29,6 +29,7 @@ import com.cozo.cozomvp.mapfragment.MapFragmentView
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
+import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
@@ -37,8 +38,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         MapFragmentView.MainActivityListener, CheckoutView.MainActivityListener,
         DetailsInterface.MainActivityListener,
         NavigationView.OnNavigationItemSelectedListener {
-
     private lateinit var mListFragment : LocalListFragment
+
     private lateinit var mMapFragment : LocalMapFragment
     private lateinit var mCheckoutFragment: CheckoutFragment
     private lateinit var currentTransitionName: String
@@ -53,7 +54,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
         containerLayout?.addView(mRecyclerView)
     }
-
     override fun areFragmentsReady(): Boolean{
         return isListFragmentReady && isMapFragmentReady
     }
@@ -125,6 +125,19 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
+    override fun onItemAddedToCart(order: OrderModel) {
+        val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
+        presenter.onItemAddedToCart(childPosition, order)
+    }
+
+    override fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {
+        currentTransitionName = transitionName
+        if (containerLayout == null) {
+            containerLayout = findViewById(R.id.recyclerContainer)
+        }
+        presenter.onRestaurantCardViewClicked(data.menu?.restaurantID!!, sharedView, data)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
@@ -188,6 +201,15 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onMapMarkerClicked(restID)
     }
 
+    override fun onMinusButtonClicked() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    }
+
+    override fun onPlusButtonClicked() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onOrderButtonClicked() {
         val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
         presenter.onOrderButtonClicked(childPosition)
@@ -201,13 +223,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onPartnersCardDataReady(locations, routes)
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData, restID: String) {
+    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {
         currentTransitionName = transitionName
-        //transitionName vem de uma classe chama TransitionUtils
         if (containerLayout == null) {
             containerLayout = findViewById(R.id.recyclerContainer)
         }
-        presenter.onRestaurantCardViewClicked(restID, sharedView, data)
+        presenter.onRestaurantCardViewClicked(data.menu!!.restaurantID, sharedView, data)
     }
 
     override fun onRestCardViewHighlighted(restID: String) {
@@ -269,8 +290,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     companion object {
+
         var MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0
         var MY_GPS_RESOLUTION_STATUS_CODE = 1
     }
-
 }
+

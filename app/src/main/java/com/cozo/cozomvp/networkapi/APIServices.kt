@@ -15,7 +15,6 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 interface APIServices{
 
-    //need to get resources without context here for both @GET parameter and baseUrl. Later today check https://stackoverflow.com/questions/4391720/how-can-i-get-a-resource-content-from-a-static-context/4391811#4391811
     @GET("location/main")
     fun userMainLocation(@Query("idToken") idToken: String):
             Observable<NetworkModel.Location>
@@ -30,10 +29,11 @@ interface APIServices{
     fun restaurantsNearestMenu(@Query("radius") radius: Int,
                                    @Query("latitude") latitude: Double,
                                    @Query("longitude") longitude: Double):
-            Observable<ResponseBody>
+            Observable<NetworkModel.ListRestaurantItem>
 
     @GET ("restaurants/items")
-    fun restaurantsItems(@Query("restaurantID") restaurantID: String): Observable<NetworkModel.ListRestaurantItem>
+    fun restaurantsItems(@Query("restaurantID") restaurantID: String):
+            Observable<NetworkModel.ListRestaurantItem>
 
     companion object {
         fun create(): APIServices {

@@ -70,31 +70,45 @@
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:padding="28dp">
+
                     <Button
-                        android:background="@drawable/ic_remove_black_24dp"
+                        android:id="@+id/MinusButton"
                         android:layout_width="70dp"
-                        android:layout_height="70dp" />
+                        android:layout_height="70dp"
+                        android:background="@drawable/ic_remove_black_24dp" />
+
                     <TextView
+                        android:id="@+id/txtQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
+                        android:layout_margin="16dp"
                         android:text="1"
-                        android:layout_margin="16dp"/>
+                        android:textSize="24sp" />
+
                     <Button
-                        android:background="@drawable/ic_add_black_24dp"
+                        android:id="@+id/PlusButton"
                         android:layout_width="70dp"
-                        android:layout_height="70dp"/>
+                        android:layout_height="70dp"
+                        android:background="@drawable/ic_add_black_24dp" />
                 </LinearLayout>
+
+                <EditText
+                    android:id="@+id/notesText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Adicione um comentário ao seu pedido..."
+                    android:layout_margin="14dp"/>
+
                 <Button
+                    android:id="@+id/OrderButton"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:id="@+id/OrderButton"
-                    android:text="Escolher Entregador"
+                    android:background="@drawable/ripple_effect"
                     android:elevation="18dp"
-                    android:textColor="@color/white100"
                     android:pointerIcon="arrow"
-                    tools:targetApi="n"
-                    android:background="@drawable/ripple_effect"/>
+                    android:text="Adicionar ao Carrinho"
+                    android:textColor="@color/white100"
+                    tools:targetApi="n" />
 
 
 
