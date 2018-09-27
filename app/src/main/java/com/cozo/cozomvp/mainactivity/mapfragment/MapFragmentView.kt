@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.mapfragment
+package com.cozo.cozomvp.mainactivity.mapfragment
 
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.networkapi.NetworkModel

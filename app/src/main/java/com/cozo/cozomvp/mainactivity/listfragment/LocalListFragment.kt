@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.listfragment
+package com.cozo.cozomvp.mainactivity.listfragment
 
 import android.content.Context
 import android.os.Bundle
