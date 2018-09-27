@@ -2,8 +2,8 @@ package com.cozo.cozomvp.mainactivity
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
-import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.listfragment.LocalListFragment
+import com.cozo.cozomvp.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.hannesdorfmann.mosby3.mvp.MvpView
 

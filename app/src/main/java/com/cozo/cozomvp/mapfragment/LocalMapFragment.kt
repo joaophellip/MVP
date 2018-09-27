@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.mainactivity.mapfragment
+package com.cozo.cozomvp.mapfragment
 
 import android.content.Context
 import android.os.Bundle

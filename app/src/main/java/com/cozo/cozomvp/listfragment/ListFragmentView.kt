@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.mainactivity.listfragment
+package com.cozo.cozomvp.listfragment
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

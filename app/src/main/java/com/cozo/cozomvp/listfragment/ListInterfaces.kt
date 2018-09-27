@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.mainactivity.listfragment
+package com.cozo.cozomvp.listfragment
 
 import com.cozo.cozomvp.networkapi.NetworkModel
 
