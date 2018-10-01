@@ -6,15 +6,14 @@ import android.os.AsyncTask
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.ImageView
-import com.cozo.cozomvp.networkapi.CardMenuData
 import java.io.File
 import java.io.FileNotFoundException
 
 class ImageDownload(private val context: Context, private val bmImage: ImageView,
-                    cardMenuData: CardMenuData) : AsyncTask<String, Void, Bitmap>() {
+                    picRefId: String) : AsyncTask<String, Void, Bitmap>() {
 
     init {
-        this.execute(cardMenuData.menu!!.pictureRefID)
+        this.execute(picRefId)
     }
 
     override fun doInBackground(vararg urls: String): Bitmap? {

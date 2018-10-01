@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.listfragment.LocalListFragment
 import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
 
-class ListFragment : MvpFragment<ListView, ListPresenter>(), ListView {
+class ListFragment : MvpFragment<ListView, ListPresenter>(), ListView,
+        RecyclerViewAdapter.OnRecyclerListener {
 
     @BindView(R.id.recyclerView) lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: RecyclerViewAdapter
@@ -30,6 +30,18 @@ class ListFragment : MvpFragment<ListView, ListPresenter>(), ListView {
         listenerCartActivity.onCompleteListFragment(this)
 
         return view
+    }
+
+    override fun onMinusButtonClicked(orderID: Int, quantity: Int, notes: String) {
+        listenerCartActivity.onUpdateCartOrder(orderID,quantity,notes)
+    }
+
+    override fun onPlusButtonClicked(orderID: Int, quantity: Int, notes: String) {
+        listenerCartActivity.onUpdateCartOrder(orderID,quantity,notes)
+    }
+
+    override fun onDeleteButtonClicked(order: OrderModel) {
+        listenerCartActivity.onDeleteCartOrder(order)
     }
 
     fun updateRecyclerView(orders: List<OrderModel>) {

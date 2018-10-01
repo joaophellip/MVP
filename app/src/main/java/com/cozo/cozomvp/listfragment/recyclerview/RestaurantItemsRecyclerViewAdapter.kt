@@ -63,7 +63,7 @@ class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListe
             this.root.setOnClickListener {_ -> listener.onItemCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, itemList[position])}
 
             // launch asynchronous process to download image
-            ImageDownload(itemView.context, this.foodImage,itemList[position])
+            ImageDownload(itemView.context, this.foodImage,itemList[position].menu!!.pictureRefID)
         }
     }
 

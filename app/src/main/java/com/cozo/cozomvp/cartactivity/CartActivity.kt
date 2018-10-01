@@ -36,6 +36,14 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
         return CartPresenter()
     }
 
+    override fun onUpdateCartOrder(orderID: Int, quantity: Int, notes: String) {
+        presenter.onOrderUpdate(orderID, quantity, notes)
+    }
+
+    override fun onDeleteCartOrder(order: OrderModel) {
+        presenter.onOrderDeleted(order)
+    }
+
     override fun updateViewData(orders: List<OrderModel>) {
         //calculate total
         var total: Float = 0f

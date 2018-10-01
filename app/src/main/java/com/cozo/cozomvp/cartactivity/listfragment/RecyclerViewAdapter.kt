@@ -10,9 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.listfragment.recyclerview.ImageDownload
 import com.cozo.cozomvp.usercart.OrderModel
 
-class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
+class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
+
+    interface OnRecyclerListener{
+        fun onMinusButtonClicked(orderID: Int, quantity: Int, notes: String)
+        fun onPlusButtonClicked(orderID: Int, quantity: Int, notes: String)
+        fun onDeleteButtonClicked(order: OrderModel)
+    }
 
     lateinit var orders : List<OrderModel>
 
@@ -40,6 +47,16 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerVie
         @BindView(R.id.deleteItemButton) lateinit var deleteItemButton: ImageButton
 
         fun bindView(position: Int){
+            itemName.text = orders[position].item.name
+            txtQuantity.text = orders[position].quantity.toString()
+
+            // launch asynchronous process to download image
+            ImageDownload(itemView.context, this.foodImage, orders[position].item.pictureRefID)
+
+            // set buttons' triggers
+            minusButton.setOnClickListener {listener.onMinusButtonClicked(orders[position].id,orders[position].quantity-1,orders[position].notes) }
+            plusButton.setOnClickListener {listener.onPlusButtonClicked(orders[position].id,orders[position].quantity+1,orders[position].notes) }
+            deleteItemButton.setOnClickListener {listener.onDeleteButtonClicked(orders[position]) }
 
         }
     }
