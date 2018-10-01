@@ -18,7 +18,6 @@ android:
     
     # System image to run emulator during instrumented tests
     - android-25
-    - sys-img-armeabi-v7a-google_apis-25
     - extra-android-m2repository
 
 before_install:
@@ -34,7 +33,7 @@ env:
 before_script:
   - android-update-sdk --components=sys-img-armeabi-v7a-google_apis-25 --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   - echo no | android create avd --force -n test -t android-25 --tag google_apis --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
+  - emulator -avd test -no-audio -no-window -engine classic &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
     
