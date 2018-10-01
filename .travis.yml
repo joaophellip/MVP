@@ -17,7 +17,7 @@ env:
   matrix:
    - API=22
    #- API=23 EMU_FLAVOR=google_apis # fails consistently but can run local
-   - API=24
+   # - API=24
    #- API=25 EMU_FLAVOR=google_apis # fails consistently but can run local
    # API >= 26 don't have arm emulators, and Travis doesn't support x86
 
