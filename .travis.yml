@@ -17,7 +17,7 @@ android:
     - android-27
     
     # System image to run emulator during instrumented tests
-    = android-26
+    - android-26
     - sys-img-armeabi-v7a-android-25
 
 before_install:
