@@ -5,16 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
+import kotlinx.android.synthetic.main.fragment_checkout.*
 
 class CheckoutFragment : MvpFragment<CheckoutView, CheckoutPresenter>(){
-
-    @BindView(R.id.quantityText) lateinit var mQuantityText: TextView
 
     private lateinit var mListenerMainActivity : CheckoutView.MainActivityListener
 
@@ -23,7 +19,6 @@ class CheckoutFragment : MvpFragment<CheckoutView, CheckoutPresenter>(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mView : View? = inflater.inflate(R.layout.fragment_checkout, container, false)
         mListenerMainActivity.onCompleteCheckoutFragment(this)
-        ButterKnife.bind(mView!!)
         return mView
     }
 
@@ -38,7 +33,7 @@ class CheckoutFragment : MvpFragment<CheckoutView, CheckoutPresenter>(){
     }
 
     fun updateContainer(){
-        mQuantityText.text = CartServiceImpl.myInstance.getOrders().size.toString()
+        quantityText.text = CartServiceImpl.myInstance.getOrders().size.toString()
         mListenerMainActivity.displayContainer()
     }
 

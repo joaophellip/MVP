@@ -15,16 +15,11 @@ import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
 
-class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {
+class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {
 
-    private lateinit var listener: OnPlaceClickListener
     lateinit var mCardViewLayoutParams: ViewGroup.MarginLayoutParams
     private var restaurantList: List<CardMenuData> = listOf()
     private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
-
-    constructor(listener: OnPlaceClickListener) : this(){
-        this.listener = listener
-    }
 
     interface OnPlaceClickListener {
         fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData)
@@ -49,21 +44,15 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
         return null
     }
 
-    fun currentRestID(position: Int) : String = mPositionMap[position]!!
+    fun currentRestID(position: Int) : String = restaurantList[position].menu!!.restaurantID
 
-    fun positionById(restID: String) : Int? {
-        return when (mPositionMap.containsValue(restID)){
-            true -> {
-                val mMap = mPositionMap.filterValues{
-                    it == restID
-                }
-                return when(mMap.size == 1){
-                    true -> mMap.keys.elementAt(0)
-                    else -> -2
-                }
+    fun positionById(restID: String) : Int?{
+        restaurantList.forEachIndexed { index, cardMenuData ->
+            when(cardMenuData.menu!!.restaurantID){
+                restID -> return index
             }
-            false -> -1
         }
+        return -1
     }
 
     fun setRestaurantList(items: List<NetworkModel.MenuMetadata>) {
