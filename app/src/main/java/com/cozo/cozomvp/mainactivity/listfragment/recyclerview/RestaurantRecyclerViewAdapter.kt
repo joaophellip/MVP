@@ -97,7 +97,7 @@ class RestaurantRecyclerViewAdapter() : RecyclerView.Adapter<RestaurantRecyclerV
             this.root.setOnClickListener {_ -> listener.onRestaurantCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList[position])}
 
             // launch asynchronous process to download image
-            ImageDownload(itemView.context, this.foodImage, restaurantList[position])
+            ImageDownload(itemView.context, this.foodImage, restaurantList[position].menu!!.pictureRefID)
 
             // sets raised elevation to first card by default
             when (position) {

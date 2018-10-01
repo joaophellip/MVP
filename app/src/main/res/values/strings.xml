@@ -78,5 +78,11 @@
     <string name="ratedBy">( %1$d )</string>
     <string name="prepTime">%1$d min</string>
     <string name="price">R$ %1$s</string>
+
+    <!-- Strings for cart view -->
+    <string name="total_label">TOTAL: R$ %1$d</string>
+    <string name="default_item_name">nome do prato</string>
+    <string name="default_item_quantity">1</string>
+
 </resources>
 

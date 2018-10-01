@@ -52,6 +52,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cozo.cozomvp.mainactivity.MainActivity" />
         </activity>
+        <activity
+            android:name=".cartactivity.CartActivity"
+            android:parentActivityName=".mainactivity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cozo.cozomvp.mainactivity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
