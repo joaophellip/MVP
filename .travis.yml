@@ -17,8 +17,8 @@ android:
     - android-27
     
     # System image to run emulator during instrumented tests
-    - android-25
-    - sys-img-armeabi-v7a-android-25
+    - sys-img-armeabi-v7a-android-27
+    - extra-android-m2repository
 
 before_install:
  - chmod +x gradlew
@@ -30,7 +30,8 @@ env:
 
 # Emulator Management: Create virtual device, start emulator, and wait until it is ready
 before_script:
-  - echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
+  - android-update-sdk --components=armeabi-v7a-android-27 --accept-licenses='android-sdk-license-[0-9a-f]{8}'
+  - echo no | android create avd --force -n test -t android-27 --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
