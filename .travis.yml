@@ -51,4 +51,4 @@ install:
 
 # Run assemble and instrumented tests
 script:
-  - ./gradlew clean assembleDebug assembleRelease connectedAndroidTest
+  - ./gradlew clean assembleDebug assembleRelease connectedAndroidTest test
