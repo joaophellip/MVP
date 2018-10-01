@@ -33,8 +33,12 @@ class ImageDownload(private val context: Context, private val bmImage: ImageView
         return downloadedImage
     }
 
-    override fun onPostExecute(result: Bitmap) {
-        bmImage.setImageBitmap(result)
+    override fun onPostExecute(result: Bitmap?) {
+        if (result != null) {
+            bmImage.setImageBitmap(result)
+        } else {
+            // get default image when unable to download it from backend (for whatever reason)
+        }
     }
 
     private fun getCachedImage(url: String): Bitmap? =

@@ -82,7 +82,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             it.onListFragmentRequired().dishOrderCreation(position)
 
             // informs checkout fragment that item was added to cart
-
             if(checkCheckoutStatus()){
                 it.onCheckoutFragmentRequired().updateContainer()
             }
