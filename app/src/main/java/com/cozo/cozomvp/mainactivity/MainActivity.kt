@@ -16,10 +16,15 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
+import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
+import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutView
 import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
@@ -33,12 +38,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
-        MapFragmentView.MainActivityListener, DetailsInterface.MainActivityListener,
+        MapFragmentView.MainActivityListener, CheckoutView.MainActivityListener,
+        DetailsInterface.MainActivityListener,
         NavigationView.OnNavigationItemSelectedListener {
+
     private lateinit var mListFragment : LocalListFragment
-
     private lateinit var mMapFragment : LocalMapFragment
-
+    private lateinit var mCheckoutFragment: CheckoutFragment
     private lateinit var currentTransitionName: String
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
@@ -46,6 +52,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private var detailsScene: Scene? = null
     private var isListFragmentReady = false
     private var isMapFragmentReady = false
+    private var isCheckoutFragmentReady = false
+
+    @BindView(R.id.checkoutContainer) lateinit var mCheckoutContainer: FrameLayout
+
     override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
         containerLayout?.addView(mRecyclerView)
     }
@@ -83,6 +93,18 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 .replace(R.id.mapContainer, LocalMapFragment.newInstance(), LocalMapFragment.TAG)
                 .addToBackStack(LocalMapFragment.TAG)
                 .commit()
+    }
+
+    override fun launchCheckoutFragment() {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.checkoutContainer, CheckoutFragment.newInstance(), CheckoutFragment.TAG)
+                .addToBackStack(CheckoutFragment.TAG)
+                .commit()
+    }
+
+    override fun displayContainer() {
+        mCheckoutContainer.visibility = View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -144,6 +166,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    override fun onCompleteCheckoutFragment(checkoutFragment: CheckoutFragment) {
+        mCheckoutFragment = checkoutFragment
+        isCheckoutFragmentReady = true
+    }
+
     override fun onCompleteListFragment(listFragment: LocalListFragment){
         mListFragment = listFragment
         isListFragmentReady = true
@@ -169,6 +196,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             requestUserPermissionForLocation()
         }
 
+        ButterKnife.bind(this)
     }
 
     override fun onListFragmentRequired(): LocalListFragment {
@@ -177,6 +205,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun onMapFragmentRequired(): LocalMapFragment {
         return mMapFragment
+    }
+
+    override fun onCheckoutFragmentRequired(): CheckoutFragment {
+        return mCheckoutFragment
     }
 
     override fun onMapMarkerClicked(restID: String) {

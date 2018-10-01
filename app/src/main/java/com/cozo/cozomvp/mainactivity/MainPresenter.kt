@@ -80,6 +80,20 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
             // informs list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
+
+            // informs checkout fragment that item was added to cart
+
+            if(checkCheckoutStatus()){
+                it.onCheckoutFragmentRequired().updateContainer()
+            }
+        }
+    }
+
+    private fun checkCheckoutStatus() : Boolean{
+        if(CartServiceImpl.myInstance.getOrders().size > 0){
+            return true
+        } else{
+            return false
         }
     }
 
@@ -193,6 +207,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
                     // launches list fragment
                     it.launchListFragment()
+
+                    // launches checkout fragment
+                    it.launchCheckoutFragment()
                 }
             }
             override fun onUserLocationRequestFailed(e: Throwable) {
