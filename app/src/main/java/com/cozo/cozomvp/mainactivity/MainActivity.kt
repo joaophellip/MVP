@@ -20,10 +20,10 @@ import android.widget.TextView
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
-import com.cozo.cozomvp.listfragment.ListFragmentView
-import com.cozo.cozomvp.listfragment.LocalListFragment
-import com.cozo.cozomvp.mapfragment.LocalMapFragment
-import com.cozo.cozomvp.mapfragment.MapFragmentView
+import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
+import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
+import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.mainactivity.mapfragment.MapFragmentView
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils

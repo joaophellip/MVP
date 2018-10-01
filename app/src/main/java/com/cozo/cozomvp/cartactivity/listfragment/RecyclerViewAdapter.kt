@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.listfragment.recyclerview.ImageDownload
+import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.ImageDownload
 import com.cozo.cozomvp.usercart.OrderModel
 
 class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
