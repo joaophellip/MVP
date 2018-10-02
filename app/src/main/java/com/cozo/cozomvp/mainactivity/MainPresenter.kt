@@ -15,6 +15,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import retrofit2.HttpException
 
 class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
+
     private var mDataProvider: DataProvider? = null
 
     private val mAuth = FirebaseAuth.getInstance()!!
@@ -78,6 +79,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             // add order to CartService singleton
             CartServiceImpl.myInstance.addOrder(order)
 
+            // hide OrderDetailsMenu
+            it.hideOrderDetailsMenu(it.onListFragmentRequired().sharedViewByPosition(position))
+
             // informs list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
 
@@ -88,11 +92,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    private fun checkCheckoutStatus() : Boolean{
-        if(CartServiceImpl.myInstance.getOrders().size > 0){
-            return true
-        } else{
-            return false
+    override fun onItemsCardDataReady() {
+        ifViewAttached {
+            val listFragment: LocalListFragment = it.onListFragmentRequired()
+            listFragment.requestLayout()
+            it.addRecyclerViewToContainer(listFragment.onRecyclerViewRequired())
         }
     }
 
@@ -120,9 +124,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    /*
-    Informs map fragment that other markers need to be invisible and route needs to be drawn
-     */
     override fun onPartnerCardViewClicked(partnerID: String) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
@@ -177,6 +178,14 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mMapFragment.highlightMapMarker(restID)
+        }
+    }
+
+    private fun checkCheckoutStatus() : Boolean{
+        if(CartServiceImpl.myInstance.getOrders().size > 0){
+            return true
+        } else{
+            return false
         }
     }
 

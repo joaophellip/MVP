@@ -30,6 +30,11 @@ interface MainInterfaces {
 
     fun onLocationServiceReady()
 
+    /*
+    Informs presenter that items from same restaurant are ready to be shown in recycler view.
+    */
+    fun onItemsCardDataReady()
+
     fun onItemAddedToCart(position: Int, order: OrderModel)
 
     /*

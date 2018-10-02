@@ -17,7 +17,7 @@ interface MainView : MvpView {
     Asks activity to add a RecyclerView object to container. Passes RecyclerView object as
     argument.
      */
-    fun addRecyclerViewToContainer(mRecyclerView : RecyclerView)
+    fun addRecyclerViewToContainer(recyclerView : RecyclerView)
 
     /*
     Asks activity whether both list and map fragments are ready to be used.

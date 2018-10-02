@@ -56,9 +56,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     @BindView(R.id.checkoutContainer) lateinit var mCheckoutContainer: FrameLayout
 
-    override fun addRecyclerViewToContainer(mRecyclerView : RecyclerView) {
-        containerLayout?.addView(mRecyclerView)
+    override fun addRecyclerViewToContainer(recyclerView : RecyclerView) {
+        containerLayout?.addView(recyclerView)
     }
+
     override fun areFragmentsReady(): Boolean{
         return isListFragmentReady && isMapFragmentReady
     }
@@ -137,6 +138,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun onItemAddedToCart(order: OrderModel) {
         val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
         presenter.onItemAddedToCart(childPosition, order)
+    }
+
+    override fun onItemsCardDataReady() {
+        presenter.onItemsCardDataReady()
     }
 
     override fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {

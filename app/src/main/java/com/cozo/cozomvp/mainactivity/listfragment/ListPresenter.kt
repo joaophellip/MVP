@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.mainactivity.listfragment
 
+import android.util.Log
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
 import com.cozo.cozomvp.mainactivity.MainActivity
