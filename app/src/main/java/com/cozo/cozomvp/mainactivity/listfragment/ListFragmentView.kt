@@ -59,6 +59,11 @@ interface ListFragmentView : MvpView {
         fun onCompleteListFragment(listFragment: LocalListFragment)
 
         /*
+        Informs activity that RecyclerView object is ready to show items from same restaurant.
+         */
+        fun onItemsCardDataReady()
+
+        /*
         Informs activity that cardview item was clicked. Passes item data as argument.
          */
         fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData)

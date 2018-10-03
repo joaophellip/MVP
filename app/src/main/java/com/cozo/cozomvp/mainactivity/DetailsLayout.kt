@@ -45,11 +45,12 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
 
     companion object {
 
-        private lateinit var mListenerMainActivity : DetailsInterface.MainActivityListener
+        private lateinit var listenerMainActivity : DetailsInterface.MainActivityListener
 
         fun showScene(activity: Activity, container: ViewGroup, sharedView: View, transitionName: String, data: CardMenuData) : Scene {
-            mListenerMainActivity = activity as DetailsInterface.MainActivityListener
+            listenerMainActivity = activity as DetailsInterface.MainActivityListener
             val detailsLayout : DetailsLayout = activity.layoutInflater.inflate(R.layout.item_place, container, false) as DetailsLayout
+
             detailsLayout.setData(data)
 
             val set : Transition = ShowDetailsTransitionSet(activity, transitionName, sharedView, detailsLayout)
@@ -68,7 +69,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
             //set Order Button
             val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
             orderButton.setOnClickListener {
-                mListenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data.menu!!,getQuantity(detailsLayout), detailsLayout.notesText.text.toString()))
+                listenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data.menu!!,getQuantity(detailsLayout), detailsLayout.notesText.text.toString()))
             }
 
             return scene
