@@ -10,11 +10,6 @@ interface DetailsInterface {
     interface MainActivityListener {
 
         /*
-        Informs activity that order button was clicked by user.
-         */
-        fun onOrderButtonClicked()
-
-        /*
         Informs main activity that addItemToCart button was clicked by user.
          */
         fun onItemAddedToCart(order: OrderModel)

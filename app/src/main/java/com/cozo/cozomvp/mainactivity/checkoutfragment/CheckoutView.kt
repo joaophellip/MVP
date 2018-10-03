@@ -13,5 +13,7 @@ interface CheckoutView : MvpView {
         fun onCompleteCheckoutFragment(checkoutFragment: CheckoutFragment)
 
         fun displayContainer()
+
+        fun onCheckoutClicked()
     }
 }

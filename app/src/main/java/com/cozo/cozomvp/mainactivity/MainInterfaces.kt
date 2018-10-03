@@ -44,10 +44,9 @@ interface MainInterfaces {
     fun onMapMarkerClicked(restID: String)
 
     /*
-    Informs presenter that order button was clicked by user. Passes position within RecyclerView
-    of chosen menu as argument.
+    Informs presenter that checkout view was clicked by user
      */
-    fun onOrderButtonClicked(listPosition: Int)
+    fun onCheckoutClicked()
 
     /*
     Informs presenter that a card view for a delivery partner was clicked by user. Passes delivery

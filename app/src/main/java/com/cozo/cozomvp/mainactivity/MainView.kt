@@ -30,6 +30,11 @@ interface MainView : MvpView {
     fun displayMessage(message: String)
 
     /*
+    Asks activity to show cart activity
+     */
+    fun goToCartActivity()
+
+    /*
     Asks activity to show payment activity
      */
     fun goToPaymentActivity()
@@ -42,7 +47,7 @@ interface MainView : MvpView {
     /*
     Asks activity to hide a item details view. Passes View object as argument.
      */
-    fun hideOrderDetailsMenu(mSharedView: View?)
+    fun hideOrderDetailsMenu(sharedView: View?)
 
     /*
     Asks activity to launch a new map fragment.
