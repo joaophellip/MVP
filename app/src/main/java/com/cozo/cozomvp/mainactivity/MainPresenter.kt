@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
@@ -117,10 +118,10 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onOrderButtonClicked(listPosition: Int) {
         ifViewAttached{
-            val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(listPosition)
-            it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
-            provideRestLocation(restID)
+            //val mListFragment: LocalListFragment = it.onListFragmentRequired()
+            //val restID: String = mListFragment.currentRestID(listPosition)
+            //it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
+            //provideRestLocation(restID)
         }
     }
 

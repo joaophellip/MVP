@@ -68,9 +68,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         return MainPresenter()
     }
 
-    override fun hideOrderDetailsMenu(mSharedView: View?) {
-        if (mSharedView != null){
-            DetailsLayout.hideScene(this, containerLayout!!, mSharedView, "name")
+    override fun hideOrderDetailsMenu(sharedView: View?) {
+        if (sharedView != null){
+            DetailsLayout.hideScene(this, containerLayout!!, sharedView, "name")
             detailsScene = null
             containerLayout?.removeAllViews()
         }

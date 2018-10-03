@@ -19,7 +19,6 @@ class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) 
 
     lateinit var mCardViewLayoutParams: ViewGroup.MarginLayoutParams
     private var restaurantList: List<CardMenuData> = listOf()
-    private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
 
     interface OnPlaceClickListener {
         fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData)

@@ -39,6 +39,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
     private lateinit var listenerMainActivity : ListFragmentView.MainActivityListener
     private lateinit var mRootView: ViewGroup
     private var isCardViewShownRestaurant: Boolean = true
+    private var currentRestaurantId : String? = null
 
     override fun addItemsDataToCards(items: List<NetworkModel.MenuMetadata>) {
         restaurantItemsRecyclerAdapter.setItemList(items)
@@ -80,7 +81,12 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
     }
 
     override fun currentRestID(listPosition: Int): String {
-        return mRestaurantsRecyclerAdapter.currentRestID(listPosition)
+        return if (currentRestaurantId != null) {
+            currentRestaurantId!!
+        } else {
+            currentRestaurantId = mRestaurantsRecyclerAdapter.currentRestID(listPosition)
+            currentRestaurantId!!
+        }
     }
 
     override fun dishOrderCreation(listPosition: Int) {
@@ -139,7 +145,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
                 }
 
                 // triggers listener to inform position to map fragment
-                listenerMainActivity.onRestCardViewHighlighted(mRestaurantsRecyclerAdapter.currentRestID(mTargetPosition-1))
+                //listenerMainActivity.onRestCardViewHighlighted(this@LocalListFragment.currentRestID(mTargetPosition-1))
             }
         }
         mRecyclerView.addOnScrollListener(scrollHandler)
