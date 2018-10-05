@@ -3,7 +3,7 @@ package com.cozo.cozomvp.payment
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class CustomerProfile {
+class CustomerProfileResponse {
 
     class TaxDocument {
         @SerializedName("type")
@@ -41,6 +41,7 @@ class CustomerProfile {
             var country: String
     )
 
+    var id: String
     var ownId: String
     var fullname: String
     var email: String
@@ -49,10 +50,11 @@ class CustomerProfile {
     var phone: Phone
     var shippingAddress: ShippingAddress
 
-    constructor(ownId: String, fullname: String, email: String, birthDate: String,
+    constructor(id: String, ownId: String, fullname: String, email: String, birthDate: String,
                 docType: String, docNumber: String,
                 countryCode: String, areaCode: String, phoneNumber: String,
                 city: String, district: String, street: String, streetNumber: String, zipCode: String, state: String, country: String){
+        this.id = id
         this.ownId = ownId
         this.fullname = fullname
         this.email = email

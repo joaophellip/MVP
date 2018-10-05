@@ -3,7 +3,7 @@ package com.cozo.cozomvp.payment
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class CustomerProfile {
+class CustomerProfileWithFundingInstrument {
 
     class TaxDocument {
         @SerializedName("type")
@@ -32,22 +32,48 @@ class CustomerProfile {
     }
 
     class ShippingAddress(
-            var city : String,
-            var district: String,
-            var street: String,
-            var streetNumber: String,
-            var zipCode :String,
-            var state: String,
-            var country: String
+        var city : String,
+        var district: String,
+        var street: String,
+        var streetNumber: String,
+        var zipCode :String,
+        var state: String,
+        var country: String
     )
+
+    class FundingInstrument{
+        class CreditCard{
+            class Holder{
+                var fullname: String
+                var birthdate: String
+                var taxDocument: TaxDocument
+                var phone: Phone
+                constructor(fullname: String, birthdate: String, taxDocument: TaxDocument, phone: Phone){
+                    this.fullname = fullname
+                    this.birthdate = birthdate
+                    this.taxDocument = taxDocument
+                    this.phone = phone
+                }
+            }
+            var holder: Holder
+            constructor(fullname: String, birthdate: String, taxDocument: TaxDocument, phone: Phone){
+                this.holder = Holder(fullname, birthdate, taxDocument, phone)
+            }
+        }
+        var creditCard: CreditCard
+        constructor(fullname: String, birthdate: String, taxDocument: TaxDocument, phone: Phone){
+            this.creditCard = CreditCard(fullname, birthdate, taxDocument, phone)
+        }
+    }
 
     var ownId: String
     var fullname: String
     var email: String
     var birthDate: String
-    var taxDocument: TaxDocument
+    var taxDocument: CustomerProfileWithFundingInstrument.TaxDocument
     var phone: Phone
     var shippingAddress: ShippingAddress
+    var fundingInstrument: FundingInstrument
 
     constructor(ownId: String, fullname: String, email: String, birthDate: String,
                 docType: String, docNumber: String,
@@ -60,5 +86,6 @@ class CustomerProfile {
         this.taxDocument = TaxDocument(docType, docNumber)
         this.phone = Phone(countryCode, areaCode, phoneNumber)
         this.shippingAddress = ShippingAddress(city, district, street, streetNumber, zipCode, state, country)
+        this.fundingInstrument = FundingInstrument(fullname, birthDate, taxDocument, phone)
     }
 }

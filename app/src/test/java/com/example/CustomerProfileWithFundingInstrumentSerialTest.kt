@@ -7,9 +7,9 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class CustomerProfileSerialTest{
+class CustomerProfileWithFundingInstrumentSerialTest{
 
-    var customerProfile = com.cozo.cozomvp.payment.CustomerProfile(
+    var customerProfile = com.cozo.cozomvp.payment.CustomerProfileWithFundingInstrument(
             "meu_id_customer_002",
             "Maria",
             "maria@email.com",
