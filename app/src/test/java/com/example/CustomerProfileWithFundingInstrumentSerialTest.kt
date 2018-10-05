@@ -28,7 +28,7 @@ class CustomerProfileWithFundingInstrumentSerialTest{
             "BRA"
     )
 
-    val expected = "{\"ownId\":\"meu_id_customer_002\",\"fullname\":\"Maria\",\"email\":\"maria@email.com\",\"birthDate\":\"1996-09-26\",\"taxDocument\":{\"type\":\"CPF\",\"number\":\"10013390023\"},\"phone\":{\"countryCode\":\"55\",\"areaCode\":\"11\",\"number\":\"22226842\"},\"shippingAddress\":{\"city\":\"Rio de Janeiro\",\"district\":\"Ipanema\",\"street\":\"Avenida Atlântica\",\"streetNumber\":\"60\",\"zipCode\":\"02446000\",\"state\":\"RJ\",\"country\":\"BRA\"},\"fundingInstrument\":{\"creditCard\":{\"holder\":{\"fullname\":\"Maria Oliveira\",\"birthdate\":\"1996-09-26\",\"taxDocument\":{\"type\":\"CPF\",\"number\":\"10013390023\"},\"phone\":{\"countryCode\":\"55\",\"areaCode\":\"11\",\"number\":\"22226842\"}}}}}"
+    val expected = "{\"ownId\":\"meu_id_customer_002\",\"fullname\":\"Maria\",\"email\":\"maria@email.com\",\"birthDate\":\"1996-09-26\",\"taxDocument\":{\"type\":\"CPF\",\"number\":\"10013390023\"},\"phone\":{\"countryCode\":\"55\",\"areaCode\":\"11\",\"number\":\"22226842\"},\"shippingAddress\":{\"city\":\"Rio de Janeiro\",\"district\":\"Ipanema\",\"street\":\"Avenida Atlântica\",\"streetNumber\":\"60\",\"zipCode\":\"02446000\",\"state\":\"RJ\",\"country\":\"BRA\"},\"fundingInstrument\":{\"creditCard\":{\"holder\":{\"fullname\":\"Maria\",\"birthdate\":\"1996-09-26\",\"taxDocument\":{\"type\":\"CPF\",\"number\":\"10013390023\"},\"phone\":{\"countryCode\":\"55\",\"areaCode\":\"11\",\"number\":\"22226842\"}}}}}"
 
     @Test
     fun generateJSON_success(){
