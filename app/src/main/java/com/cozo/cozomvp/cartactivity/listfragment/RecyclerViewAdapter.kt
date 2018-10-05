@@ -1,6 +1,7 @@
 package com.cozo.cozomvp.cartactivity.listfragment
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
+import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.ImageDownload
 import com.cozo.cozomvp.usercart.OrderModel
@@ -46,7 +48,12 @@ class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerVi
         @BindView(R.id.PlusButton) lateinit var plusButton: Button
         @BindView(R.id.deleteItemButton) lateinit var deleteItemButton: ImageButton
 
+        init {
+            ButterKnife.bind(this, itemView)
+        }
+
         fun bindView(position: Int){
+
             itemName.text = orders[position].item.name
             txtQuantity.text = orders[position].quantity.toString()
 
