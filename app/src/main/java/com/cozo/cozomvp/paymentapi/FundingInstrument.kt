@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.payment
+package com.cozo.cozomvp.paymentapi
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

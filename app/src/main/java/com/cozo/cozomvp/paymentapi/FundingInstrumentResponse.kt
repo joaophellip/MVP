@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.payment
+package com.cozo.cozomvp.paymentapi
 
 class FundingInstrumentResponse{
     class CreditCard{
