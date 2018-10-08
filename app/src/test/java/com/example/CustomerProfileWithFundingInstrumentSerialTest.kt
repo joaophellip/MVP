@@ -9,7 +9,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class CustomerProfileWithFundingInstrumentSerialTest{
 
-    var customerProfile = com.cozo.cozomvp.payment.CustomerProfileWithFundingInstrument(
+    var customerProfile = com.cozo.cozomvp.paymentapi.CustomerProfileWithFundingInstrument(
             "meu_id_customer_002",
             "Maria",
             "maria@email.com",

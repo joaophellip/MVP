@@ -1,7 +1,4 @@
-package com.cozo.cozomvp.payment
-
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+package com.cozo.cozomvp.paymentapi
 
 class FundingInstrumentResponse{
     class CreditCard{
