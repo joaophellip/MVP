@@ -84,5 +84,9 @@
     <string name="default_item_name">nome do prato</string>
     <string name="default_item_quantity">1</string>
 
+    <!-- Strings for payment activity -->
+    <string name="credit_card_number">**** **** **** %1$s</string>
+
+
 </resources>
 

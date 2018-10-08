@@ -1,8 +1,5 @@
 package com.cozo.cozomvp.payment
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-
 class FundingInstrumentResponse{
     class CreditCard{
         val id: String
