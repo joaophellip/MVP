@@ -93,6 +93,9 @@ dependencies {
         exclude group: "com.android.support"
     }
 
+    // Dependency for masking credit card data
+    implementation "com.github.santalu:mask-edittext:1.0.2"
+
     // Add local JAR files to project if any
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

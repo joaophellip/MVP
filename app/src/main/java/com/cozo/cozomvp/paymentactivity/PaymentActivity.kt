@@ -3,6 +3,7 @@ package com.cozo.cozomvp.paymentactivity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.paymentactivity.AddCardFragment.AddCardFragment
 import com.cozo.cozomvp.paymentactivity.CardListFragment.CardListFragment
 import com.cozo.cozomvp.paymentactivity.CardListFragment.CardListInterface
 
@@ -20,10 +21,13 @@ class PaymentActivity : AppCompatActivity(), CardListInterface.CardActivityListe
     }
 
     override fun onAddCardButtonClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        supportFragmentManager.beginTransaction().add(R.id.payment_frame,
+                AddCardFragment.newInstance(),AddCardFragment.TAG)
+                .addToBackStack(AddCardFragment.TAG)
+                .commit()
     }
 
-    override fun onCardDeleted() {
+    override fun onCardDeleted(cardId:String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

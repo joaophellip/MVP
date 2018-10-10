@@ -3,7 +3,7 @@
 // this block determines which plugins, tasks classes, and other classes are available for use in
 // the rest of the build script.
 buildscript {
-    ext.kotlin_version = '1.2.61'
+    ext.kotlin_version = '1.2.71'
     ext.anko_version='0.10.5'
     ext.testrunner_version = '1.0.2'
     ext.espresso_version = '3.0.2'
@@ -24,6 +24,7 @@ allprojects {
     repositories {
         google()    // for accessing Google's Maven repository
         jcenter()   // Android Studio default location for remote repositories
+        maven {url "https://jitpack.io"}
     }
 }
 

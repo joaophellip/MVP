@@ -10,7 +10,7 @@ interface CardListInterface: MvpView {
     interface CardActivityListener
     {
         fun onAddCardButtonClicked()
-        fun onCardDeleted()
+        fun onCardDeleted(cardId:String)
         fun updateCardList()
     }
 }

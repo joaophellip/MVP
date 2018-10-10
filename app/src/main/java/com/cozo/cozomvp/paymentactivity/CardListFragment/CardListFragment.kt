@@ -2,6 +2,7 @@ package com.cozo.cozomvp.paymentactivity.CardListFragment
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,12 @@ import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
 import kotlinx.android.synthetic.main.fragment_card_list.*
 
-class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), CardListInterface{
+class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), CardListInterface,
+        CardListRecyclerAdapter.CardListeners{
 
-    private lateinit var mActivityListener:CardListInterface.CardActivityListener
-    lateinit var mRecyclerView:RecyclerView
+    private lateinit var mActivityListener: CardListInterface.CardActivityListener
+    lateinit var mRecyclerView: RecyclerView
+    lateinit var mRecyclerAdapter: CardListRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,14 @@ class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), Car
 
     override fun createPresenter(): CardListPresenter {
         return CardListPresenter()
+    }
+
+    override fun deleteCard(cardId: String) {
+        mActivityListener.onCardDeleted(cardId)
+    }
+
+    override fun selectCard(cardId: String) {
+        context?.getSharedPreferences("CozoApp",Context.MODE_PRIVATE)?.edit()?.putString("MainCardId",cardId)?.apply()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,6 +47,8 @@ class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), Car
             mActivityListener.onAddCardButtonClicked()
         })
         mRecyclerView = view.findViewById(R.id.cardRecycler)
+        mRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        mRecyclerAdapter = CardListRecyclerAdapter(this)
     }
 
     override fun onAttach(context: Context?) {
@@ -48,7 +61,8 @@ class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), Car
     }
 
     override fun onCardListAvailable(cards: List<PaymentActivity.CardData>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRecyclerAdapter.updateCardData(cards)
+        mRecyclerView.adapter = mRecyclerAdapter
     }
 
     companion object {
