@@ -99,7 +99,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:ems="6"
+        android:ems="8"
         android:hint="\uFF3F /\uFF3F /\uFF3F"
         android:inputType="date"
         android:textAlignment="center"

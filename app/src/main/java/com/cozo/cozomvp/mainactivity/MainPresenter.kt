@@ -19,7 +19,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private var mDataProvider: DataProvider? = null
 
-    private val mAuth = FirebaseAuth.getInstance()!!
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()!!
     private lateinit var mUserLocation: NetworkModel.Location
     private val mUser: FirebaseUser? = mAuth.currentUser
 

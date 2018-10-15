@@ -24,7 +24,12 @@ class AddCardFragment:MvpFragment<AddCardInterface, AddCardPresenter>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createCardButton.setOnClickListener{
-            //capturar mActivityListener.onNewCardCreated(NewCreditCardData(birthDate.rawText,holderName.text))
+            mActivityListener.onNewCardCreated(NewCreditCardData(creditCardNumber.rawText.toString(),
+                    holderName.text.toString(),
+                    cvv.text.toString(),
+                    expireDate.rawText,
+                    cpf.text.toString(),
+                    birthDate.rawText))
         }
         //https://stackoverflow.com/questions/20824634/android-on-text-change-listener
         //creditCardNumber.addTextChangedListener()

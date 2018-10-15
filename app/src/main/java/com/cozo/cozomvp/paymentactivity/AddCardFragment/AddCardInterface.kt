@@ -7,5 +7,6 @@ interface AddCardInterface:MvpView {
     interface CardActivityListener
     {
         fun onNewCardCreated(creditCard: AddCardFragment.NewCreditCardData)
+
     }
 }

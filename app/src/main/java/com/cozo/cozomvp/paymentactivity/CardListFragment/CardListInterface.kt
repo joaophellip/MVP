@@ -11,6 +11,6 @@ interface CardListInterface: MvpView {
     {
         fun onAddCardButtonClicked()
         fun onCardDeleted(cardId:String)
-        fun updateCardList()
+        fun onCardListFragmentReady(fragment: CardListFragment)
     }
 }

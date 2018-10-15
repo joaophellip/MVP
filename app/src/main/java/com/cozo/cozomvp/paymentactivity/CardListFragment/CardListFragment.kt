@@ -16,13 +16,8 @@ class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), Car
         CardListRecyclerAdapter.CardListeners{
 
     private lateinit var mActivityListener: CardListInterface.CardActivityListener
-    lateinit var mRecyclerView: RecyclerView
-    lateinit var mRecyclerAdapter: CardListRecyclerAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mActivityListener.updateCardList()
-    }
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mRecyclerAdapter: CardListRecyclerAdapter
 
     override fun createPresenter(): CardListPresenter {
         return CardListPresenter()
@@ -37,18 +32,19 @@ class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), Car
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val mview: View? = inflater.inflate(R.layout.fragment_card_list, container, false)
-        return mview
+        val view: View = inflater.inflate(R.layout.fragment_card_list, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addCardButton.setOnClickListener({
+        addCardButton.setOnClickListener{
             mActivityListener.onAddCardButtonClicked()
-        })
+        }
         mRecyclerView = view.findViewById(R.id.cardRecycler)
         mRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         mRecyclerAdapter = CardListRecyclerAdapter(this)
+        mActivityListener.onCardListFragmentReady(this)
     }
 
     override fun onAttach(context: Context?) {
@@ -63,6 +59,9 @@ class CardListFragment: MvpFragment<CardListInterface, CardListPresenter>(), Car
     override fun onCardListAvailable(cards: List<PaymentActivity.CardData>) {
         mRecyclerAdapter.updateCardData(cards)
         mRecyclerView.adapter = mRecyclerAdapter
+        if (cards.isEmpty()){
+            noCardText.visibility = View.VISIBLE
+        }
     }
 
     companion object {
