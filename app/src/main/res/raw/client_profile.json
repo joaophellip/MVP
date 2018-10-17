@@ -1,0 +1,41 @@
+{
+  "ownId":"meu_id_customer_002",
+  "fullname":"Maria Oliveira",
+  "email":"maria@email.com",
+  "birthDate":"1980-5-10",
+  "taxDocument":{
+    "type":"CPF",
+    "number":"10013390023"
+  },
+  "phone":{
+    "countryCode":"55",
+    "areaCode":"11",
+    "number":"22226842"
+  },
+  "shippingAddress":{
+    "city":"Rio de Janeiro",
+    "district":"Ipanema",
+    "street":"Avenida Atlântica",
+    "streetNumber":"60",
+    "zipCode":"02446000",
+    "state":"RJ",
+    "country":"BRA"
+  },
+  "fundingInstrument":{
+    "creditCard":{
+      "holder":{
+        "fullname":"Maria Oliveira",
+        "birthdate":"1980-05-10",
+        "taxDocument":{
+          "type":"CPF",
+          "number":"10013390023"
+        },
+        "phone":{
+          "countryCode":"55",
+          "areaCode":"11",
+          "number":"22226842"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "id": "CUS-84OG1W7AEVXQ",
+  "ownId": "meu_id_customer_002",
+  "fullname": "Maria Oliveira",
+  "createdAt": "2017-10-11T10:48:02.000-03",
+  "birthDate": "1980-05-10",
+  "email": "maria@email.com",
+  "phone": {
+    "countryCode": "55",
+    "areaCode": "11",
+    "number": "22226842"
+  },
+  "taxDocument": {
+    "type": "CPF",
+    "number": "10013390023"
+  },
+  "shippingAddress": {
+    "zipCode": "02446000",
+    "street": "Avenida Atlântica",
+    "streetNumber": "60",
+    "city": "Rio de Janeiro",
+    "district": "Ipanema",
+    "state": "RJ",
+    "country": "BRA"
+  },
+  "_links": {
+    "self": {
+      "href": "https://sandbox.moip.com.br/v2/customers/CUS-84OG1W7AEVXQ"
+    },
+    "hostedAccount": {
+      "redirectHref": "https://hostedaccount-sandbox.moip.com.br?token=1d588f4d-4cfb-411d-84d4-8a7126e78218&id=CUS-84OG1W7AEVXQ&mpa=MPA-B4DEE9F7589B"
+    }
+  },
+  "fundingInstruments": []
+}
