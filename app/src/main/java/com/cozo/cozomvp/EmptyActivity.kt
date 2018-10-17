@@ -3,7 +3,6 @@ package com.cozo.cozomvp
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
@@ -11,7 +10,7 @@ import com.cozo.cozomvp.userprofile.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class EmptyActivity : AppCompatActivity() {
+class EmptyActivity : AppCompatActivity(), ProfileServiceImpl.ProfileServiceListener {
 
     private val mFirebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -33,10 +32,7 @@ class EmptyActivity : AppCompatActivity() {
                 if (mTask.isSuccessful){
                     //retrieve userProfile from backend
                     user.getIdToken(true).addOnSuccessListener{
-                        ProfileServiceImpl.myInstance.loadUserProfile(it.token).addOnSuccessListener{
-                            //start Main Activity
-                            startMainActivity()
-                        }
+                        ProfileServiceImpl.myInstance.loadUserProfile(it.token!!, this)
                     }
                 } else {
                     startAuthActivity()
@@ -44,6 +40,13 @@ class EmptyActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onComplete(userProfile: UserModel) {
+        //start Main Activity
+        startMainActivity()
+    }
+
+    override fun onError() {}
 
     private fun startAuthActivity(){
         val mActivityIntent = Intent(this, AuthActivity::class.java)
@@ -54,5 +57,6 @@ class EmptyActivity : AppCompatActivity() {
         val mActivityIntent = Intent(this, MainActivity::class.java)
         startActivity(mActivityIntent)
     }
+
 
 }
