@@ -39,16 +39,6 @@ interface APIServices{
     fun restaurantsItems(@Query("restaurantID") restaurantID: String):
             Observable<NetworkModel.ListRestaurantItem>
 
-    @GET("user/creditCardInfo")
-    fun userCreditCardInfo(@Query("idtoken") idToken: String) :
-            Observable<CreditCardData>
-
-    @POST("user")
-    fun saveUserExternalId(@Field("userId") id: String, @Field("externalId") externalId: String):
-            Observable<SaveUserExternalIdResponse>
-
-    @POST("user/creditCard")
-    fun saveUserCreditCard(creditCard: PaymentActivity.CardData, externalId: String): Observable<CreditCardData>
 
     companion object {
         fun create(): APIServices {
