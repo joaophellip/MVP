@@ -33,10 +33,10 @@ class EmptyActivity : AppCompatActivity() {
                 if (mTask.isSuccessful){
                     //retrieve userProfile from backend
                     user.getIdToken(true).addOnSuccessListener{
-                        ProfileServiceImpl.myInstance.loadUserProfile(it.token)
-
-                        //start Main Activity
-                        startMainActivity()
+                        ProfileServiceImpl.myInstance.loadUserProfile(it.token).addOnSuccessListener{
+                            //start Main Activity
+                            startMainActivity()
+                        }
                     }
                 } else {
                     startAuthActivity()
