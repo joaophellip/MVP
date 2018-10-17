@@ -10,6 +10,9 @@ class ProfileServiceImpl : IProfileService {
     private var favoriteCardMapping : MutableMap<String, Boolean> = mutableMapOf()
 
     override fun setUserProfile(userProfile: UserModel) : Boolean {
+        //send to back end DB
+        model.uploadUserProfileToBackEnd(userProfile)
+
         user = userProfile
         return true
     }
@@ -26,10 +29,13 @@ class ProfileServiceImpl : IProfileService {
     override fun setAvatarUrl(image: Bitmap) {
         //send to back end storage
         val avatarUrl = model.uploadUserAvatarToStorage(user!!.ownId, image)
-        model.updateUserAvatarInBackEnd(user!!.ownId, avatarUrl)
+        val dispose = avatarUrl.subscribe {
+            //store locally in singleton
+            user!!.avatarUrl = it
 
-        //store locally in singleton
-        user!!.avatarUrl = avatarUrl
+        }
+
+        //model.updateUserAvatarInBackEnd(user!!.ownId, avatarUrl)
     }
 
     override fun getAvatarUrl(): String? {
@@ -59,7 +65,6 @@ class ProfileServiceImpl : IProfileService {
         } else {
             favoriteCardMapping.put(fundingInstrument.cardId, false)
         }
-
     }
 
     override fun setFavoriteFundingInstrument(cardId: String) : Boolean {
@@ -111,8 +116,8 @@ class ProfileServiceImpl : IProfileService {
             val userModel = UserModel(userId, email, Phone(countryCode, areaCode, phoneNumber), null,
                     null, mutableListOf<PaymentActivity.CardData>())
 
-            //upload userModel to backend for further use
-            myInstance.model.uploadUserProfileToBackEnd(userModel)
+            //set and upload userModel to backend for further use
+            myInstance.setUserProfile(userModel)
 
             return userModel
             }

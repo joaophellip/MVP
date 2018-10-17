@@ -1,8 +1,10 @@
 package com.cozo.cozomvp.paymentactivity
 
 import com.cozo.cozomvp.networkapi.APIServices
+import com.cozo.cozomvp.networkapi.CreditCardData
 import com.cozo.cozomvp.paymentactivity.AddCardFragment.AddCardFragment
 import com.cozo.cozomvp.paymentapi.*
+import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -22,14 +24,8 @@ class PaymentModel(private var listener: PaymentInterfaces.Model) {
             "BRA")
 
     fun requestCardListFromBackend(userId: String) {
-        disposable = backendService.userCreditCardInfo(userId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            listener.onCreditCardListAvailable(it)
-                        },
-                        {})
+        val externalId = ProfileServiceImpl.myInstance.getPaymentExternalId()
+        listener.onCreditCardListAvailable(CreditCardData(externalId!!, ProfileServiceImpl.myInstance.getFundingInstruments()))
     }
 
     fun sendCreditCardToPaymentsAPI(user: PaymentPresenter.UserInfo, creditCard: AddCardFragment.NewCreditCardData){
@@ -83,14 +79,8 @@ class PaymentModel(private var listener: PaymentInterfaces.Model) {
     }
 
     fun saveCreditCardToBackend(creditCard: PaymentActivity.CardData, userInfo: PaymentPresenter.UserInfo){
-        disposable = backendService.saveUserCreditCard(creditCard, userInfo.externalId!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            listener.onCreditCardListAvailable(it)
-                        },
-                        {})
+        ProfileServiceImpl.myInstance.setFundingInstrument(creditCard)
+        listener.onCreditCardListAvailable(CreditCardData(userInfo.externalId!!, ProfileServiceImpl.myInstance.getFundingInstruments()))
     }
 
     private fun brandMapping(brand: String): Int{
@@ -106,16 +96,9 @@ class PaymentModel(private var listener: PaymentInterfaces.Model) {
     }
 
     fun saveUserPaymentMappingToBackend(creditCard: PaymentActivity.CardData, userInfo: PaymentPresenter.UserInfo, externalId: String) {
-        disposable = backendService.saveUserExternalId(userInfo.id, externalId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .concatMap {
-                    backendService.saveUserCreditCard(creditCard, it.externalId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                }.subscribe({
-                    listener.onCreditCardListAvailable(it)
-                }, {})
+        ProfileServiceImpl.myInstance.setPaymentExternalId(externalId)
+        ProfileServiceImpl.myInstance.setFundingInstrument(creditCard)
+        listener.onCreditCardListAvailable(CreditCardData(externalId, ProfileServiceImpl.myInstance.getFundingInstruments()) )
     }
 
     data class DefaultShippingAddress (val city: String,
