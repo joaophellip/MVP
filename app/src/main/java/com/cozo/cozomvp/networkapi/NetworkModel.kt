@@ -126,3 +126,7 @@ data class CreditCardData(
 data class SaveUserExternalIdResponse (
         val externalId: String
 )
+
+data class SaveFavoriteCreditCardResponse (
+        val creditCardId: String
+)

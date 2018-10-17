@@ -1,7 +1,9 @@
 package com.cozo.cozomvp.userprofile
 
+import android.app.TaskStackBuilder
 import android.graphics.Bitmap
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
+import com.google.android.gms.tasks.Task
 import io.reactivex.Observable
 import io.reactivex.internal.operators.observable.ObservableCreate
 import okhttp3.MediaType
@@ -11,7 +13,7 @@ import java.io.File
 
 class ProfileServiceModel {
 
-    val profileServiceAPI = ProfileServiceAPI.create()
+    private val profileServiceAPI = ProfileServiceAPI.create()
 
     fun uploadUserProfileToBackEnd(userModel: UserModel) {
         profileServiceAPI.createUserProfile(userModel)
@@ -23,8 +25,6 @@ class ProfileServiceModel {
         return profileServiceAPI.saveUserAvatar(userId, body)
     }
 
-    //fun updateUserAvatarInBackEnd(userId: String, avatarUrl: String){}
-
     fun updateUserPaymentExternalIdToBackEnd(userId: String, externalId: String){
         profileServiceAPI.saveUserExternalId(userId, externalId)
     }
@@ -34,6 +34,10 @@ class ProfileServiceModel {
     }
 
     fun setFavoriteUserFundingInstrumentToBackEnd(userId: String, cardId: String){
-        //profileServiceAPI.saveFavoriteCreditCard(userId, cardId)
+        profileServiceAPI.saveFavoriteCreditCard(userId, cardId)
+    }
+
+    fun loadUserProfileFromBackEnd(token: String): Observable<UserModel>{
+        return profileServiceAPI.loadUserProfile(token)
     }
 }

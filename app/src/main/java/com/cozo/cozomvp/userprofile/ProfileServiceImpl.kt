@@ -1,7 +1,8 @@
 package com.cozo.cozomvp.userprofile
 
-import android.graphics.Bitmap
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
+import com.google.android.gms.tasks.Task
+import java.io.File
 
 class ProfileServiceImpl : IProfileService {
 
@@ -26,16 +27,13 @@ class ProfileServiceImpl : IProfileService {
         }
     }
 
-    override fun setAvatarUrl(image: Bitmap) {
+    override fun setAvatarUrl(image: File) {
         //send to back end storage
         val avatarUrl = model.uploadUserAvatarToStorage(user!!.ownId, image)
         val dispose = avatarUrl.subscribe {
             //store locally in singleton
             user!!.avatarUrl = it
-
         }
-
-        //model.updateUserAvatarInBackEnd(user!!.ownId, avatarUrl)
     }
 
     override fun getAvatarUrl(): String? {
@@ -105,6 +103,17 @@ class ProfileServiceImpl : IProfileService {
 
     override fun getPaymentExternalId(): String? = user!!.paymentExternalId
 
+    override fun loadUserProfile(token: String, callback: ProfileServiceListener) {
+        //load userProfile from model
+        val disposable = model.loadUserProfileFromBackEnd(token).subscribe(
+                {
+                    callback.onComplete(it)
+                },{
+                    callback.onError()
+                }
+        )
+    }
+
     companion object {
 
         val myInstance = ProfileServiceImpl()
@@ -121,5 +130,10 @@ class ProfileServiceImpl : IProfileService {
 
             return userModel
             }
+    }
+
+    interface ProfileServiceListener{
+        fun onComplete(userProfile: UserModel)
+        fun onError()
     }
 }

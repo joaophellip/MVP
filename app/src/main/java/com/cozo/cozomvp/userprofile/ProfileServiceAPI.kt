@@ -1,6 +1,7 @@
 package com.cozo.cozomvp.userprofile
 
 import com.cozo.cozomvp.networkapi.CreditCardData
+import com.cozo.cozomvp.networkapi.SaveFavoriteCreditCardResponse
 import com.cozo.cozomvp.networkapi.SaveUserExternalIdResponse
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import io.reactivex.Observable
@@ -31,7 +32,11 @@ interface ProfileServiceAPI{
     @POST("user/{id}/creditCard")
     fun saveUserCreditCard(@Path("id") id: String, @Field("creditCardData") creditCard: PaymentActivity.CardData): Observable<CreditCardData>
 
+    @POST("user/{id}/favorite")
+    fun saveFavoriteCreditCard(@Path("id") userId: String, @Body cardId: String): Observable<SaveFavoriteCreditCardResponse>
 
+    @GET("user/{id}")
+    fun loadUserProfile(@Path("id") token: String) : Observable<UserModel>
 
     companion object {
         fun create(baseUrl: String? = null): ProfileServiceAPI {
