@@ -12,21 +12,26 @@ import kotlinx.android.synthetic.main.fragment_checkout.*
 
 class CheckoutFragment : MvpFragment<CheckoutView, CheckoutPresenter>(){
 
-    private lateinit var mListenerMainActivity : CheckoutView.MainActivityListener
+    private lateinit var listenerMainActivity : CheckoutView.MainActivityListener
 
     override fun createPresenter(): CheckoutPresenter = CheckoutPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val mView : View? = inflater.inflate(R.layout.fragment_checkout, container, false)
-        mListenerMainActivity.onCompleteCheckoutFragment(this)
-        return mView
+        val view : View? = inflater.inflate(R.layout.fragment_checkout, container, false)
+        listenerMainActivity.onCompleteCheckoutFragment(this)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkoutFragment.setOnClickListener { listenerMainActivity.onCheckoutClicked()}
     }
 
     override fun onAttach(context: Context?) {
         //https://developer.android.com/training/basics/fragments/communicating
         super.onAttach(context)
         try {
-            mListenerMainActivity = activity as CheckoutView.MainActivityListener
+            listenerMainActivity = activity as CheckoutView.MainActivityListener
         } catch (e: ClassCastException) {
             throw ClassCastException(activity.toString() + " must implement CheckoutView.MainActivityListener ")
         }
@@ -34,7 +39,7 @@ class CheckoutFragment : MvpFragment<CheckoutView, CheckoutPresenter>(){
 
     fun updateContainer(){
         quantityText.text = CartServiceImpl.myInstance.getOrders().size.toString()
-        mListenerMainActivity.displayContainer()
+        listenerMainActivity.displayContainer()
     }
 
     fun hideContainer(){

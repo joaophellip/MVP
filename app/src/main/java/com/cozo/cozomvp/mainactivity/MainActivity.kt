@@ -23,6 +23,7 @@ import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
+import com.cozo.cozomvp.cartactivity.CartActivity
 import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
 import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutView
 import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
@@ -66,6 +67,22 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun createPresenter(): MainPresenter {
         return MainPresenter()
+    }
+
+    override fun displayMessage(message: String){
+        toast(message)
+    }
+
+    override fun goToCartActivity() {
+        startActivity(Intent(this, CartActivity::class.java))
+    }
+
+    override fun goToPaymentActivity() {
+        startActivity(Intent(this, PaymentActivity::class.java))
+    }
+
+    override fun goToSettingsActivity() {
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     override fun hideOrderDetailsMenu(sharedView: View?) {
@@ -229,9 +246,19 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onOrderButtonClicked() {
-        val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
-        presenter.onOrderButtonClicked(childPosition)
+    override fun onCheckoutClicked() {
+        //val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
+        presenter.onCheckoutClicked()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when  (item.itemId) {
+            R.id.menu_home -> {}
+            R.id.menu_payment -> presenter.onPaymentMenuClicked()
+            R.id.menu_settings -> presenter.onSettingsMenuClicked()
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 
     override fun onPartnerCardViewClicked(partnerID: String) {
@@ -268,33 +295,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
-    override fun showOrderDetailsMenu(sharedView: View, data: CardMenuData){
-        // shows up detailed view
-        detailsScene = DetailsLayout.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
-    }
-
-    override fun goToPaymentActivity() {
-        startActivity(Intent(this, PaymentActivity::class.java))
-    }
-
-    override fun goToSettingsActivity() {
-        startActivity(Intent(this, SettingsActivity::class.java))
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when  (item.itemId) {
-            R.id.menu_home -> {}
-            R.id.menu_payment -> presenter.onPaymentMenuClicked()
-            R.id.menu_settings -> presenter.onSettingsMenuClicked()
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    override fun displayMessage(message: String){
-        toast(message)
-    }
-
     override fun setUpNavigationDrawer(userName: String) {
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.navigation_view)
@@ -306,6 +306,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         navigation_drawer_button.setOnClickListener {
             drawerLayout.openDrawer(Gravity.START)
         }
+    }
+
+    override fun showOrderDetailsMenu(sharedView: View, data: CardMenuData){
+        // shows up detailed view
+        detailsScene = DetailsLayout.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
     }
 
     companion object {
