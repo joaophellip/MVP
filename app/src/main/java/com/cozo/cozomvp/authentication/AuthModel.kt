@@ -83,17 +83,7 @@ interface ValidationService{
     fun signUserOut(authModel: AuthModel)
 }
 
-class PhoneValidationServiceImpl : ValidationService{
-
-    constructor(phoneUtil: PhoneNumberUtil, phoneAuthProvider: PhoneAuthProvider, firebaseAuth: FirebaseAuth){
-        this.phoneUtil = phoneUtil
-        this.phoneAuthProvider = phoneAuthProvider
-        this.firebaseAuth = firebaseAuth
-    }
-
-    private var phoneUtil : PhoneNumberUtil
-    private var phoneAuthProvider : PhoneAuthProvider
-    private var firebaseAuth : FirebaseAuth
+class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private var phoneAuthProvider: PhoneAuthProvider, private var firebaseAuth: FirebaseAuth) : ValidationService{
 
     override fun linkWithAccount(accountData: ValidationData, authModel: AuthModel) {
 
@@ -187,7 +177,7 @@ class PhoneValidationServiceImpl : ValidationService{
                     AuthActivity(),         // Activity (for callback binding)
                     mCallbacks)             // OnVerificationStateChangedCallbacks
         } else {
-            authModel.mOnRequestAuthListener?.onInvalidNumber()
+            authModel.mOnRequestAuthListener.onInvalidNumber()
         }
     }
 
