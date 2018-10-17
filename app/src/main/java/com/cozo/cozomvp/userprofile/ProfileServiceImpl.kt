@@ -1,6 +1,7 @@
 package com.cozo.cozomvp.userprofile
 
 import android.graphics.Bitmap
+import com.cozo.cozomvp.paymentactivity.PaymentActivity
 
 class ProfileServiceImpl : IProfileService {
 
@@ -47,16 +48,16 @@ class ProfileServiceImpl : IProfileService {
         user!!.paymentExternalId = id
     }
 
-    override fun setFundingInstrument(fundingInstrument: XPTO) {
+    override fun setFundingInstrument(fundingInstrument: PaymentActivity.CardData) {
         // send to back end dB
-        model.addUserFundingInstrumentToBackEnd(user!!.ownId, XPTO)
+        model.addUserFundingInstrumentToBackEnd(user!!.ownId, fundingInstrument)
 
         //store locally in singleton
-        user!!.fundingInstruments.add(XPTO)
+        user!!.fundingInstruments.add(fundingInstrument)
         if(user!!.fundingInstruments.size == 1){
-            favoriteCardMapping.put(XPTO.cardId, true)
+            favoriteCardMapping.put(fundingInstrument.cardId, true)
         } else {
-            favoriteCardMapping.put(XPTO.cardId, false)
+            favoriteCardMapping.put(fundingInstrument.cardId, false)
         }
 
     }
@@ -82,10 +83,10 @@ class ProfileServiceImpl : IProfileService {
         }
     }
 
-    override fun getFavoriteFundingInstrument(): XPTO? {
+    override fun getFavoriteFundingInstrument(): PaymentActivity.CardData? {
         favoriteCardMapping.forEach {
             if(it.value){
-                user!!.fundingInstruments.forEach {card ->
+                user!!.fundingInstruments.forEach {card : PaymentActivity.CardData ->
                     if(card.cardId == it.key){
                         return card
                     }
@@ -95,7 +96,7 @@ class ProfileServiceImpl : IProfileService {
         return null
     }
 
-    override fun getFundingInstruments(): List<XPTO> = user!!.fundingInstruments
+    override fun getFundingInstruments(): List<PaymentActivity.CardData> = user!!.fundingInstruments
 
     override fun getPaymentExternalId(): String? = user!!.paymentExternalId
 
@@ -108,7 +109,7 @@ class ProfileServiceImpl : IProfileService {
 
             //create user profile instance with userId/email/phone
             val userModel = UserModel(userId, email, Phone(countryCode, areaCode, phoneNumber), null,
-                    null, mutableListOf<XPTO>())
+                    null, mutableListOf<PaymentActivity.CardData>())
 
             //upload userModel to backend for further use
             myInstance.model.uploadUserProfileToBackEnd(userModel)

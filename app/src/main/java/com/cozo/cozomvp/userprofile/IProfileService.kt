@@ -1,6 +1,7 @@
 package com.cozo.cozomvp.userprofile
 
 import android.graphics.Bitmap
+import com.cozo.cozomvp.paymentactivity.PaymentActivity
 
 interface IProfileService {
 
@@ -10,8 +11,8 @@ interface IProfileService {
     fun getAvatarUrl() : String?
     fun setPaymentExternalId(id: String)
     fun getPaymentExternalId() : String?
-    fun setFundingInstrument(fundingInstrument: XPTO)
-    fun getFundingInstruments() : List<XPTO>
+    fun setFundingInstrument(fundingInstrument: PaymentActivity.CardData)
+    fun getFundingInstruments() : List<PaymentActivity.CardData>
     fun setFavoriteFundingInstrument(cardId: String) : Boolean
-    fun getFavoriteFundingInstrument() : XPTO
+    fun getFavoriteFundingInstrument() : PaymentActivity.CardData?
 }
