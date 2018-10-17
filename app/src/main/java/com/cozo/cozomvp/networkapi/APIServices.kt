@@ -1,14 +1,18 @@
 package com.cozo.cozomvp.networkapi
 
+import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import retrofit2.http.GET
 import retrofit2.http.Query
 import io.reactivex.Observable
+import io.reactivex.internal.operators.observable.ObservableAll
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.POST
 
 /**
  * Interface to consume the API endpoint for the backend Location services
@@ -34,6 +38,17 @@ interface APIServices{
     @GET ("restaurants/items")
     fun restaurantsItems(@Query("restaurantID") restaurantID: String):
             Observable<NetworkModel.ListRestaurantItem>
+
+    @GET("user/creditCardInfo")
+    fun userCreditCardInfo(@Query("idtoken") idToken: String) :
+            Observable<CreditCardData>
+
+    @POST("user")
+    fun saveUserExternalId(@Field("userId") id: String, @Field("externalId") externalId: String):
+            Observable<SaveUserExternalIdResponse>
+
+    @POST("user/creditCard")
+    fun saveUserCreditCard(creditCard: PaymentActivity.CardData, externalId: String): Observable<CreditCardData>
 
     companion object {
         fun create(): APIServices {

@@ -1,6 +1,7 @@
 package com.cozo.cozomvp.networkapi
 
 import android.graphics.Bitmap
+import com.cozo.cozomvp.paymentactivity.PaymentActivity
 
 /**
  * This is the singleton model for storing backend responses received through HTTP
@@ -116,3 +117,12 @@ data class CardMenuData(
 data class CardInfoData(
         var image: Bitmap?,
         var info: NetworkModel.PartnerMetadata?)
+
+data class CreditCardData(
+        var externalAPIId: String,
+        var creditCardList: List<PaymentActivity.CardData>
+)
+
+data class SaveUserExternalIdResponse (
+        val externalId: String
+)

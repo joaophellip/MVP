@@ -21,7 +21,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.PaymentActivity
+import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
 import com.cozo.cozomvp.cartactivity.CartActivity
 import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
