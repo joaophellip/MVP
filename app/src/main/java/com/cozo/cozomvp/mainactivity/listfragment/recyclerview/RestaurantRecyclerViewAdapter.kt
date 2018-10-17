@@ -14,6 +14,7 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
+import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 
 class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {
 
