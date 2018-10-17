@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.mainactivity.MainActivity
+import com.cozo.cozomvp.userprofile.ProfileServiceImpl
+import com.cozo.cozomvp.userprofile.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -29,7 +31,13 @@ class EmptyActivity : AppCompatActivity() {
             // from DB
             user.reload().addOnCompleteListener { mTask ->
                 if (mTask.isSuccessful){
-                    startMainActivity()
+                    //retrieve userProfile from backend
+                    user.getIdToken(true).addOnSuccessListener{
+                        ProfileServiceImpl.myInstance.loadUserProfile(it.token).addOnSuccessListener{
+                            //start Main Activity
+                            startMainActivity()
+                        }
+                    }
                 } else {
                     startAuthActivity()
                 }

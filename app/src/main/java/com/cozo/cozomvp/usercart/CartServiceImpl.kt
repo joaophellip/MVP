@@ -15,6 +15,7 @@ class CartServiceImpl : ICartService {
             items.put(order.id, order)
             return true
         } else {
+            // only stores orders from a single restaurant
             val first = items.entries.first().value
             if (first.item.restaurantID != order.item.restaurantID) {
                 return false
