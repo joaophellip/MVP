@@ -24,8 +24,8 @@ class PaymentModel(private var listener: PaymentInterfaces.Model) {
             "BRA")
 
     fun requestCardListFromBackend(userId: String) {
-        val externalId = ProfileServiceImpl.myInstance.getPaymentExternalId()
-        listener.onCreditCardListAvailable(CreditCardData(externalId!!, ProfileServiceImpl.myInstance.getFundingInstruments()))
+        val externalId = ProfileServiceImpl.getInstance().getPaymentExternalId()
+        listener.onCreditCardListAvailable(CreditCardData(externalId!!, ProfileServiceImpl.getInstance().getFundingInstruments()))
     }
 
     fun sendCreditCardToPaymentsAPI(user: PaymentPresenter.UserInfo, creditCard: AddCardFragment.NewCreditCardData){
@@ -79,8 +79,8 @@ class PaymentModel(private var listener: PaymentInterfaces.Model) {
     }
 
     fun saveCreditCardToBackend(creditCard: PaymentActivity.CardData, userInfo: PaymentPresenter.UserInfo){
-        ProfileServiceImpl.myInstance.setFundingInstrument(creditCard)
-        listener.onCreditCardListAvailable(CreditCardData(userInfo.externalId!!, ProfileServiceImpl.myInstance.getFundingInstruments()))
+        ProfileServiceImpl.getInstance().setFundingInstrument(creditCard)
+        listener.onCreditCardListAvailable(CreditCardData(userInfo.externalId!!, ProfileServiceImpl.getInstance().getFundingInstruments()))
     }
 
     private fun brandMapping(brand: String): Int{
@@ -96,9 +96,9 @@ class PaymentModel(private var listener: PaymentInterfaces.Model) {
     }
 
     fun saveUserPaymentMappingToBackend(creditCard: PaymentActivity.CardData, userInfo: PaymentPresenter.UserInfo, externalId: String) {
-        ProfileServiceImpl.myInstance.setPaymentExternalId(externalId)
-        ProfileServiceImpl.myInstance.setFundingInstrument(creditCard)
-        listener.onCreditCardListAvailable(CreditCardData(externalId, ProfileServiceImpl.myInstance.getFundingInstruments()) )
+        ProfileServiceImpl.getInstance().setPaymentExternalId(externalId)
+        ProfileServiceImpl.getInstance().setFundingInstrument(creditCard)
+        listener.onCreditCardListAvailable(CreditCardData(externalId, ProfileServiceImpl.getInstance().getFundingInstruments()) )
     }
 
     data class DefaultShippingAddress (val city: String,

@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations
 import java.util.concurrent.TimeUnit
 import com.cozo.cozomvp.authentication.AuthInterfaces
 import com.cozo.cozomvp.authentication.AuthModel
-import com.cozo.cozomvp.authentication.PhoneValidationServiceImpl
+import com.cozo.cozomvp.authentication.validationservice.PhoneValidationServiceImpl
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult

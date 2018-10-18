@@ -12,7 +12,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'    // Gradle plug-in to build Android apps
+        classpath 'com.android.tools.build:gradle:3.2.1'    // Gradle plug-in to build Android apps
         classpath 'com.google.gms:google-services:4.0.1'    // Google-Services plug-in
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"   // Kotlin plug-in
     }

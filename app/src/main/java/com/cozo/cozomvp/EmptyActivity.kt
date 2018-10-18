@@ -32,7 +32,7 @@ class EmptyActivity : AppCompatActivity(), ProfileServiceImpl.ProfileServiceList
                 if (mTask.isSuccessful){
                     //retrieve userProfile from backend
                     user.getIdToken(true).addOnSuccessListener{
-                        ProfileServiceImpl.myInstance.loadUserProfile(it.token!!, this)
+                        ProfileServiceImpl.getInstance().loadUserProfile(it.token!!, this)
                     }
                 } else {
                     startAuthActivity()

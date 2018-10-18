@@ -1,0 +1,17 @@
+{
+  "externalAPIId": "vbnmijkol",
+  "creditCardList": [
+    {
+      "cardId":"1234-redsv77",
+      "name": "Victor M",
+      "cardNumber": "9999-1234-*",
+      "cardNetwork": 1
+    },
+    {
+      "cardId":"1234abv",
+      "name": "Victor",
+      "cardNumber": "1234-1234-*",
+      "cardNetwork": 0
+    }
+  ]
+}

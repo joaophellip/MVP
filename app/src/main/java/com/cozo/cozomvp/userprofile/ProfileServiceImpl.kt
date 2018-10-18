@@ -6,9 +6,13 @@ import java.io.File
 
 class ProfileServiceImpl : IProfileService {
 
-    private var model = ProfileServiceModel()
+    private var model: ProfileServiceModel
     private var user : UserModel? = null
     private var favoriteCardMapping : MutableMap<String, Boolean> = mutableMapOf()
+
+    constructor(baseUrl: String? = null) {
+        model = ProfileServiceModel(baseUrl)
+    }
 
     override fun setUserProfile(userProfile: UserModel) : Boolean {
         //send to back end DB
@@ -116,7 +120,19 @@ class ProfileServiceImpl : IProfileService {
 
     companion object {
 
-        val myInstance = ProfileServiceImpl()
+        private var myInstance:ProfileServiceImpl? = null
+
+        fun getInstance (baseUrl: String? = null): ProfileServiceImpl {
+            if (myInstance != null) {
+                return myInstance!!
+            }
+            if(baseUrl == null) {
+                myInstance = ProfileServiceImpl()
+            } else {
+                myInstance = ProfileServiceImpl(baseUrl)
+            }
+            return myInstance!!
+        }
 
         fun createUserProfile(userId: String, email: String, countryCode: String, areaCode: String,
                               phoneNumber: String) : UserModel {
@@ -126,7 +142,7 @@ class ProfileServiceImpl : IProfileService {
                     null, mutableListOf<PaymentActivity.CardData>())
 
             //set and upload userModel to backend for further use
-            myInstance.setUserProfile(userModel)
+            getInstance().setUserProfile(userModel)
 
             return userModel
             }
