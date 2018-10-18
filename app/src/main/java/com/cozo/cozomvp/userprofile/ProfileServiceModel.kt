@@ -45,6 +45,10 @@ class ProfileServiceModel {
         profileServiceAPI.saveFavoriteCreditCard(userId, cardId)
     }
 
+    fun getFavoriteUserFundingInstrumentFromBackEnd(userId: String) : Observable<String?> {
+        return profileServiceAPI.getUserFavoriteCreditCard(userId)
+    }
+
     fun loadUserProfileFromBackEnd(token: String): Observable<UserModel>{
         return profileServiceAPI.loadUserProfile(token)
     }

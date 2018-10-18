@@ -16,10 +16,6 @@ import retrofit2.http.*
 
 interface ProfileServiceAPI{
 
-    @GET("user/{id}/creditCard")
-    fun userCreditCardInfo(@Path("id") id: String) :
-            Observable<CreditCardData>
-
     @Multipart
     @POST("user/{id}/profileAvatar")
     fun saveUserAvatar(@Path("id") id: String, @Part image: MultipartBody.Part) : Observable<String>
@@ -39,6 +35,10 @@ interface ProfileServiceAPI{
     @FormUrlEncoded
     @POST("user/{id}/favorite")
     fun saveFavoriteCreditCard(@Path("id") userId: String, @Field("cardId") cardId: String): Observable<SaveFavoriteCreditCardResponse>
+
+    @GET("user/{id}/favorite")
+    fun getUserFavoriteCreditCard(@Path("id") id: String) :
+            Observable<String?>
 
     @GET("user/{id}")
     fun loadUserProfile(@Path("id") token: String) : Observable<UserModel>
