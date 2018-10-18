@@ -1,0 +1,19 @@
+{
+  "ownId": "abc123",
+  "email": "abc@123.com",
+  "phone": {
+    "countryCode": "55",
+    "areaCode": "11",
+    "phoneNumber": "12334567"
+  },
+  "avatarUrl": "http://a.b.c",
+  "paymentExternalId": "ABC123",
+  "fundingInstruments": [
+    {
+      "cardId":"1234abv",
+      "name": "Victor",
+      "cardNumber": "1234-1234-*",
+      "cardNetwork": 0
+    }
+  ]
+}

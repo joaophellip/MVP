@@ -13,7 +13,15 @@ import java.io.File
 
 class ProfileServiceModel {
 
-    private val profileServiceAPI = ProfileServiceAPI.create()
+    constructor(baseUrl: String? = null) {
+        if (baseUrl == null) {
+            profileServiceAPI = ProfileServiceAPI.create()
+        } else {
+            profileServiceAPI = ProfileServiceAPI.create(baseUrl)
+        }
+    }
+
+    private val profileServiceAPI: ProfileServiceAPI
 
     fun uploadUserProfileToBackEnd(userModel: UserModel) {
         profileServiceAPI.createUserProfile(userModel)

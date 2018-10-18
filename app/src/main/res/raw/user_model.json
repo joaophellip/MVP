@@ -1,0 +1,10 @@
+{
+  "ownId": "abc123",
+  "email": "abc@123.com",
+  "phone": {
+    "countryCode": "55",
+    "areaCode": "11",
+    "phoneNumber": "12334567"
+  },
+  "fundingInstruments": []
+}
