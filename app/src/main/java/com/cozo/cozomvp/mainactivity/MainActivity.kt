@@ -34,6 +34,7 @@ import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
 import com.cozo.cozomvp.usercart.OrderModel
+import com.cozo.cozomvp.userprofileactivity.UserProfileActivity
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
@@ -83,6 +84,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun goToSettingsActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
+    }
+
+    override fun goToUserProfileActivity() {
+        startActivity(Intent(this, UserProfileActivity::class.java))
     }
 
     override fun hideOrderDetailsMenu(sharedView: View?) {

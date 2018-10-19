@@ -44,6 +44,8 @@ interface MainView : MvpView {
      */
     fun goToSettingsActivity()
 
+    fun goToUserProfileActivity()
+
     /*
     Asks activity to hide a item details view. Passes View object as argument.
      */

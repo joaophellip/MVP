@@ -3,6 +3,7 @@ package com.cozo.cozomvp
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
@@ -46,7 +47,9 @@ class EmptyActivity : AppCompatActivity(), ProfileServiceImpl.ProfileServiceList
         startMainActivity()
     }
 
-    override fun onError() {}
+    override fun onError() {
+        //do something pls
+    }
 
     private fun startAuthActivity(){
         val mActivityIntent = Intent(this, AuthActivity::class.java)

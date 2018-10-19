@@ -29,21 +29,26 @@
 
         <activity android:name=".mainactivity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".authentication.AuthActivity"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".EmptyActivity"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".paymentactivity.PaymentActivity"
             android:parentActivityName=".mainactivity.MainActivity" />
+        <activity
+            android:name=".userprofileactivity.UserProfileActivity"
+            android:parentActivityName=".mainactivity.MainActivity" >
+        </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
