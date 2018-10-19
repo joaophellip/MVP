@@ -6,7 +6,6 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.ImageDownload
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import kotlinx.android.synthetic.main.activity_user_profile.*
-import org.jetbrains.anko.image
 
 class UserProfileActivity : AppCompatActivity(){
 

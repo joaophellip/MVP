@@ -4,6 +4,7 @@ import com.cozo.cozomvp.paymentactivity.PaymentActivity
 
 data class UserModel(
         val ownId: String,
+        val name: String,
         var email: String,
         var phone: Phone,
         var avatarUrl: String?,

@@ -8,6 +8,7 @@ import com.cozo.cozomvp.userprofile.ProfileServiceAPI
 import com.cozo.cozomvp.userprofile.UserModel
 import com.google.gson.Gson
 import io.reactivex.observers.TestObserver
+import junit.framework.Assert
 import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -50,6 +51,7 @@ class ProfileServiceAPITest: TestBase() {
 
         val customer = Gson().fromJson<UserModel>(getJson(R.raw.user_model)
                 , UserModel::class.java)
+
         repository.createUserProfile(customer).subscribe(testObserver)
         testObserver.assertNoErrors()
     }

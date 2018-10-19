@@ -1,7 +1,6 @@
 package com.cozo.cozomvp.userprofile
 
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
-import com.google.android.gms.tasks.Task
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
@@ -167,11 +166,11 @@ class ProfileServiceImpl : IProfileService {
             return myInstance!!
         }
 
-        fun createUserProfile(userId: String, email: String, countryCode: String, areaCode: String,
+        fun createUserProfile(userId: String, name: String, email: String, countryCode: String, areaCode: String,
                               phoneNumber: String) : UserModel {
 
             //create user profile instance with userId/email/phone
-            val userModel = UserModel(userId, email, Phone(countryCode, areaCode, phoneNumber), null,
+            val userModel = UserModel(userId, name, email, Phone(countryCode, areaCode, phoneNumber), null,
                     null, mutableListOf<PaymentActivity.CardData>())
 
             //set and upload userModel to backend for further use
