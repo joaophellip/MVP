@@ -40,7 +40,7 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private
                         // get user token
                         user.getIdToken(true).addOnSuccessListener{
                             // create userProfile inside ProfileService
-                            ProfileServiceImpl.createUserProfile(it.token!!, user.email!!,
+                            ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
                                     brPhone.countryCode.toString(), accountData.phoneNumber.substring(0,2), accountData.phoneNumber.substring(2))
                         }
                         authModel.mOnRequestSignInWithGoogleListener.onCompleted(providerData)
@@ -67,7 +67,7 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private
                                                 // get user token
                                                 user.getIdToken(true).addOnSuccessListener{
                                                     // create userProfile inside ProfileService
-                                                    ProfileServiceImpl.createUserProfile(it.token!!, user.email!!,
+                                                    ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
                                                             brPhone.countryCode.toString(), signInData.phoneNumber.substring(0,2), signInData.phoneNumber.substring(2))
                                                 }
                                                 // fire callback

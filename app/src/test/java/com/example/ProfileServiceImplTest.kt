@@ -49,7 +49,7 @@ class ProfileServiceImplTest: TestBase() {
         mockResponse.setBody("{}")
         mockServer.enqueue(mockResponse)
 
-        ProfileServiceImpl.createUserProfile("abc123","abc@123.com","55","11", "9999-9999")
+        ProfileServiceImpl.createUserProfile("abc123", "joao da silva","abc@123.com","55","11", "9999-9999")
         Assert.assertEquals(repository.getUserProfile()?.ownId,"abc123")
     }
 

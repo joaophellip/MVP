@@ -143,7 +143,8 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     //check later
     override fun onSettingsMenuClicked() {
         ifViewAttached {
-            it.goToSettingsActivity()
+            it.goToUserProfileActivity()
+            //it.goToSettingsActivity()
         }
     }
 

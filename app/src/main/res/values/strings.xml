@@ -87,6 +87,8 @@
     <!-- Strings for payment activity -->
     <string name="credit_card_number">**** **** **** %1$s</string>
 
+    <!-- Strings for user profile activity -->
+    <string name="phone_number">+%1$s (%2$s) %3$s</string>
 
 </resources>
 

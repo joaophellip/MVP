@@ -1,11 +1,7 @@
 package com.cozo.cozomvp.userprofile
 
-import android.app.TaskStackBuilder
-import android.graphics.Bitmap
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
-import com.google.android.gms.tasks.Task
 import io.reactivex.Observable
-import io.reactivex.internal.operators.observable.ObservableCreate
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
