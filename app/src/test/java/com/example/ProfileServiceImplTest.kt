@@ -42,7 +42,7 @@ class ProfileServiceImplTest: TestBase() {
     }
 
     @Test
-    fun testCreateUserProfile () {
+    fun testCreateUserProfileOnSuccess () {
 
         val mockResponse = MockResponse()
         mockResponse.setResponseCode(200)
@@ -54,7 +54,19 @@ class ProfileServiceImplTest: TestBase() {
     }
 
     @Test
-    fun testLoadUserProfile () {
+    fun testCreateUserProfileOnFail () {
+
+        val mockResponse = MockResponse()
+        mockResponse.setResponseCode(200)
+        mockResponse.setBody("{}")
+        mockServer.enqueue(mockResponse)
+
+        ProfileServiceImpl.createUserProfile("abc123", "joao da silva","abc@123.com","55","11", "9999-9999")
+        Assert.assertNotEquals(repository.getUserProfile()?.ownId, null)
+    }
+
+    @Test
+    fun testLoadUserProfileOnSuccess () {
         val mockResponse = MockResponse()
         mockResponse.setResponseCode(200)
         mockResponse.setBody(getJson(R.raw.user_model_full))
@@ -73,8 +85,77 @@ class ProfileServiceImplTest: TestBase() {
             override fun onError() {
                 Assert.fail()
             }
-
         })
     }
 
+    @Test
+    fun testLoadUserProfileOnFail () {
+        val mockResponse = MockResponse()
+        mockResponse.setResponseCode(200)
+        mockResponse.setBody(getJson(R.raw.user_model_full))
+        mockServer.enqueue(mockResponse)
+
+        val mockResponse2 = MockResponse()
+        mockResponse2.setResponseCode(200)
+        mockResponse2.setBody("{}")
+        mockServer.enqueue(mockResponse2)
+
+        repository.loadUserProfile("abc123",object : ProfileServiceImpl.ProfileServiceListener {
+            override fun onComplete(userProfile: UserModel) {
+                Assert.assertNotEquals(null, userProfile.ownId)
+            }
+
+            override fun onError() {
+                Assert.fail()
+            }
+        })
+    }
+
+    @Test
+    fun testCallsLoadUserProfileOnSuccess () {
+        val mockResponse = MockResponse()
+        mockResponse.setResponseCode(200)
+        mockResponse.setBody(getJson(R.raw.user_model_full))
+        mockServer.enqueue(mockResponse)
+
+        val mockResponse2 = MockResponse()
+        mockResponse2.setResponseCode(200)
+        mockResponse2.setBody("{}")
+        mockServer.enqueue(mockResponse2)
+
+        repository.loadUserProfile("abc123",object : ProfileServiceImpl.ProfileServiceListener {
+            override fun onComplete(userProfile: UserModel) {
+                // Expecting calls for model.loadUserProfileFromBackEnd and model.getFavoriteUserFundingInstrumentFromBackEnd
+                Assert.assertEquals(2, mockServer.requestCount)
+            }
+
+            override fun onError() {
+                Assert.fail()
+            }
+        })
+    }
+
+    @Test
+    fun testCallsLoadUserProfileOnFail () {
+        val mockResponse = MockResponse()
+        mockResponse.setResponseCode(200)
+        mockResponse.setBody(getJson(R.raw.user_model_full))
+        mockServer.enqueue(mockResponse)
+
+        val mockResponse2 = MockResponse()
+        mockResponse2.setResponseCode(200)
+        mockResponse2.setBody("{}")
+        mockServer.enqueue(mockResponse2)
+
+        repository.loadUserProfile("abc123",object : ProfileServiceImpl.ProfileServiceListener {
+            override fun onComplete(userProfile: UserModel) {
+                // Expecting calls for model.loadUserProfileFromBackEnd and model.getFavoriteUserFundingInstrumentFromBackEnd
+                Assert.assertNotEquals(1, mockServer.requestCount)
+            }
+
+            override fun onError() {
+                Assert.fail()
+            }
+        })
+    }
 }
