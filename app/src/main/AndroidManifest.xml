@@ -39,7 +39,7 @@
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".EmptyActivity"
+            android:name=".emptyactivity.EmptyActivity"
             android:theme="@style/SplashTheme">
         </activity>
         <activity

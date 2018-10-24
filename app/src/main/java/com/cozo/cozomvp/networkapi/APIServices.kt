@@ -1,18 +1,13 @@
 package com.cozo.cozomvp.networkapi
 
-import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import retrofit2.http.GET
 import retrofit2.http.Query
 import io.reactivex.Observable
-import io.reactivex.internal.operators.observable.ObservableAll
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.POST
 
 /**
  * Interface to consume the API endpoint for the backend Location services
@@ -39,11 +34,14 @@ interface APIServices{
     fun restaurantsItems(@Query("restaurantID") restaurantID: String):
             Observable<NetworkModel.ListRestaurantItem>
 
+    @GET("config/authentication")
+    fun authenticationToken(): Observable<AuthorizationToken>
 
     companion object {
-        fun create(): APIServices {
+        fun create(baseUrl: String? = null): APIServices {
             // Variables used for testing API using an interceptor
             val logging = HttpLoggingInterceptor()
+            val defaultUrl = "https://us-central1-cozo-platform-version-1.cloudfunctions.net"
             logging.level = HttpLoggingInterceptor.Level.HEADERS
             val okHttpClient = OkHttpClient.Builder().addInterceptor(logging).build()
 
@@ -51,7 +49,7 @@ interface APIServices{
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(okHttpClient)
-                    .baseUrl("https://us-central1-cozo-platform-version-1.cloudfunctions.net")
+                    .baseUrl(baseUrl ?: defaultUrl)
                     .build()
 
             return retrofit.create(APIServices::class.java)

@@ -20,6 +20,7 @@ interface PaymentAPIService {
     fun deleteFundingInstrument(@Path("id") id: String): Observable<ResponseBody>
 
     companion object {
+        //TODO: refactor create function to add encrypted authToken. Pass as header in client
         fun create(baseUrl: String? = null): PaymentAPIService {
 
             val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()

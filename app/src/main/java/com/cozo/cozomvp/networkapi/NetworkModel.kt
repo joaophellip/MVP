@@ -130,3 +130,7 @@ data class SaveUserExternalIdResponse (
 data class SaveFavoriteCreditCardResponse (
         val creditCardId: String
 )
+
+data class AuthorizationToken(
+        val encryptedToken: String
+)
