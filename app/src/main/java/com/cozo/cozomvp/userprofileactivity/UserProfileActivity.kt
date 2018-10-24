@@ -25,7 +25,5 @@ class UserProfileActivity : AppCompatActivity(){
         if(userProfile?.avatarUrl != null){
             ImageDownload(this.applicationContext, userPicture, userProfile.avatarUrl!!)
         }
-
     }
-
 }
