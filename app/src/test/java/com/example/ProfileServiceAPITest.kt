@@ -7,7 +7,6 @@ import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.cozo.cozomvp.userprofile.ProfileServiceAPI
 import com.cozo.cozomvp.userprofile.UserModel
 import com.google.gson.Gson
-import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
@@ -177,6 +176,4 @@ class ProfileServiceAPITest: TestBase() {
 
         Assert.assertNotEquals(null, userModelResponse.email)
     }
-
-
 }

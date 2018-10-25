@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.emptyactivity
 
+import com.cozo.cozomvp.paymentapi.PaymentAPIService
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import com.cozo.cozomvp.userprofile.UserModel
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +36,7 @@ class EmptyPresenter(private var firebaseAuth: FirebaseAuth) : MvpBasePresenter<
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { authToken ->
                     //storeAuthToken somewhere
+                    PaymentAPIService.setHeader(authToken.encryptedToken)
 
                     //check if user is logged already. Start either AuthActivity or MainActivity accordingly
                     ifViewAttached {
