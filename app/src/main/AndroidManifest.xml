@@ -30,10 +30,6 @@
         <activity android:name=".mainactivity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".authentication.AuthActivity"
             android:theme="@style/SplashTheme"
@@ -41,6 +37,10 @@
         <activity
             android:name=".emptyactivity.EmptyActivity"
             android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".paymentactivity.PaymentActivity"

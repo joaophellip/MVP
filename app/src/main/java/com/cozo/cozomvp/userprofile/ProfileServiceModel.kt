@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import java.io.File
 
 class ProfileServiceModel {
@@ -19,8 +20,8 @@ class ProfileServiceModel {
 
     private val profileServiceAPI: ProfileServiceAPI
 
-    fun uploadUserProfileToBackEnd(userModel: UserModel) {
-        profileServiceAPI.createUserProfile(userModel)
+    fun uploadUserProfileToBackEnd(userModel: UserModel): Observable<ResponseBody> {
+        return profileServiceAPI.createUserProfile(userModel)
     }
 
     fun uploadUserAvatarToStorage(userId: String, image: File): Observable<String> {

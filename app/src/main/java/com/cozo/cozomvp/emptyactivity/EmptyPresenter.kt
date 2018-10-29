@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.emptyactivity
 
+import android.util.Log
 import com.cozo.cozomvp.paymentapi.PaymentAPIService
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import com.cozo.cozomvp.userprofile.UserModel
@@ -26,7 +27,7 @@ class EmptyPresenter(private var firebaseAuth: FirebaseAuth) : MvpBasePresenter<
     }
 
     override fun onError() {
-        //do something pls
+        Log.d("DebugXPTO","Couldnt load profile from back end")
     }
 
     private fun retrieveAuthorizationToken(){

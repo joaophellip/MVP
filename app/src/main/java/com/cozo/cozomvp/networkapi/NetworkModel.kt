@@ -119,7 +119,7 @@ data class CardInfoData(
         var info: NetworkModel.PartnerMetadata?)
 
 data class CreditCardData(
-        var externalAPIId: String,
+        var externalAPIId: String?,
         var creditCardList: List<PaymentActivity.CardData>
 )
 
