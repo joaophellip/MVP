@@ -35,31 +35,37 @@ class EmptyPresenter(private var firebaseAuth: FirebaseAuth) : MvpBasePresenter<
         val dispose = authToken
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { authToken ->
-                    //storeAuthToken somewhere
-                    PaymentAPIService.setHeader(authToken.encryptedToken)
+                .subscribe(
+                        {authToken ->
 
-                    //check if user is logged already. Start either AuthActivity or MainActivity accordingly
-                    ifViewAttached {
-                        if (user == null){
-                            it.startAuthActivity()
-                        } else {
-                            // tries to refresh user data from Firebase servers. Forces user to login when refresh
-                            // fails, which means either Token is no longer valid or User has been deleted/disabled
-                            // from DB
-                            user.reload().addOnCompleteListener { mTask ->
-                                if (mTask.isSuccessful){
-                                    //retrieve userProfile from backend
-                                    user.getIdToken(true).addOnSuccessListener{
-                                        ProfileServiceImpl.getInstance().loadUserProfile(it.token!!, this)
-                                    }
-                                } else {
+                            //storeAuthToken somewhere
+                            PaymentAPIService.setHeader(authToken.encryptedToken)
+
+                            //check if user is logged already. Start either AuthActivity or MainActivity accordingly
+                            ifViewAttached {
+                                if (user == null){
                                     it.startAuthActivity()
+                                } else {
+                                    // tries to refresh user data from Firebase servers. Forces user to login when refresh
+                                    // fails, which means either Token is no longer valid or User has been deleted/disabled
+                                    // from DB
+                                    user.reload().addOnCompleteListener { mTask ->
+                                        if (mTask.isSuccessful){
+                                            //retrieve userProfile from backend
+                                            user.getIdToken(true).addOnSuccessListener{
+                                                ProfileServiceImpl.getInstance().loadUserProfile(it.token!!, this)
+                                            }
+                                        } else {
+                                            it.startAuthActivity()
+                                        }
+                                    }
                                 }
                             }
+                        },
+                        {
+
                         }
-                    }
-                }
+                )
     }
 
 }

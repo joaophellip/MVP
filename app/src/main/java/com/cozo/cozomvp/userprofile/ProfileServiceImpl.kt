@@ -16,12 +16,8 @@ class ProfileServiceImpl : IProfileService {
         model = ProfileServiceModel(baseUrl)
     }
 
-    fun updateUserInfo(user:UserModel) {
+    private fun updateUserInfo(user:UserModel) {
         this.user = user
-        //workaround - fix properly later (shouldn't be null, but what do i know right...)
-        if(this.user!!.fundingInstruments == null){
-            this.user!!.fundingInstruments = mutableListOf()
-        }
         this.user!!.fundingInstruments.forEach {
             favoriteCardMapping.put(it.cardId, false)
         }

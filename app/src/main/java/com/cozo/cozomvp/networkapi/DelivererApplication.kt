@@ -12,7 +12,7 @@ class DelivererApplication : Application() {
 
     init {
         try {
-            mSocket = IO.socket("http://35.192.108.177:80")
+            mSocket = IO.socket("http://nearby.cozo.com.br")
         } catch (e: URISyntaxException) {
             throw RuntimeException(e)
         }
