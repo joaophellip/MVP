@@ -63,7 +63,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun areFragmentsReady(): Boolean{
-        return isListFragmentReady && isMapFragmentReady
+        return isListFragmentReady && isMapFragmentReady && isCheckoutFragmentReady
     }
 
     override fun createPresenter(): MainPresenter {
@@ -196,6 +196,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun onCompleteCheckoutFragment(checkoutFragment: CheckoutFragment) {
         mCheckoutFragment = checkoutFragment
         isCheckoutFragmentReady = true
+        presenter.onFragmentReady()
     }
 
     override fun onCompleteListFragment(listFragment: LocalListFragment){

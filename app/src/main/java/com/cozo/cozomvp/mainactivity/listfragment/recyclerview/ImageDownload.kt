@@ -29,7 +29,7 @@ class ImageDownload(private val context: Context, private val bmImage: ImageView
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        storeImageToCache(urlDisplay)
+        //storeImageToCache(urlDisplay)
         return downloadedImage
     }
 

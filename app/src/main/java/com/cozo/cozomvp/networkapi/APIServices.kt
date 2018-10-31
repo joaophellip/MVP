@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 /**
  * Interface to consume the API endpoint for the backend Location services
@@ -43,7 +44,8 @@ interface APIServices{
             val logging = HttpLoggingInterceptor()
             val defaultUrl = "https://us-central1-cozo-platform-version-1.cloudfunctions.net"
             logging.level = HttpLoggingInterceptor.Level.HEADERS
-            val okHttpClient = OkHttpClient.Builder().addInterceptor(logging).build()
+            val client = OkHttpClient.Builder().readTimeout(30,TimeUnit.SECONDS)
+            val okHttpClient = client.addInterceptor(logging).build()
 
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
