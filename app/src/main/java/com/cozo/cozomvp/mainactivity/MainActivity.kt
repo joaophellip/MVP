@@ -75,7 +75,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun goToCartActivity() {
-        startActivity(Intent(this, CartActivity::class.java))
+        startActivityForResult(Intent(this, CartActivity::class.java), CART_ACTIVITY_REQUEST_CODE)
     }
 
     override fun goToPaymentActivity() {
@@ -135,12 +135,18 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             MY_GPS_RESOLUTION_STATUS_CODE -> {
                 if (resultCode == RESULT_OK) {
                     presenter.onLocationServiceReady()
-                    //createLocationRequest()
-                    Log.d("Permission", "1")
-                }
-                else {
+                } else {
                     linear_layout_permission_box.visibility = View.VISIBLE
-                    Log.d("Permission", "2")
+                }
+            }
+            //when CartActivity calls finishActivity(), it will trigger this callback with resultCode CART_ACTIVITY_REQUEST_CODE.
+            CART_ACTIVITY_REQUEST_CODE -> {
+                if (resultCode == RESULT_OK) {
+                    //do something
+                    Log.d("DebugXPTO","ok, button clicked")
+                } else {
+                    //do something
+                    Log.d("DebugXPTO","not ok, button not clicked")
                 }
             }
         }
@@ -320,9 +326,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     companion object {
-
+        //request codes to be used in either finishActivity() by CartActivity or GRP Resolution intent
+        //see: https://developer.android.com/reference/android/app/Activity
+        const val MY_GPS_RESOLUTION_STATUS_CODE = 1
+        const val CART_ACTIVITY_REQUEST_CODE = 2
         var MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0
-        var MY_GPS_RESOLUTION_STATUS_CODE = 1
     }
 }
-

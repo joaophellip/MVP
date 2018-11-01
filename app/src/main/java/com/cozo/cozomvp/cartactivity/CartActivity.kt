@@ -1,19 +1,25 @@
 package com.cozo.cozomvp.cartactivity
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.cartactivity.listfragment.ListFragment
 import com.cozo.cozomvp.cartactivity.listfragment.ListView
+import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_cart.*
 
-class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.CartActivityListener {
+class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.CartActivityListener,
+    View.OnClickListener{
 
     private lateinit var listFragment : ListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupActionBar()
 
         setContentView(R.layout.activity_cart)
 
@@ -23,6 +29,9 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
                 .replace(R.id.listContainer, ListFragment.newInstance(), ListFragment.TAG)
                 .addToBackStack(ListFragment.TAG)
                 .commit()
+
+        //set confirmButton onClickListener
+        confirmOrder.setOnClickListener(this)
     }
 
     override fun onCompleteListFragment(fragment: ListFragment) {
@@ -44,7 +53,7 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
 
     override fun updateViewData(orders: List<OrderModel>) {
         //calculate total
-        var total: Float = 0f
+        var total = 0f
         for (o in orders) {
             total += o.totalPrice
         }
@@ -58,10 +67,27 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
     }
 
     override fun returnToParentActivity() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     override fun editOrder(order: OrderModel) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onClick(v: View?) {
+        when(v){
+            confirmOrder -> {
+                presenter.onConfirmOrderButtonClicked()
+            }
+        }
+    }
+
+    /**
+     * Set up the [android.app.ActionBar], if the API is available.
+     * See https://developer.android.com/training/appbar/up-action
+     */
+    private fun setupActionBar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }
