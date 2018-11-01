@@ -69,6 +69,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
                 // sets up navigation drawer
                 it.setUpNavigationDrawer(mUser.displayName!!)
+
+                // informs checkout fragment that item was added to cart
+                if(checkCheckoutStatus()){
+                    it.onCheckoutFragmentRequired().updateContainer()
+                }
             }
         }
 
@@ -185,11 +190,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     }
 
     private fun checkCheckoutStatus() : Boolean{
-        if(CartServiceImpl.myInstance.getOrders().size > 0){
-            return true
-        } else{
-            return false
-        }
+        return (!CartServiceImpl.myInstance.getOrders().isEmpty())
     }
 
     private fun provideRestLocation(restID: String) {

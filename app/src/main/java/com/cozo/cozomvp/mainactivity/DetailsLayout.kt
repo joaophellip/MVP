@@ -17,6 +17,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.ImageDownload
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.transition.HideDetailsTransitionSet
 import com.cozo.cozomvp.transition.ShowDetailsTransitionSet
@@ -38,9 +39,11 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
 
     private fun setData(data: CardMenuData){
         textViewTitle.text = data.menu?.name
-        imageViewPlaceDetails.setImageBitmap(data.image)
         textViewDescription.text = data.menu?.ingredients
         quantityTextView.text = "1"
+
+        // launch asynchronous process to download image
+        ImageDownload(context, imageViewPlaceDetails, data.menu!!.pictureRefID)
     }
 
     companion object {

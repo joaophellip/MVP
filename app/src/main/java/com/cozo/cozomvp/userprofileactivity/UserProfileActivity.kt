@@ -2,6 +2,7 @@ package com.cozo.cozomvp.userprofileactivity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.ImageDownload
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl

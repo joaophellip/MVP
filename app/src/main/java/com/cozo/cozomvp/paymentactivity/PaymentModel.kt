@@ -16,16 +16,13 @@ class PaymentModel(private var listener: PaymentInterfaces.Model) {
     private val paymentService by lazy {
         PaymentAPIService.create()
     }
-    private val backendService by lazy {
-        APIServices.create()
-    }
     private val defaultShippingAddress = DefaultShippingAddress("São Paulo","Paraíso",
             "Rua Coronel Oscar Porto. Apt 93", "40", "04003000", "SP",
             "BRA")
 
     fun requestCardListFromBackend(userId: String) {
-        val externalId = ProfileServiceImpl.getInstance().getPaymentExternalId()
-        listener.onCreditCardListAvailable(CreditCardData(externalId!!, ProfileServiceImpl.getInstance().getFundingInstruments()))
+        val externalId: String? = ProfileServiceImpl.getInstance().getPaymentExternalId()
+        listener.onCreditCardListAvailable(CreditCardData(externalId, ProfileServiceImpl.getInstance().getFundingInstruments()))
     }
 
     fun sendCreditCardToPaymentsAPI(user: PaymentPresenter.UserInfo, creditCard: AddCardFragment.NewCreditCardData){

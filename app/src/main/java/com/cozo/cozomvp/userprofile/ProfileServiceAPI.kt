@@ -25,7 +25,7 @@ interface ProfileServiceAPI{
     fun saveUserExternalId(@Path("id") id: String, @Field("externalId") externalId: String):
             Observable<SaveUserExternalIdResponse>
 
-    @POST("user")
+    @POST("user/")
     fun createUserProfile(@Body userModel: UserModel): Observable<ResponseBody>
 
     @FormUrlEncoded

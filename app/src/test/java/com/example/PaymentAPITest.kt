@@ -10,6 +10,7 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.Assert
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
@@ -75,5 +76,40 @@ class PaymentAPITest: TestBase() {
         repository.deleteFundingInstrument("abc1234").subscribe(testObserver)
 
         testObserver.assertNoErrors()
+    }
+
+    @Test
+    fun testCheckHeaderDefaultTokenUsingDeleteMethod(){
+        val testObserver = TestObserver<ResponseBody>()
+
+        val mockResponse = MockResponse()
+        mockResponse.setResponseCode(200)
+        mockResponse.setBody("{}")
+        mockServer.enqueue(mockResponse)
+
+        repository.deleteFundingInstrument("abc1234").subscribe(testObserver)
+
+        val takeRequest = mockServer.takeRequest()
+
+        Assert.assertEquals("Basic no token", takeRequest.getHeader("Authorization"))
+    }
+
+    @Test
+    fun testCheckHeaderCustomTokenUsingDeleteMethod(){
+        val baseURL = mockServer.url("/").toString()
+        PaymentAPIService.setHeader("r6rdiydriydfd==")
+        val repository = PaymentAPIService.create(baseURL)
+        val testObserver = TestObserver<ResponseBody>()
+
+        val mockResponse = MockResponse()
+        mockResponse.setResponseCode(200)
+        mockResponse.setBody("{}")
+        mockServer.enqueue(mockResponse)
+
+        repository.deleteFundingInstrument("abc1234").subscribe(testObserver)
+
+        val takeRequest = mockServer.takeRequest()
+
+        Assert.assertNotEquals("Basic no token", takeRequest.getHeader("Authorization"))
     }
 }

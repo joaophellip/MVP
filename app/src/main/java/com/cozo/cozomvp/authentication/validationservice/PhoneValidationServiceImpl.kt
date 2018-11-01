@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.authentication.validationservice
 
+import android.util.Log
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.authentication.AuthModel
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
@@ -34,14 +35,15 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
 
-                        //get country code
-                        val brPhone: Phonenumber.PhoneNumber = phoneUtil.parse(accountData.phoneNumber, "BR")
+                        //get country code (from user, not accountData, which doesn't have it here)
+                        val brPhone: Phonenumber.PhoneNumber = phoneUtil.parse(user.phoneNumber, "BR")
 
                         // get user token
                         user.getIdToken(true).addOnSuccessListener{
                             // create userProfile inside ProfileService
+                            Log.d("UserProfileDebug","linkedWithCredentual - ${user.phoneNumber}")
                             ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
-                                    brPhone.countryCode.toString(), accountData.phoneNumber.substring(0,2), accountData.phoneNumber.substring(2))
+                                    brPhone.countryCode.toString(), user.phoneNumber!!.substring(3,5), user.phoneNumber!!.substring(5))
                         }
                         authModel.mOnRequestSignInWithGoogleListener.onCompleted(providerData)
                     } else {
@@ -67,8 +69,9 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private
                                                 // get user token
                                                 user.getIdToken(true).addOnSuccessListener{
                                                     // create userProfile inside ProfileService
+                                                    Log.d("UserProfileDebug","signInWithCredential - ${user.phoneNumber}")
                                                     ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
-                                                            brPhone.countryCode.toString(), signInData.phoneNumber.substring(0,2), signInData.phoneNumber.substring(2))
+                                                            brPhone.countryCode.toString(), signInData.phoneNumber.substring(3,5), signInData.phoneNumber.substring(5))
                                                 }
                                                 // fire callback
                                                 authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()

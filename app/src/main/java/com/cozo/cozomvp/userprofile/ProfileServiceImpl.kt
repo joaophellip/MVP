@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.userprofile
 
+import android.util.Log
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -15,7 +16,7 @@ class ProfileServiceImpl : IProfileService {
         model = ProfileServiceModel(baseUrl)
     }
 
-    fun updateUserInfo(user:UserModel) {
+    private fun updateUserInfo(user:UserModel) {
         this.user = user
         this.user!!.fundingInstruments.forEach {
             favoriteCardMapping.put(it.cardId, false)
@@ -24,8 +25,15 @@ class ProfileServiceImpl : IProfileService {
 
     override fun setUserProfile(userProfile: UserModel) : Boolean {
         //send to back end DB
-        model.uploadUserProfileToBackEnd(userProfile)
-
+        val responseBody = model.uploadUserProfileToBackEnd(userProfile)
+        val disposable = responseBody
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.d("DebugXPTO","Post OK")
+                },{
+                    Log.d("DebugXPTO","Post Error")
+                })
         user = userProfile
         return true
     }
@@ -145,6 +153,7 @@ class ProfileServiceImpl : IProfileService {
                         }
                     }
                 },{
+                    Log.d("DebugXPTO",it.message)
                     callback.onError()
                 }
         )
@@ -171,7 +180,7 @@ class ProfileServiceImpl : IProfileService {
 
             //create user profile instance with userId/email/phone
             val userModel = UserModel(userId, name, email, Phone(countryCode, areaCode, phoneNumber), null,
-                    null, mutableListOf<PaymentActivity.CardData>())
+                    null, mutableListOf())
 
             //set and upload userModel to backend for further use
             getInstance().setUserProfile(userModel)

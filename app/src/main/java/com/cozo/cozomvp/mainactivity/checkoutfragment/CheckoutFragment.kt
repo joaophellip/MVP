@@ -18,12 +18,12 @@ class CheckoutFragment : MvpFragment<CheckoutView, CheckoutPresenter>(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view : View? = inflater.inflate(R.layout.fragment_checkout, container, false)
-        listenerMainActivity.onCompleteCheckoutFragment(this)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listenerMainActivity.onCompleteCheckoutFragment(this)
         checkoutFragment.setOnClickListener { listenerMainActivity.onCheckoutClicked()}
     }
 

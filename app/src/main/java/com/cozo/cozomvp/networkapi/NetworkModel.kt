@@ -119,7 +119,7 @@ data class CardInfoData(
         var info: NetworkModel.PartnerMetadata?)
 
 data class CreditCardData(
-        var externalAPIId: String,
+        var externalAPIId: String?,
         var creditCardList: List<PaymentActivity.CardData>
 )
 
@@ -129,4 +129,8 @@ data class SaveUserExternalIdResponse (
 
 data class SaveFavoriteCreditCardResponse (
         val creditCardId: String
+)
+
+data class AuthorizationToken(
+        val encryptedToken: String
 )
