@@ -1,10 +1,13 @@
 package com.cozo.cozomvp.cartactivity
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.cartactivity.listfragment.ListFragment
 import com.cozo.cozomvp.cartactivity.listfragment.ListView
+import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_cart.*
@@ -16,6 +19,7 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupActionBar()
 
         setContentView(R.layout.activity_cart)
 
@@ -49,7 +53,7 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
 
     override fun updateViewData(orders: List<OrderModel>) {
         //calculate total
-        var total: Float = 0f
+        var total = 0f
         for (o in orders) {
             total += o.totalPrice
         }
@@ -63,7 +67,8 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
     }
 
     override fun returnToParentActivity() {
-        onBackPressed()
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     override fun editOrder(order: OrderModel) {
@@ -76,5 +81,13 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
                 presenter.onConfirmOrderButtonClicked()
             }
         }
+    }
+
+    /**
+     * Set up the [android.app.ActionBar], if the API is available.
+     * See https://developer.android.com/training/appbar/up-action
+     */
+    private fun setupActionBar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }
