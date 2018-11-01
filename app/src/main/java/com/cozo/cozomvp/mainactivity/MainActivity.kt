@@ -1,7 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -334,4 +333,3 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         var MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0
     }
 }
-
