@@ -10,7 +10,7 @@ interface ICartPresenter {
 
     fun onOrderDeleted(order: OrderModel)
 
-    fun onPartnerSelectClicked()
+    fun onConfirmOrderButtonClicked()
 
     fun onDiscountCodeSet(discountCode: String)
 }

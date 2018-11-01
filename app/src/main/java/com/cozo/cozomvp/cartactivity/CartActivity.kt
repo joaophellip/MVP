@@ -1,6 +1,7 @@
 package com.cozo.cozomvp.cartactivity
 
 import android.os.Bundle
+import android.view.View
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.cartactivity.listfragment.ListFragment
 import com.cozo.cozomvp.cartactivity.listfragment.ListView
@@ -8,7 +9,8 @@ import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_cart.*
 
-class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.CartActivityListener {
+class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.CartActivityListener,
+    View.OnClickListener{
 
     private lateinit var listFragment : ListFragment
 
@@ -23,6 +25,9 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
                 .replace(R.id.listContainer, ListFragment.newInstance(), ListFragment.TAG)
                 .addToBackStack(ListFragment.TAG)
                 .commit()
+
+        //set confirmButton onClickListener
+        confirmOrder.setOnClickListener(this)
     }
 
     override fun onCompleteListFragment(fragment: ListFragment) {
@@ -58,10 +63,18 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
     }
 
     override fun returnToParentActivity() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        onBackPressed()
     }
 
     override fun editOrder(order: OrderModel) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onClick(v: View?) {
+        when(v){
+            confirmOrder -> {
+                presenter.onConfirmOrderButtonClicked()
+            }
+        }
     }
 }

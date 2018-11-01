@@ -83,12 +83,14 @@
     <string name="total_label">TOTAL: R$ %1$s</string>
     <string name="default_item_name">nome do prato</string>
     <string name="default_item_quantity">1</string>
+    <string name="confirmCart">Ver entregadores</string>
 
     <!-- Strings for payment activity -->
     <string name="credit_card_number">**** **** **** %1$s</string>
 
     <!-- Strings for user profile activity -->
     <string name="phone_number">+%1$s (%2$s) %3$s</string>
+
 
 </resources>
 

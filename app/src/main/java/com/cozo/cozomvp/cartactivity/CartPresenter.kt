@@ -27,7 +27,7 @@ class CartPresenter: MvpBasePresenter<CartView>(), ICartPresenter {
         }
     }
 
-    override fun onPartnerSelectClicked() {
+    override fun onConfirmOrderButtonClicked() {
         // open mainActivity partner select window
         ifViewAttached { it ->
             it.returnToParentActivity()
