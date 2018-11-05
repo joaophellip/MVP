@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
@@ -128,11 +129,13 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     }
 
     override fun onShowDeliverersClicked() {
-        //mostrar motoboys ...
-        /*val mListFragment: LocalListFragment = it.onListFragmentRequired()
-        val restID: String = mListFragment.currentRestID(listPosition)
-        it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
-        provideRestLocation(restID)*/
+        // update listFragment with delivery partners now. in order to do that,
+        // send restaurant location to listFragment
+        ifViewAttached {
+            val mListFragment: LocalListFragment = it.onListFragmentRequired()
+            val restID: String = mListFragment.currentRestID(0)
+            provideRestLocation(restID)
+        }
     }
 
     override fun onPartnerCardViewClicked(partnerID: String) {
@@ -142,14 +145,12 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    //check later
     override fun onPaymentMenuClicked() {
         ifViewAttached {
             it.goToPaymentActivity()
         }
     }
 
-    //check later
     override fun onSettingsMenuClicked() {
         ifViewAttached {
             it.goToUserProfileActivity()

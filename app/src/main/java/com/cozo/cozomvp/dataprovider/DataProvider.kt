@@ -255,7 +255,8 @@ class DataProvider : DataProviderInterface.Model {
         setupSocketIO()
         val gson = Gson()
         val data = gson.toJson(SocketIOEmitData(restLocation, userLocation))
-        mSocket.emit("ready to receive partners list", data)
+        Log.d("DebugXpto",data)
+        mSocket.emit("awaiting_partners_list", data)
     }
     override fun provideRestaurantItems(restaurantID: String) {
         disposable = apiServe.restaurantsItems(restaurantID)
@@ -279,9 +280,9 @@ class DataProvider : DataProviderInterface.Model {
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect)
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError)
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError)
-        mSocket.on("partners list available", onListAvailable)
-        mSocket.on("updated partners list available", onUpdatedListAvailable)
-        mSocket.on("updated locations available", onUpdatedLocationsAvailable)
+        mSocket.on("partners_list_available", onListAvailable)
+        //mSocket.on("updated partners list available", onUpdatedListAvailable)
+        //mSocket.on("updated locations available", onUpdatedLocationsAvailable)
         mSocket.connect()
     }
 

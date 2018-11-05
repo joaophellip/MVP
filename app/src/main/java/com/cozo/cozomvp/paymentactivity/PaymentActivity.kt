@@ -48,8 +48,9 @@ class PaymentActivity : MvpActivity<PaymentView, PaymentPresenter>(), CardListIn
     }
 
     override fun onNewCardCreated(creditCard: AddCardFragment.NewCreditCardData) {
-        supportFragmentManager.beginTransaction().replace(R.id.payment_frame,
-                CardListFragment.newInstance(),CardListFragment.TAG)
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.payment_frame, CardListFragment.newInstance(),CardListFragment.TAG)
                 .commit()
         presenter.onNewCardCreated(creditCard)
     }
