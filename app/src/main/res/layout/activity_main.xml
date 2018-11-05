@@ -13,6 +13,63 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cartContainer"
+            android:layout_width="73dp"
+            android:layout_height="73dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.25">
+
+            <ImageView
+                android:id="@+id/imageBasket"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:layout_marginBottom="37dp"
+                android:contentDescription="TODO"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fabCart"
+                app:layout_constraintVertical_bias="0.62"
+                app:srcCompat="@drawable/outline_shopping_basket_black_48dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabCart"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                app:backgroundTint="@color/cyan_300"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/showQuantityText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/fabCart"
+                app:layout_constraintEnd_toEndOf="@+id/fabCart"
+                    app:layout_constraintStart_toStartOf="@+id/fabCart"
+                app:layout_constraintTop_toTopOf="@+id/fabCart" />
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
         <Button
             android:id="@+id/navigation_drawer_button"
             android:layout_width="30dp"
@@ -58,14 +115,15 @@
             android:id="@+id/mapContainer"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp" />
 
         <FrameLayout
             android:id="@+id/listContainer"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toTopOf="@id/actionContainer" />
+            app:layout_constraintBottom_toTopOf="@id/actionContainer"
+            tools:layout_editor_absoluteX="0dp" />
 
         <FrameLayout
             android:id="@+id/actionContainer"

@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cozo.cozomvp.R
+import com.cozo.cozomvp.R.id.cartContainer
+import com.cozo.cozomvp.R.id.showQuantityText
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_deliverers.*
 
 class ShowDeliverersFragment : MvpFragment<ShowDeliverersView, ShowDeliverersPresenter>(){

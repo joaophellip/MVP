@@ -140,6 +140,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun displayContainer() {
         actionContainer.visibility = View.VISIBLE
+        showQuantityText.visibility = View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
