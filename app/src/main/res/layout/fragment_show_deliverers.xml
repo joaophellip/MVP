@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/checkoutFragment"
+    android:id="@+id/showDeliverersFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
@@ -9,14 +9,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/checkoutButton"
+        android:id="@+id/showButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:elevation="12dp"
-        android:text="@string/checkout_message"
+        android:text="@string/show_deliv_message"
         android:fontFamily="sans-serif-medium"
         android:textAllCaps="true"
         android:textColor="@color/white100"
@@ -41,10 +41,10 @@
         >
 
         <TextView
-            android:id="@+id/quantityText"
+            android:id="@+id/showQuantityText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/checkout_quantity"
+            android:text="@string/show_deliv_quantity"
             android:textColor="@color/white100"
             android:fontFamily="sans-serif-medium"
             android:layout_margin="4dp"

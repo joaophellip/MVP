@@ -41,7 +41,7 @@
                 android:id="@+id/permission_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Access your location is important for your deliverer to know where to deliver your order. We will use this information only for this matter."
+                android:text="@string/permission_message"
                 android:textSize="16sp" />
 
             <Button
@@ -49,9 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Grant Location"
+                android:text="@string/permission_button_message"
                 android:background="@color/cyan_400"/>
-
 
         </LinearLayout>
 
@@ -66,10 +65,10 @@
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toTopOf="@id/checkoutContainer" />
+            app:layout_constraintBottom_toTopOf="@id/actionContainer" />
 
         <FrameLayout
-            android:id="@+id/checkoutContainer"
+            android:id="@+id/actionContainer"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/ripple_effect"

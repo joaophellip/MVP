@@ -90,9 +90,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             // informs list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
 
-            // informs checkout fragment that item was added to cart
+            // informs show deliverer fragment that item was added to cart
             if(checkCheckoutStatus()){
-                it.onCheckoutFragmentRequired().updateContainer()
+                it.onShowDeliverersFragmentRequired().updateContainerQuantityText()
             }
         }
     }
@@ -124,11 +124,15 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached{
             // launch cart activity
             it.goToCartActivity()
-            /*val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(listPosition)
-            it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
-            provideRestLocation(restID)*/
         }
+    }
+
+    override fun onShowDeliverersClicked() {
+        //mostrar motoboys ...
+        /*val mListFragment: LocalListFragment = it.onListFragmentRequired()
+        val restID: String = mListFragment.currentRestID(listPosition)
+        it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
+        provideRestLocation(restID)*/
     }
 
     override fun onPartnerCardViewClicked(partnerID: String) {
@@ -222,6 +226,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
                     // launches checkout fragment
                     it.launchCheckoutFragment()
+
+                    // launches show deliverers fragment
+                    it.launchShowDeliverersFragment()
                 }
             }
             override fun onUserLocationRequestFailed(e: Throwable) {
