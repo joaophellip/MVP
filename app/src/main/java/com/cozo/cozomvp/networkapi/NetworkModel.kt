@@ -46,6 +46,7 @@ object NetworkModel{
             val location: Location,
             val name: String,
             val pricePerKm: Float,
+            val pictureRefID: String,
             val totalPrice: Float,
             val route: List<Leg>    //https://developers.google.com/maps/documentation/directions/intro#Legs
     )

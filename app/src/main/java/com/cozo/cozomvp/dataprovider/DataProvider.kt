@@ -82,60 +82,8 @@ class DataProvider : DataProviderInterface.Model {
     }
     private val onListAvailable = Emitter.Listener { args ->
         mActivity?.runOnUiThread {
-            val result = args[0] as ByteArray
-            ZipInputStream(result.inputStream()).use{
-                var entry : ZipEntry?
-                val bufSize = 8192
-                val buffer = ByteArray(bufSize)
-                do {
-                    entry = it.nextEntry
-                    if (entry == null) break
-                    // For each file, try reading bytes to byte array, and convert it to either a bitmap representation if image or a string if text.
-                    var bytesRead : Int
-                    var bytesReadTotal = 0
-                    val outputStream = ByteArrayOutputStream()
-                    try {
-                        bytesRead = it.read(buffer,0, bufSize)
-                        while(bytesRead > 0) {
-                            bytesReadTotal += bytesRead
-                            outputStream.write(buffer,0,bytesRead)
-                            bytesRead = it.read(buffer,0, bufSize)
-                        }
-                    } catch (e: IOException){
-                        Log.d("bytes","Error while reading bytes.")
-                    }
-                    if (entry.name == "Data.json") {
-                        val gson = Gson()
-                        val result2 = gson.fromJson(outputStream.toString(), NetworkModel.ListDeliveryPartnersInfo::class.java)
-                        for (mDeliveryPartner in result2.objects){
-                            if (mPartnersMap.containsKey(mDeliveryPartner.id)){
-                                mPartnersMap[mDeliveryPartner.id]?.info = NetworkModel.PartnerMetadata(
-                                        mDeliveryPartner.metadata.location,
-                                        mDeliveryPartner.metadata.name,
-                                        mDeliveryPartner.metadata.pricePerKm,
-                                        mDeliveryPartner.metadata.totalPrice,
-                                        mDeliveryPartner.metadata.route)
-                            } else {
-                                val mPartnerInfo = CardInfoData(null, NetworkModel.PartnerMetadata(
-                                        mDeliveryPartner.metadata.location,
-                                        mDeliveryPartner.metadata.name,
-                                        mDeliveryPartner.metadata.pricePerKm,
-                                        mDeliveryPartner.metadata.totalPrice,
-                                        mDeliveryPartner.metadata.route))
-                                mPartnersMap[mDeliveryPartner.id] = mPartnerInfo
-                            }
-                        }
-                    } else {
-                        val mPartnerID : String = entry.name.substringBefore("/",entry.name)
-                        if (mPartnersMap.containsKey(mPartnerID)){
-                            mPartnersMap[mPartnerID]?.image = BitmapFactory.decodeByteArray(outputStream.toByteArray(),0,outputStream.toByteArray().size)
-                        } else {
-                            val mPartnerInfo = CardInfoData(BitmapFactory.decodeByteArray(outputStream.toByteArray(),0,outputStream.toByteArray().size),
-                                    null)
-                            mPartnersMap[mPartnerID] = mPartnerInfo
-                        }
-                    }
-                } while (true)
+            args.forEach {
+                Log.d("TaDeSacanagem",it.toString())
             }
             mListenerListFragment.onPartCardDataRequestCompleted(mPartnersMap)
         }
@@ -255,7 +203,6 @@ class DataProvider : DataProviderInterface.Model {
         setupSocketIO()
         val gson = Gson()
         val data = gson.toJson(SocketIOEmitData(restLocation, userLocation))
-        Log.d("DebugXpto",data)
         mSocket.emit("awaiting_partners_list", data)
     }
     override fun provideRestaurantItems(restaurantID: String) {
