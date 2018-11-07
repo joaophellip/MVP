@@ -5,6 +5,7 @@ import android.view.View
 import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersFragment
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
@@ -20,7 +21,7 @@ interface MainView : MvpView {
     fun addRecyclerViewToContainer(recyclerView : RecyclerView)
 
     /*
-    Asks activity whether both list and map fragments are ready to be used.
+    Asks activity whether all fragments are ready to be used.
      */
     fun areFragmentsReady() : Boolean
 
@@ -44,6 +45,9 @@ interface MainView : MvpView {
      */
     fun goToSettingsActivity()
 
+    /*
+    Asks activity to show user profile activity
+     */
     fun goToUserProfileActivity()
 
     /*
@@ -67,17 +71,22 @@ interface MainView : MvpView {
     fun launchCheckoutFragment()
 
     /*
+    Asks activity to launch a new show deliverers fragment.
+     */
+    fun launchShowDeliverersFragment()
+
+    /*
     Asks activity to return a reference to the very activity.
      */
     fun onActivityRequired() : MainActivity
 
     /*
-    Asks activity to return a reference to current LocalListFragment object is required.
+    Asks activity to return a reference to current LocalListFragment object.
      */
     fun onListFragmentRequired() : LocalListFragment
 
     /*
-    Asks activity to return a reference to current CheckoutFragment object is required.
+    Asks activity to return a reference to current CheckoutFragment object.
      */
     fun onCheckoutFragmentRequired() : CheckoutFragment
 
@@ -85,6 +94,11 @@ interface MainView : MvpView {
     Asks activity to return a reference to current LocalMapFragment object.
      */
     fun onMapFragmentRequired() : LocalMapFragment
+
+    /*
+Asks activity to return a reference to current ShowDeliverersFragment object.
+ */
+    fun onShowDeliverersFragmentRequired() : ShowDeliverersFragment
 
     /*
     Asks activity to request permission for accessing user location

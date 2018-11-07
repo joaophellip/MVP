@@ -2,7 +2,6 @@ package com.cozo.cozomvp.dataprovider
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
@@ -17,11 +16,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
 import retrofit2.HttpException
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.net.UnknownHostException
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
 import io.socket.emitter.Emitter
 
 class DataProvider : DataProviderInterface.Model {
@@ -36,7 +31,6 @@ class DataProvider : DataProviderInterface.Model {
     private val apiServe by lazy {
         APIServices.create()
     }   // companion object?
-    private var mPartnersMap: MutableMap<String,CardInfoData> = mutableMapOf()
     private var mLocationPermission = false
     private lateinit var mLocationCallback: LocationCallback
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -82,62 +76,13 @@ class DataProvider : DataProviderInterface.Model {
     }
     private val onListAvailable = Emitter.Listener { args ->
         mActivity?.runOnUiThread {
-            val result = args[0] as ByteArray
-            ZipInputStream(result.inputStream()).use{
-                var entry : ZipEntry?
-                val bufSize = 8192
-                val buffer = ByteArray(bufSize)
-                do {
-                    entry = it.nextEntry
-                    if (entry == null) break
-                    // For each file, try reading bytes to byte array, and convert it to either a bitmap representation if image or a string if text.
-                    var bytesRead : Int
-                    var bytesReadTotal = 0
-                    val outputStream = ByteArrayOutputStream()
-                    try {
-                        bytesRead = it.read(buffer,0, bufSize)
-                        while(bytesRead > 0) {
-                            bytesReadTotal += bytesRead
-                            outputStream.write(buffer,0,bytesRead)
-                            bytesRead = it.read(buffer,0, bufSize)
-                        }
-                    } catch (e: IOException){
-                        Log.d("bytes","Error while reading bytes.")
-                    }
-                    if (entry.name == "Data.json") {
-                        val gson = Gson()
-                        val result2 = gson.fromJson(outputStream.toString(), NetworkModel.ListDeliveryPartnersInfo::class.java)
-                        for (mDeliveryPartner in result2.objects){
-                            if (mPartnersMap.containsKey(mDeliveryPartner.id)){
-                                mPartnersMap[mDeliveryPartner.id]?.info = NetworkModel.PartnerMetadata(
-                                        mDeliveryPartner.metadata.location,
-                                        mDeliveryPartner.metadata.name,
-                                        mDeliveryPartner.metadata.pricePerKm,
-                                        mDeliveryPartner.metadata.totalPrice,
-                                        mDeliveryPartner.metadata.route)
-                            } else {
-                                val mPartnerInfo = CardInfoData(null, NetworkModel.PartnerMetadata(
-                                        mDeliveryPartner.metadata.location,
-                                        mDeliveryPartner.metadata.name,
-                                        mDeliveryPartner.metadata.pricePerKm,
-                                        mDeliveryPartner.metadata.totalPrice,
-                                        mDeliveryPartner.metadata.route))
-                                mPartnersMap[mDeliveryPartner.id] = mPartnerInfo
-                            }
-                        }
-                    } else {
-                        val mPartnerID : String = entry.name.substringBefore("/",entry.name)
-                        if (mPartnersMap.containsKey(mPartnerID)){
-                            mPartnersMap[mPartnerID]?.image = BitmapFactory.decodeByteArray(outputStream.toByteArray(),0,outputStream.toByteArray().size)
-                        } else {
-                            val mPartnerInfo = CardInfoData(BitmapFactory.decodeByteArray(outputStream.toByteArray(),0,outputStream.toByteArray().size),
-                                    null)
-                            mPartnersMap[mPartnerID] = mPartnerInfo
-                        }
-                    }
-                } while (true)
-            }
-            mListenerListFragment.onPartCardDataRequestCompleted(mPartnersMap)
+            val gson = Gson()
+            val result = args[0] as String
+
+            Log.d("DebugHj",result)
+
+            val partnerList = gson.fromJson(result, NetworkModel.ListPartners::class.java)
+            mListenerListFragment.onPartCardDataRequestCompleted(partnerList.items)
         }
     }
     private val onUpdatedListAvailable = Emitter.Listener { args ->
@@ -255,7 +200,7 @@ class DataProvider : DataProviderInterface.Model {
         setupSocketIO()
         val gson = Gson()
         val data = gson.toJson(SocketIOEmitData(restLocation, userLocation))
-        mSocket.emit("ready to receive partners list", data)
+        mSocket.emit("awaiting_partners_list", data)
     }
     override fun provideRestaurantItems(restaurantID: String) {
         disposable = apiServe.restaurantsItems(restaurantID)
@@ -279,9 +224,9 @@ class DataProvider : DataProviderInterface.Model {
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect)
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError)
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError)
-        mSocket.on("partners list available", onListAvailable)
-        mSocket.on("updated partners list available", onUpdatedListAvailable)
-        mSocket.on("updated locations available", onUpdatedLocationsAvailable)
+        mSocket.on("partners_list_available", onListAvailable)
+        //mSocket.on("updated partners list available", onUpdatedListAvailable)
+        //mSocket.on("updated locations available", onUpdatedLocationsAvailable)
         mSocket.connect()
     }
 

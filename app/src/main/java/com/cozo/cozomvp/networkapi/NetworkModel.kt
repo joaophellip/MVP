@@ -37,6 +37,10 @@ object NetworkModel{
             val items: List<MenuMetadata>
     )
 
+    data class ListPartners(
+            val items: List<PartnerMetadata>
+    )
+
     // data model for SocketIO onListAvailable
     data class ListDeliveryPartnersInfo(val objects: List<PartInfoObjects>)
     data class PartInfoObjects(
@@ -45,7 +49,11 @@ object NetworkModel{
     data class PartnerMetadata(
             val location: Location,
             val name: String,
+            val partnerID: String,
             val pricePerKm: Float,
+            val pictureRefID: String,
+            val rating: Float,
+            val ratedBy: Int,
             val totalPrice: Float,
             val route: List<Leg>    //https://developers.google.com/maps/documentation/directions/intro#Legs
     )

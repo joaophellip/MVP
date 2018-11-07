@@ -3,7 +3,6 @@ package com.cozo.cozomvp.mainactivity.listfragment
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.cozo.cozomvp.mainactivity.MainActivity
-import com.cozo.cozomvp.networkapi.CardInfoData
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpView
@@ -11,7 +10,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
 interface ListFragmentView : MvpView {
 
     // adds delivery partners data to card views.
-    fun addPartnersDataToCards(cards: MutableMap<String, CardInfoData>)
+    fun addPartnersDataToCards(cards: List<NetworkModel.PartnerMetadata>)
 
     // adds restaurants data to card views.
     fun addRestaurantsDataToCards(items: List<NetworkModel.MenuMetadata>)

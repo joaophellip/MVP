@@ -11,17 +11,13 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.CardInfoData
+import com.cozo.cozomvp.networkapi.NetworkModel
 
-class PartnersRecyclerViewAdapter() : RecyclerView.Adapter<PartnersRecyclerViewAdapter.RecyclerViewHolder>() {
+class PartnersRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<PartnersRecyclerViewAdapter.RecyclerViewHolder>() {
 
-    lateinit var listener: OnPlaceClickListener
     lateinit var mCardViewLayoutParams: ViewGroup.MarginLayoutParams
-    private var partnerList: MutableMap<String, CardInfoData> = mutableMapOf()
-    private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
-
-    constructor(listener: OnPlaceClickListener) : this(){
-        this.listener = listener
-    }
+    private var partnerList: List<CardInfoData> = listOf()
+    //private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
 
     interface OnPlaceClickListener {
         fun onPartnerCardViewClicked(partnerID: String)
@@ -37,28 +33,20 @@ class PartnersRecyclerViewAdapter() : RecyclerView.Adapter<PartnersRecyclerViewA
         holder.bindView(position)
     }
 
-    fun setPartnerList(cards: MutableMap<String, CardInfoData>){
-        partnerList = cards
-        partnerList.entries.forEachIndexed { index, mutableEntry ->
-            mPositionMap[index] = mutableEntry.key
-        }
-
-    }
-
-    fun currentPartnerID(position: Int) : String = mPositionMap[position]!!
+    fun currentPartnerID(position: Int) : String = partnerList[position].info!!.partnerID
 
     fun positionById(restID: String) : Int? {
-        return when (mPositionMap.containsValue(restID)){
-            true -> {
-                val mMap = mPositionMap.filterValues{
-                    it == restID
-                }
-                return when(mMap.size == 1){
-                    true -> mMap.keys.elementAt(0)
-                    else -> -2
-                }
+        partnerList.forEachIndexed { index, cardInfoData ->
+            when(cardInfoData.info!!.partnerID){
+                restID -> return index
             }
-            false -> -1
+        }
+        return -1
+    }
+
+    fun setPartnerList(items: List<NetworkModel.PartnerMetadata>){
+        partnerList = items.map { it ->
+            CardInfoData(null, it)
         }
     }
 
@@ -76,24 +64,20 @@ class PartnersRecyclerViewAdapter() : RecyclerView.Adapter<PartnersRecyclerViewA
         }
 
         fun bindView(position: Int){
+
             var totalDeliveryTimeInSeconds : Long = 0
-            partnerList.entries.elementAt(position).value.info?.route?.forEach {
+            partnerList[position].info?.route?.forEach{
                 totalDeliveryTimeInSeconds += it.duration.value
             }
 
-            //adjust formatting later on to use xml file instead of local variables
-            val formattedPrice: String = "R$ " + String.format("%02.2f", partnerList.entries.elementAt(position).value.info?.totalPrice).replace(".",",")
-            val formattedDeliveryTime = String.format("%2.0f", totalDeliveryTimeInSeconds.toFloat()/60).replace(".",",") + " min"
+            this.mPartnerName.text = partnerList[position].info!!.name
+            this.mTotalPartnerPrice.text = itemView.context.getString(R.string.deliv_price, String.format("%02.2f", partnerList[position].info!!.totalPrice).replace(".",","))
+            this.mTimeToDelivery.text = itemView.context.getString(R.string.deliv_time, String.format("%2.0f", totalDeliveryTimeInSeconds.toFloat()/60).replace(".",","))
+            this.mRoot.setOnClickListener {_ -> listener.onPartnerCardViewClicked(partnerList[position].info!!.partnerID)}
 
-            this.mPartnerImage.setImageBitmap(partnerList.entries.elementAt(position).value.image)
-            this.mPartnerName.text = partnerList.entries.elementAt(position).value.info?.name
-            this.mTotalPartnerPrice.text = formattedPrice
-            this.mTimeToDelivery.text = formattedDeliveryTime
-            this.mRoot.setOnClickListener {_ -> listener.onPartnerCardViewClicked(partnerList.entries.elementAt(position).key)}
-             // sets raised elevation to first card by default
-            /*when (position) {
-                0 -> itemView.elevation = 24f
-            }*/
+            // launch asynchronous process to download image
+            ImageDownload(itemView.context, this.mPartnerImage, partnerList[position].info!!.pictureRefID)
+
         }
     }
 }

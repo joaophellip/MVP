@@ -49,6 +49,11 @@ interface MainInterfaces {
     fun onCheckoutClicked()
 
     /*
+    Informs presenter that show deliverers view was clicked by user
+     */
+    fun onShowDeliverersClicked()
+
+    /*
     Informs presenter that a card view for a delivery partner was clicked by user. Passes delivery
     partner ID associated with the card view as argument.
      */

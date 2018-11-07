@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
@@ -90,9 +91,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             // informs list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
 
-            // informs checkout fragment that item was added to cart
+            // informs show deliverer fragment that item was added to cart
             if(checkCheckoutStatus()){
-                it.onCheckoutFragmentRequired().updateContainer()
+                it.onShowDeliverersFragmentRequired().updateContainerQuantityText()
             }
         }
     }
@@ -124,10 +125,16 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached{
             // launch cart activity
             it.goToCartActivity()
-            /*val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(listPosition)
-            it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
-            provideRestLocation(restID)*/
+        }
+    }
+
+    override fun onShowDeliverersClicked() {
+        ifViewAttached {
+            // update listFragment with delivery partners now. in order to do that,
+            // send restaurant location to listFragment
+            val mListFragment: LocalListFragment = it.onListFragmentRequired()
+            val restID: String = mListFragment.currentRestID(0)
+            provideRestLocation(restID)
         }
     }
 
@@ -138,18 +145,15 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    //check later
     override fun onPaymentMenuClicked() {
         ifViewAttached {
             it.goToPaymentActivity()
         }
     }
 
-    //check later
     override fun onSettingsMenuClicked() {
         ifViewAttached {
             it.goToUserProfileActivity()
-            //it.goToSettingsActivity()
         }
     }
 
@@ -222,6 +226,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
                     // launches checkout fragment
                     it.launchCheckoutFragment()
+
+                    // launches show deliverers fragment
+                    it.launchShowDeliverersFragment()
                 }
             }
             override fun onUserLocationRequestFailed(e: Throwable) {

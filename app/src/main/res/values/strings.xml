@@ -74,10 +74,18 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <!-- Strings for main activity -->
+    <string name="permission_message">Access your location is important for your deliverer to know where to deliver your order. We will use this information only for this matter.</string>
+    <string name="permission_button_message">Grant Location</string>
+
     <!-- Strings for cardview -->
     <string name="ratedBy">( %1$d )</string>
     <string name="prepTime">%1$d min</string>
     <string name="price">R$ %1$s</string>
+
+    <!-- Strings for partners cardview -->
+    <string name="deliv_price">R$ %1$s</string>
+    <string name="deliv_time">%1$s min</string>
 
     <!-- Strings for cart view -->
     <string name="total_label">TOTAL: R$ %1$s</string>
@@ -91,6 +99,13 @@
     <!-- Strings for user profile activity -->
     <string name="phone_number">+%1$s (%2$s) %3$s</string>
 
+    <!-- Strings for checkout fragment -->
+    <string name="checkout_message">Ir para checkout</string>
+    <string name="checkout_quantity">1</string>
+
+    <!-- Strings for show deliverers fragment -->
+    <string name="show_deliv_message">Escolher entregador</string>
+    <string name="show_deliv_quantity">1</string>
 
 </resources>
 

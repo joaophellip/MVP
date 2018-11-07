@@ -145,7 +145,6 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
                 }
             }
         } else {
-            Log.d("MVPdebug","wont change icon because marker couldn't be found")
             //to do something
         }
     }

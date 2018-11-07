@@ -16,9 +16,7 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
-import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
@@ -30,6 +28,8 @@ import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.MapFragmentView
+import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersFragment
+import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersView
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
@@ -41,29 +41,35 @@ import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
         MapFragmentView.MainActivityListener, CheckoutView.MainActivityListener,
-        DetailsInterface.MainActivityListener,
+        ShowDeliverersView.MainActivityListener, DetailsInterface.MainActivityListener,
         NavigationView.OnNavigationItemSelectedListener {
 
+    // variables to hold reference to fragments
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
     private lateinit var mCheckoutFragment: CheckoutFragment
+    private lateinit var mShowDeliverersFragment: ShowDeliverersFragment
+
+    // variables to control state
+    private var isListFragmentReady = false
+    private var isMapFragmentReady = false
+    private var isCheckoutFragmentReady = false
+    private var isShowDeliverersFragmentReady = false
+
+    // other variables
     private lateinit var currentTransitionName: String
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
     private var containerLayout: ViewGroup? = null
     private var detailsScene: Scene? = null
-    private var isListFragmentReady = false
-    private var isMapFragmentReady = false
-    private var isCheckoutFragmentReady = false
-
-    @BindView(R.id.checkoutContainer) lateinit var mCheckoutContainer: FrameLayout
 
     override fun addRecyclerViewToContainer(recyclerView : RecyclerView) {
+        containerLayout?.removeAllViews()
         containerLayout?.addView(recyclerView)
     }
 
     override fun areFragmentsReady(): Boolean{
-        return isListFragmentReady && isMapFragmentReady && isCheckoutFragmentReady
+        return isListFragmentReady && isMapFragmentReady && isCheckoutFragmentReady && isShowDeliverersFragmentReady
     }
 
     override fun createPresenter(): MainPresenter {
@@ -121,13 +127,20 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun launchCheckoutFragment() {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.checkoutContainer, CheckoutFragment.newInstance(), CheckoutFragment.TAG)
+                .replace(R.id.actionContainer, CheckoutFragment.newInstance(), CheckoutFragment.TAG)
                 .addToBackStack(CheckoutFragment.TAG)
                 .commit()
     }
 
+    override fun launchShowDeliverersFragment() {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.actionContainer, ShowDeliverersFragment.newInstance(), ShowDeliverersFragment.TAG)
+                .commit()
+    }
+
     override fun displayContainer() {
-        mCheckoutContainer.visibility = View.VISIBLE
+        actionContainer.visibility = View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -143,10 +156,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             CART_ACTIVITY_REQUEST_CODE -> {
                 if (resultCode == RESULT_OK) {
                     //do something
-                    Log.d("DebugXPTO","ok, button clicked")
                 } else {
                     //do something
-                    Log.d("DebugXPTO","not ok, button not clicked")
                 }
             }
         }
@@ -190,7 +201,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 } else {
                     // permission denied
                     linear_layout_permission_box.visibility = View.VISIBLE
-                    Log.d("locationDebug","permission denied")
                 }
                 return
             }
@@ -214,6 +224,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun onCompleteMapFragment(mapFragment: LocalMapFragment){
         mMapFragment = mapFragment
         isMapFragmentReady = true
+        presenter.onFragmentReady()
+    }
+
+    override fun onCompleteShowDeliverersFragment(showDeliverersFragment: ShowDeliverersFragment) {
+        mShowDeliverersFragment = showDeliverersFragment
+        isShowDeliverersFragmentReady = true
         presenter.onFragmentReady()
     }
 
@@ -241,6 +257,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         return mMapFragment
     }
 
+    override fun onShowDeliverersFragmentRequired(): ShowDeliverersFragment = mShowDeliverersFragment
+
     override fun onCheckoutFragmentRequired(): CheckoutFragment {
         return mCheckoutFragment
     }
@@ -259,8 +277,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun onCheckoutClicked() {
-        //val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
         presenter.onCheckoutClicked()
+    }
+
+    override fun onFragmentClicked() {
+        presenter.onShowDeliverersClicked()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -299,7 +320,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             presenter.onLocationServiceReady()
             //createLocationRequest()
         } else {
-            Log.d("permission", "ask for permission")
 //            TODO: tratar caso de "não perguntar novamente"
             ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
