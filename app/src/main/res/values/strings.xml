@@ -96,12 +96,13 @@
     <string name="phone_number">+%1$s (%2$s) %3$s</string>
 
     <!-- Strings for checkout fragment -->
-    <string name="checkout_message">Ir para checkout</string>
+    <string name="checkout_message">Checkout</string>
     <string name="checkout_quantity">1</string>
 
     <!-- Strings for show deliverers fragment -->
-    <string name="show_deliv_message">Escolher entregador</string>
+    <string name="show_deliv_message">Delivery</string>
     <string name="show_deliv_quantity">1</string>
+    <string name="show_deliv_price">R$ 15,00</string>
 
 </resources>
 
