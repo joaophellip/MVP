@@ -115,4 +115,5 @@ Asks activity to return a reference to current ShowDeliverersFragment object.
      */
     fun showOrderDetailsMenu(sharedView: View, data: CardMenuData)
 
+    fun updateContainerQuantityText(quantity: Int)
 }
