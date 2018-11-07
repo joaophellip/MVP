@@ -129,12 +129,14 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     }
 
     override fun onShowDeliverersClicked() {
-        // update listFragment with delivery partners now. in order to do that,
-        // send restaurant location to listFragment
         ifViewAttached {
+            // update listFragment with delivery partners now. in order to do that,
+            // send restaurant location to listFragment
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             val restID: String = mListFragment.currentRestID(0)
             provideRestLocation(restID)
+
+
         }
     }
 

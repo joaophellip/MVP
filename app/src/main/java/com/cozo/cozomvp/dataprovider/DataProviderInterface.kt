@@ -2,7 +2,6 @@ package com.cozo.cozomvp.dataprovider
 
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.networkapi.*
-import com.google.android.gms.maps.model.LatLng
 
 interface DataProviderInterface {
 
@@ -23,7 +22,7 @@ interface DataProviderInterface {
     interface ListFragmentListener{
         fun onRestCardDataRequestCompleted(items: List<NetworkModel.MenuMetadata>)
         fun onRestCardDataRequestFailed(e: Throwable)
-        fun onPartCardDataRequestCompleted(cards: MutableMap<String, CardInfoData>)
+        fun onPartCardDataRequestCompleted(cards: List<NetworkModel.PartnerMetadata>)
         fun onPartCardDataRequestFailed(e: Throwable)
         fun onRestItemsDataRequestCompleted(items: List<NetworkModel.MenuMetadata>)
         fun onRestItemsDataRequestFailed(e: Throwable)

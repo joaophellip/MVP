@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.mainactivity.listfragment
 
-import android.util.Log
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
 import com.cozo.cozomvp.mainactivity.MainActivity
@@ -38,7 +37,7 @@ class ListPresenter : MvpBasePresenter<ListFragmentView>(), ListInterfaces.Prese
         // do something later
     }
 
-    override fun onPartCardDataRequestCompleted(cards: MutableMap<String, CardInfoData>) {
+    override fun onPartCardDataRequestCompleted(cards: List<NetworkModel.PartnerMetadata>) {
         ifViewAttached {
             partListSize = cards.size
             it.addPartnersDataToCards(cards)

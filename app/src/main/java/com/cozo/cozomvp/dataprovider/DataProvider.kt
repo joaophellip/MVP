@@ -2,7 +2,6 @@ package com.cozo.cozomvp.dataprovider
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
@@ -17,11 +16,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
 import retrofit2.HttpException
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.net.UnknownHostException
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
 import io.socket.emitter.Emitter
 
 class DataProvider : DataProviderInterface.Model {
@@ -36,7 +31,6 @@ class DataProvider : DataProviderInterface.Model {
     private val apiServe by lazy {
         APIServices.create()
     }   // companion object?
-    private var mPartnersMap: MutableMap<String,CardInfoData> = mutableMapOf()
     private var mLocationPermission = false
     private lateinit var mLocationCallback: LocationCallback
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -82,10 +76,13 @@ class DataProvider : DataProviderInterface.Model {
     }
     private val onListAvailable = Emitter.Listener { args ->
         mActivity?.runOnUiThread {
-            args.forEach {
-                Log.d("TaDeSacanagem",it.toString())
-            }
-            mListenerListFragment.onPartCardDataRequestCompleted(mPartnersMap)
+            val gson = Gson()
+            val result = args[0] as String
+
+            Log.d("DebugHj",result)
+
+            val partnerList = gson.fromJson(result, NetworkModel.ListPartners::class.java)
+            mListenerListFragment.onPartCardDataRequestCompleted(partnerList.items)
         }
     }
     private val onUpdatedListAvailable = Emitter.Listener { args ->

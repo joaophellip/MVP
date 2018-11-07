@@ -12,7 +12,6 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.MainActivity
-import com.cozo.cozomvp.networkapi.CardInfoData
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
@@ -48,15 +47,15 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         listenerMainActivity.onItemsCardDataReady()
     }
 
-    override fun addPartnersDataToCards(cards: MutableMap<String, CardInfoData>) {
+    override fun addPartnersDataToCards(cards: List<NetworkModel.PartnerMetadata>) {
         mPartnersRecyclerAdapter.setPartnerList(cards)
         mRecyclerView.adapter = mPartnersRecyclerAdapter
         isCardViewShownRestaurant = false
         val locations: MutableMap<String, NetworkModel.Location> = mutableMapOf()
         val routes: MutableMap<String, List<NetworkModel.Leg>> = mutableMapOf()
         cards.forEach {
-            locations[it.key] = it.value.info?.location!!
-            routes[it.key] = it.value.info?.route!!
+            locations[it.partnerID] = it.location
+            routes[it.partnerID] = it.route
         }
         listenerMainActivity.onPartnersCardDataReady(locations, routes)
     }

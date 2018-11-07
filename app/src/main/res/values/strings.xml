@@ -83,6 +83,10 @@
     <string name="prepTime">%1$d min</string>
     <string name="price">R$ %1$s</string>
 
+    <!-- Strings for partners cardview -->
+    <string name="deliv_price">R$ %1$s</string>
+    <string name="deliv_time">%1$s min</string>
+
     <!-- Strings for cart view -->
     <string name="total_label">TOTAL: R$ %1$s</string>
     <string name="default_item_name">nome do prato</string>
