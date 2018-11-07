@@ -135,8 +135,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             val restID: String = mListFragment.currentRestID(0)
             provideRestLocation(restID)
-
-
         }
     }
 
@@ -156,7 +154,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     override fun onSettingsMenuClicked() {
         ifViewAttached {
             it.goToUserProfileActivity()
-            //it.goToSettingsActivity()
         }
     }
 

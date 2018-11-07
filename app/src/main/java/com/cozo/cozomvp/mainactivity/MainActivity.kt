@@ -64,6 +64,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private var detailsScene: Scene? = null
 
     override fun addRecyclerViewToContainer(recyclerView : RecyclerView) {
+        containerLayout?.removeAllViews()
         containerLayout?.addView(recyclerView)
     }
 
@@ -155,10 +156,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             CART_ACTIVITY_REQUEST_CODE -> {
                 if (resultCode == RESULT_OK) {
                     //do something
-                    Log.d("DebugXPTO","ok, button clicked")
                 } else {
                     //do something
-                    Log.d("DebugXPTO","not ok, button not clicked")
                 }
             }
         }
@@ -202,7 +201,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
                 } else {
                     // permission denied
                     linear_layout_permission_box.visibility = View.VISIBLE
-                    Log.d("locationDebug","permission denied")
                 }
                 return
             }
@@ -322,7 +320,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             presenter.onLocationServiceReady()
             //createLocationRequest()
         } else {
-            Log.d("permission", "ask for permission")
 //            TODO: tratar caso de "não perguntar novamente"
             ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
