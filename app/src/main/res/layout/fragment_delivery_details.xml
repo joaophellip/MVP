@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cozo.cozomvp.mainactivity.delivdetailsfragment.DelivFragment
+<com.cozo.cozomvp.mainactivity.deliverydetailsfragment.DeliveryDetailsFragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/delivDetailsContainer"
+    android:id="@+id/deliveryDetailsContainer"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
     android:layout_gravity="bottom">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/delivCardView"
+        android:id="@+id/deliveryCardView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         app:cardCornerRadius="8dp"
@@ -30,7 +30,7 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/delivImage"
+                    android:id="@+id/deliveryImage"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginBottom="14dp"
@@ -39,7 +39,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/delivName"
+                    android:id="@+id/deliveryName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="14dp"
@@ -50,7 +50,7 @@
                     android:transitionName="titleTransition" />
 
                 <EditText
-                    android:id="@+id/delivNotesText"
+                    android:id="@+id/deliveryNotesText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Adicione um comentário ao entregador..."
@@ -58,7 +58,7 @@
                     android:inputType="text" />
 
                 <Button
-                    android:id="@+id/delivCheckoutButton"
+                    android:id="@+id/deliveryCheckoutButton"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/ripple_effect"
@@ -74,4 +74,4 @@
 
     </android.support.v7.widget.CardView>
 
-</com.cozo.cozomvp.mainactivity.delivdetailsfragment.DelivFragment>
+</com.cozo.cozomvp.mainactivity.deliverydetailsfragment.DeliveryDetailsFragment>

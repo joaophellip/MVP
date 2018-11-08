@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.mainactivity.delivdetailsfragment
+package com.cozo.cozomvp.mainactivity.deliverydetailsfragment
 
 import android.content.Context
 import android.os.Parcel
@@ -6,7 +6,7 @@ import android.os.Parcelable
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 
-class DelivFragment(context: Context, attrs: AttributeSet) : CoordinatorLayout(context, attrs), Parcelable {
+class DeliveryDetailsFragment(context: Context, attrs: AttributeSet) : CoordinatorLayout(context, attrs), Parcelable {
     constructor(parcel: Parcel) : this(
             TODO("context"),
             TODO("attrs")) {
@@ -20,12 +20,12 @@ class DelivFragment(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<DelivFragment> {
-        override fun createFromParcel(parcel: Parcel): DelivFragment {
-            return DelivFragment(parcel)
+    companion object CREATOR : Parcelable.Creator<DeliveryDetailsFragment> {
+        override fun createFromParcel(parcel: Parcel): DeliveryDetailsFragment {
+            return DeliveryDetailsFragment(parcel)
         }
 
-        override fun newArray(size: Int): Array<DelivFragment?> {
+        override fun newArray(size: Int): Array<DeliveryDetailsFragment?> {
             return arrayOfNulls(size)
         }
     }
