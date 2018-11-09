@@ -18,7 +18,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.ImageDownload
-import com.cozo.cozomvp.networkapi.CardMenuData
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.HideDetailsTransitionSet
 import com.cozo.cozomvp.transition.ShowDetailsTransitionSet
 import com.cozo.cozomvp.usercart.CartServiceImpl
@@ -37,20 +37,20 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
         ButterKnife.bind(this)
     }
 
-    private fun setData(data: CardMenuData){
-        textViewTitle.text = data.menu?.name
-        textViewDescription.text = data.menu?.ingredients
+    private fun setData(data: NetworkModel.MenuMetadata){
+        textViewTitle.text = data.name
+        textViewDescription.text = data.ingredients
         quantityTextView.text = "1"
 
         // launch asynchronous process to download image
-        ImageDownload(context, imageViewPlaceDetails, data.menu!!.pictureRefID)
+        ImageDownload(context, imageViewPlaceDetails, data.pictureRefID)
     }
 
     companion object {
 
         private lateinit var listenerMainActivity : DetailsInterface.MainActivityListener
 
-        fun showScene(activity: Activity, container: ViewGroup, sharedView: View, transitionName: String, data: CardMenuData) : Scene {
+        fun showScene(activity: Activity, container: ViewGroup, sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) : Scene {
             listenerMainActivity = activity as DetailsInterface.MainActivityListener
             val detailsLayout : DetailsLayout = activity.layoutInflater.inflate(R.layout.item_place, container, false) as DetailsLayout
 
@@ -72,7 +72,7 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
             //set Order Button
             val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
             orderButton.setOnClickListener {
-                listenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data.menu!!,getQuantity(detailsLayout), detailsLayout.notesText.text.toString()))
+                listenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data,getQuantity(detailsLayout), detailsLayout.notesText.text.toString()))
             }
 
             return scene

@@ -3,7 +3,6 @@ package com.cozo.cozomvp.mainactivity.listfragment
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.cozo.cozomvp.mainactivity.MainActivity
-import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
@@ -63,39 +62,53 @@ interface ListFragmentView : MvpView {
         fun onItemsCardDataReady()
 
         /*
-        Informs activity that cardview item was clicked. Passes item data as argument.
-         */
-        fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData)
+Informs activity that cardview item containing a restaurant menu was highlighted. Passes
+restaurant ID as argument.
+ */
+        fun onRestCardViewHighlighted(restID: String)
 
         /*
-        Informs activity that RecyclerView object is ready to show delivery partners data. Passes
-        delivery partners locations and routes to be relayed to MapFragment as argument.
-         */
+Informs activity that RecyclerView object is ready to show delivery partners data. Passes
+delivery partners locations and routes to be relayed to MapFragment as argument.
+ */
         fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>,
                                     encodedPolylines: Map<String, String>)
+
+        /*
+        Informs activity that cardview item was clicked. Passes item data as argument.
+         */
+        fun onItemCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
 
         /*
         Informs activity that cardview item containing a delivery partner was clicked. Passes
         delivery partner ID as argument.
          */
-        fun onPartnerCardViewClicked(partnerID: String)
+        fun onPartnerCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.PartnerMetadata)
 
         /*
         Informs activity that cardview item containing a restaurant menu was clicked. Passes View object,
          transitionName, menu data, and the restaurant ID as argument.
          */
-        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData)
+        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
 
         /*
-        Informs activity that cardview item containing a restaurant menu was highlighted. Passes
-        restaurant ID as argument.
+        Informs activity that cardview item containing a delivery partner was swiped. Passes View object,
+         transitionName, and card data as argument.
          */
-        fun onRestCardViewHighlighted(restID: String)
+        fun onPartnerCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.PartnerMetadata)
 
-        //fun onPartnerCardViewSwiped()
-        //fun onItemCardViewSwiped()
-        //fun onRestaurantCardViewSwiped()
-        //TODO create above abstract functions and implement their behavior inside MainAcitivty
+        /*
+        Informs activity that cardview item containing a restaurant item was swiped. Passes View object,
+         transitionName, and card data as argument.
+         */
+        fun onItemCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
+
+        /*
+        Informs activity that cardview item containing a restaurant item was swiped. Passes View object,
+         transitionName, and card data as argument.
+         */
+        fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
+
     }
 }
 

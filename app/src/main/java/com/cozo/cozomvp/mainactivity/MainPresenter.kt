@@ -5,7 +5,6 @@ import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
-import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.cozo.cozomvp.usercart.OrderModel
@@ -174,7 +173,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     /*
     Informs map fragment that other markers need to be invisible
      */
-    override fun onRestaurantCardViewClicked(restID: String, sharedView: View, data: CardMenuData) {
+    override fun onRestaurantCardViewClicked(restID: String, sharedView: View, data: NetworkModel.MenuMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(restID)

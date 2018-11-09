@@ -1,7 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
 import android.view.View
-import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.usercart.OrderModel
 
@@ -75,7 +74,7 @@ interface MainInterfaces {
     Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
     ID, the menu data, and the View object as argument.
      */
-    fun onRestaurantCardViewClicked(restID: String, sharedView: View, data: CardMenuData)
+    fun onRestaurantCardViewClicked(restID: String, sharedView: View, data: NetworkModel.MenuMetadata)
 
     /*
     Informs presenter that a card view for a restaurant was highlighted. Passes the restaurant ID

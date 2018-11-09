@@ -10,17 +10,16 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.networkapi.CardInfoData
 import com.cozo.cozomvp.networkapi.NetworkModel
+import com.cozo.cozomvp.transition.TransitionUtils
 
 class PartnersRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<PartnersRecyclerViewAdapter.RecyclerViewHolder>() {
 
     lateinit var mCardViewLayoutParams: ViewGroup.MarginLayoutParams
-    private var partnerList: List<CardInfoData> = listOf()
-    //private var mPositionMap: MutableMap<Int,String> = mutableMapOf()
+    private var partnerList: List<NetworkModel.PartnerMetadata> = listOf()
 
     interface OnPlaceClickListener {
-        fun onPartnerCardViewClicked(partnerID: String)
+        fun onPartnerCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.PartnerMetadata)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
@@ -29,14 +28,23 @@ class PartnersRecyclerViewAdapter(private var listener: OnPlaceClickListener) : 
 
     override fun getItemCount(): Int  = partnerList.size
 
+    fun currentPartnerID(position: Int) : String = partnerList[position].partnerID
+
+    fun cardData(partnerID: String): NetworkModel.PartnerMetadata? {
+        partnerList.forEach {
+            if (partnerID == it.partnerID){
+                return it
+            }
+        }
+        return null
+    }
+
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         holder.bindView(position)
     }
 
     fun setPartnerList(items: List<NetworkModel.PartnerMetadata>){
-        partnerList = items.map { it ->
-            CardInfoData(null, it)
-        }
+        partnerList = items
     }
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -54,14 +62,14 @@ class PartnersRecyclerViewAdapter(private var listener: OnPlaceClickListener) : 
 
         fun bindView(position: Int){
 
-            val totalDeliveryTimeInSeconds = partnerList[position].info!!.totalDeliveryTime
-            this.mPartnerName.text = partnerList[position].info!!.name
-            this.mTotalPartnerPrice.text = itemView.context.getString(R.string.deliv_price, String.format("%02.2f", partnerList[position].info!!.totalPrice).replace(".",","))
+            val totalDeliveryTimeInSeconds = partnerList[position].totalDeliveryTime
+            this.mPartnerName.text = partnerList[position].name
+            this.mTotalPartnerPrice.text = itemView.context.getString(R.string.deliv_price, String.format("%02.2f", partnerList[position].totalPrice).replace(".",","))
             this.mTimeToDelivery.text = itemView.context.getString(R.string.deliv_time, String.format("%2.0f", totalDeliveryTimeInSeconds/60).replace(".",","))
-            this.mRoot.setOnClickListener {listener.onPartnerCardViewClicked(partnerList[position].info!!.partnerID)}
+            this.mRoot.setOnClickListener {listener.onPartnerCardViewClicked(this.mRoot, TransitionUtils.getRecyclerViewTransitionName(position), position, partnerList[position])}
 
             // launch asynchronous process to download image
-            ImageDownload(itemView.context, this.mPartnerImage, partnerList[position].info!!.pictureRefID)
+            ImageDownload(itemView.context, this.mPartnerImage, partnerList[position].pictureRefID)
 
         }
     }
