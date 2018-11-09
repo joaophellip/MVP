@@ -52,12 +52,12 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         mRecyclerView.adapter = mPartnersRecyclerAdapter
         isCardViewShownRestaurant = false
         val locations: MutableMap<String, NetworkModel.Location> = mutableMapOf()
-        val routes: MutableMap<String, List<NetworkModel.Leg>> = mutableMapOf()
+        val encodedPolylines: MutableMap<String, String> = mutableMapOf()
         cards.forEach {
             locations[it.partnerID] = it.location
-            routes[it.partnerID] = it.route
+            encodedPolylines[it.partnerID] = it.encodedPolyline
         }
-        listenerMainActivity.onPartnersCardDataReady(locations, routes)
+        listenerMainActivity.onPartnersCardDataReady(locations, encodedPolylines)
     }
 
     override fun addRestaurantsDataToCards(items: List<NetworkModel.MenuMetadata>) {

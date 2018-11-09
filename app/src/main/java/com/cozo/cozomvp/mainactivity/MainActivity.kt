@@ -298,8 +298,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onPartnerCardViewClicked(partnerID)
     }
 
-    override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, routes: MutableMap<String, List<NetworkModel.Leg>>) {
-        presenter.onPartnersCardDataReady(locations, routes)
+    override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
+        presenter.onPartnersCardDataReady(locations, encodedPolylines)
     }
 
     override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {

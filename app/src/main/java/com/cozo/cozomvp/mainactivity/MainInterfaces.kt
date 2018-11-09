@@ -64,7 +64,7 @@ interface MainInterfaces {
     locations and routes for all available delivery partners as argument.
      */
     fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>,
-                                routes: MutableMap<String, List<NetworkModel.Leg>>)
+                                encodedPolylines: Map<String, String>)
 
     /*
     Informs presenter that payment menu was clicked.
