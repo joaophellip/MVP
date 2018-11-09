@@ -38,8 +38,9 @@ class PaymentActivity : MvpActivity<PaymentView, PaymentPresenter>(), CardListIn
     }
 
     override fun onAddCardButtonClicked() {
-        supportFragmentManager.beginTransaction().replace(R.id.payment_frame,
-                AddCardFragment.newInstance(),AddCardFragment.TAG)
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.payment_frame, AddCardFragment.newInstance(),AddCardFragment.TAG)
                 .commit()
     }
 
@@ -58,9 +59,9 @@ class PaymentActivity : MvpActivity<PaymentView, PaymentPresenter>(), CardListIn
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment)
-        supportFragmentManager.beginTransaction().add(R.id.payment_frame,
-                CardListFragment.newInstance(),CardListFragment.TAG)
-                .addToBackStack(CardListFragment.TAG)
+        supportFragmentManager
+                .beginTransaction()
+                .add(R.id.payment_frame, CardListFragment.newInstance(),CardListFragment.TAG)
                 .commit()
     }
 
