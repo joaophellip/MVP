@@ -9,7 +9,7 @@ interface MapInterfaces {
         fun onUserLocationDataAvailable(location: NetworkModel.Location)
 
         // triggered when delivery partner locations and routes are available.
-        fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, routes: MutableMap<String, List<NetworkModel.Leg>>)
+        fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>)
 
         // triggered when restaurant card view has been clicked
         fun onRestaurantCardViewClicked(restID: String)

@@ -72,7 +72,7 @@ interface ListFragmentView : MvpView {
         delivery partners locations and routes to be relayed to MapFragment as argument.
          */
         fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>,
-                                    routes: MutableMap<String, List<NetworkModel.Leg>>)
+                                    encodedPolylines: Map<String, String>)
 
         /*
         Informs activity that cardview item containing a delivery partner was clicked. Passes
@@ -92,6 +92,10 @@ interface ListFragmentView : MvpView {
          */
         fun onRestCardViewHighlighted(restID: String)
 
+        //fun onPartnerCardViewSwiped()
+        //fun onItemCardViewSwiped()
+        //fun onRestaurantCardViewSwiped()
+        //TODO create above abstract functions and implement their behavior inside MainAcitivty
     }
 }
 

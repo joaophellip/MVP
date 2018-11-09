@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.mainactivity
 
-import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
@@ -160,10 +159,10 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     /*
     Informs map fragment the geolocation and routes of the delivery partners
      */
-    override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, routes: MutableMap<String, List<NetworkModel.Leg>>) {
+    override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
         ifViewAttached {
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
-            mMapFragment.onPartLocationDataAvailable(locations, routes)
+            mMapFragment.onPartLocationDataAvailable(locations, encodedPolylines)
 
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             mListFragment.requestLayout()

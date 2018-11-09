@@ -16,7 +16,7 @@ interface MapFragmentView : MvpView {
     fun onBackPressed()
 
     // callback for when delivery partner locations are available.
-    fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, routes: MutableMap<String, List<NetworkModel.Leg>>)
+    fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>)
 
     // callback for when delivery partner card view has been clicked.
     fun onPartnerCardViewClicked(partnerID: String)
@@ -55,7 +55,7 @@ interface MapFragmentView : MvpView {
     fun restLocation(restID: String) : NetworkModel.Location
 
     // stores routes from delivery partner to user location with a midway point at restaurant
-    fun savePartnerRoutes(routes: MutableMap<String, List<NetworkModel.Leg>>)
+    fun savePartnerRoutes(encodedPolylines: Map<String, String>)
 
     /*
     Interface MainActivityListener contains the abstract methods implemented by MainActivity.kt and

@@ -33,17 +33,6 @@ class PartnersRecyclerViewAdapter(private var listener: OnPlaceClickListener) : 
         holder.bindView(position)
     }
 
-    fun currentPartnerID(position: Int) : String = partnerList[position].info!!.partnerID
-
-    fun positionById(restID: String) : Int? {
-        partnerList.forEachIndexed { index, cardInfoData ->
-            when(cardInfoData.info!!.partnerID){
-                restID -> return index
-            }
-        }
-        return -1
-    }
-
     fun setPartnerList(items: List<NetworkModel.PartnerMetadata>){
         partnerList = items.map { it ->
             CardInfoData(null, it)
@@ -65,15 +54,11 @@ class PartnersRecyclerViewAdapter(private var listener: OnPlaceClickListener) : 
 
         fun bindView(position: Int){
 
-            var totalDeliveryTimeInSeconds : Long = 0
-            partnerList[position].info?.route?.forEach{
-                totalDeliveryTimeInSeconds += it.duration.value
-            }
-
+            val totalDeliveryTimeInSeconds = partnerList[position].info!!.totalDeliveryTime
             this.mPartnerName.text = partnerList[position].info!!.name
             this.mTotalPartnerPrice.text = itemView.context.getString(R.string.deliv_price, String.format("%02.2f", partnerList[position].info!!.totalPrice).replace(".",","))
-            this.mTimeToDelivery.text = itemView.context.getString(R.string.deliv_time, String.format("%2.0f", totalDeliveryTimeInSeconds.toFloat()/60).replace(".",","))
-            this.mRoot.setOnClickListener {_ -> listener.onPartnerCardViewClicked(partnerList[position].info!!.partnerID)}
+            this.mTimeToDelivery.text = itemView.context.getString(R.string.deliv_time, String.format("%2.0f", totalDeliveryTimeInSeconds/60).replace(".",","))
+            this.mRoot.setOnClickListener {listener.onPartnerCardViewClicked(partnerList[position].info!!.partnerID)}
 
             // launch asynchronous process to download image
             ImageDownload(itemView.context, this.mPartnerImage, partnerList[position].info!!.pictureRefID)

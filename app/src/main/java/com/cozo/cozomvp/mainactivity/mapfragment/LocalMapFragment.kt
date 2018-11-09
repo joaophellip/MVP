@@ -25,6 +25,7 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.maps.CameraUpdate
+import com.google.maps.android.PolyUtil
 import java.lang.Math.round
 
 class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), MapFragmentView, OnMapReadyCallback,
@@ -39,7 +40,7 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
     private var mMap: GoogleMap? = null
     private var mRestMarkerMap: MutableMap<String,Marker> = mutableMapOf()
     private var mPartMarkerMap: MutableMap<String,Marker> = mutableMapOf()
-    private var mRoutes: MutableMap<String, ArrayList<LatLng>> = mutableMapOf()
+    private var mRoutes: MutableMap<String, List<LatLng>> = mutableMapOf()
     private var mPolyline: Polyline? = null
     private var isUserLocationAvailable = false
     private var areGesturesEnabled = true
@@ -200,8 +201,8 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         return true
     }
 
-    override fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, routes: MutableMap<String, List<NetworkModel.Leg>>) {
-        presenter.onPartLocationDataAvailable(locations, routes)
+    override fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
+        presenter.onPartLocationDataAvailable(locations, encodedPolylines)
     }
 
     override fun onPartnerCardViewClicked(partnerID: String) {
@@ -261,15 +262,11 @@ class LocalMapFragment : MvpFragment<MapFragmentView, MapFragmentPresenter>(), M
         }
     }
 
-    override fun savePartnerRoutes(routes: MutableMap<String, List<NetworkModel.Leg>>) {
-        routes.forEach {
-            val mRoute: ArrayList<LatLng> = arrayListOf()
-            it.value.forEach {legs ->
-                legs.steps.forEach {steps ->
-                    mRoute.add(LatLng(steps.end_location.lat,steps.end_location.lng))
-                }
-            }
-            mRoutes[it.key] = mRoute
+    override fun savePartnerRoutes(encodedPolylines: Map<String, String>) {
+        //decode polylines and save resulting routes
+        //check: https://stackoverflow.com/questions/15924834/decoding-polyline-with-new-google-maps-api
+        encodedPolylines.forEach{
+            mRoutes[it.key] = PolyUtil.decode(it.value)
         }
     }
 

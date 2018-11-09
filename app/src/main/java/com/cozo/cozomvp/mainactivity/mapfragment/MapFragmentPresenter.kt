@@ -20,10 +20,10 @@ class MapFragmentPresenter : MvpBasePresenter<MapFragmentView>(), MapInterfaces.
         }
     }
 
-    override fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, routes: MutableMap<String, List<NetworkModel.Leg>>) {
+    override fun onPartLocationDataAvailable(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
         ifViewAttached {
             it.addPartnerMarkersToMap(locations)
-            it.savePartnerRoutes(routes)
+            it.savePartnerRoutes(encodedPolylines)
         }
     }
 

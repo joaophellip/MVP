@@ -93,6 +93,9 @@ dependencies {
         exclude group: "com.android.support"
     }
 
+    // Handy extensions to the Google Maps Android API.
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
     // Dependency for masking credit card data
     implementation "com.github.santalu:mask-edittext:1.0.2"
 

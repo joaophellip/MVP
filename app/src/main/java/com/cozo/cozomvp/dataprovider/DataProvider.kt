@@ -48,18 +48,9 @@ class DataProvider : DataProviderInterface.Model {
         mActivity = listener.getActivity()
     }
 
-    private val onConnect = Emitter.Listener {
-        /*mActivity?.runOnUiThread(Runnable {
-            if (!isConnectedToSocket) {
-                Toast.makeText(mActivity?.applicationContext,
-                        "connected to server", Toast.LENGTH_LONG).show()
-                isConnectedToSocket = true
-            }
-        })*/
-    }
+    private val onConnect = Emitter.Listener {}
     private val onDisconnect = Emitter.Listener {
         mActivity?.runOnUiThread {
-            Log.i("socketIODebug", "disconnected")
             isConnectedToSocket = false
             Toast.makeText(mActivity?.applicationContext,
                     "disconnected from server", Toast.LENGTH_LONG).show()
@@ -67,9 +58,6 @@ class DataProvider : DataProviderInterface.Model {
     }
     private val onConnectError = Emitter.Listener {
         mActivity?.runOnUiThread {
-            for (msg in it){
-                Log.e("DeliveryPartnerDebug", "Error connecting. $msg")
-            }
             Toast.makeText(mActivity?.applicationContext,
                     "error while connecting to IO.Socket server", Toast.LENGTH_LONG).show()
         }
@@ -79,21 +67,16 @@ class DataProvider : DataProviderInterface.Model {
             val gson = Gson()
             val result = args[0] as String
 
-            Log.d("DebugHj",result)
-
             val partnerList = gson.fromJson(result, NetworkModel.ListPartners::class.java)
+
             mListenerListFragment.onPartCardDataRequestCompleted(partnerList.items)
         }
     }
     private val onUpdatedListAvailable = Emitter.Listener { args ->
-        mActivity?.runOnUiThread {
-            Log.d("DeliveryPartnerDebug","onUpdatedListAvailable: ${args[0]}")
-        }
+        mActivity?.runOnUiThread {}
     }
     private val onUpdatedLocationsAvailable = Emitter.Listener { args ->
-        mActivity?.runOnUiThread {
-            Log.d("DeliveryPartnerDebug","onUpdatedLocationsAvailable. Args: ${args[0]}")
-        }
+        mActivity?.runOnUiThread {}
     }
 
     override fun provideUserLatLng(idToken: String, isUserDeviceLocationNeeded: Boolean){
