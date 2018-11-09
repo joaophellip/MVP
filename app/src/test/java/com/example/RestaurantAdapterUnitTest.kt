@@ -2,7 +2,6 @@ package com.example
 
 import android.view.View
 import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.RestaurantRecyclerViewAdapter
-import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import org.junit.Assert
 import org.junit.Test
@@ -23,7 +22,7 @@ class RestaurantAdapterUnitTest {
             "Kiosk da Ana",
             restaurantID)
     private val listenerImpl = object: RestaurantRecyclerViewAdapter.OnPlaceClickListener{
-        override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData) {
+        override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata) {
             //
         }
     }

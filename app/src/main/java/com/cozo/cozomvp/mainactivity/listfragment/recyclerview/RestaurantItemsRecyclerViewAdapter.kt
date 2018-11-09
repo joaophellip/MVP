@@ -11,16 +11,15 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
 
 class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<RestaurantItemsRecyclerViewAdapter.RecyclerViewHolder>() {
 
-    private var itemList: List<CardMenuData> = listOf()
+    private var itemList: List<NetworkModel.MenuMetadata> = listOf()
 
     interface OnPlaceClickListener {
-        fun onItemCardViewClicked(sharedView: View, transitionName: String, position: Int, data: CardMenuData)
+        fun onItemCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantItemsRecyclerViewAdapter.RecyclerViewHolder {
@@ -33,21 +32,19 @@ class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListe
         holder.bindView(position)
     }
 
-    fun cardData(restID: String) : CardMenuData? {
+    fun cardData(restID: String): NetworkModel.MenuMetadata? {
         itemList.forEach {
-            if (restID == it.menu?.restaurantID){
+            if (restID == it.restaurantID){
                 return it
             }
         }
         return null
     }
 
-    fun currentRestID(position: Int) : String = itemList[position].menu!!.restaurantID
+    fun currentRestID(position: Int) : String = itemList[position].restaurantID
 
     fun setItemList(items: List<NetworkModel.MenuMetadata>) {
-        itemList = items.map { it ->
-            CardMenuData(null, it)
-        }
+        itemList = items
     }
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -66,15 +63,15 @@ class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListe
 
         fun bindView(position: Int){
 
-            this.foodTitle.text = itemList[position].menu?.name
-            this.foodPrice.text = itemView.context.getString(R.string.price, String.format("%02.2f", itemList[position].menu?.price).replace(".",","))
-            this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,itemList[position].menu?.prepTime)
-            this.foodRating.rating = itemList[position].menu?.rating!!
-            this.ratedBy.text = itemView.context.getString(R.string.ratedBy,itemList[position].menu?.ratedBy)
+            this.foodTitle.text = itemList[position].name
+            this.foodPrice.text = itemView.context.getString(R.string.price, String.format("%02.2f", itemList[position].price).replace(".",","))
+            this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,itemList[position].prepTime)
+            this.foodRating.rating = itemList[position].rating
+            this.ratedBy.text = itemView.context.getString(R.string.ratedBy,itemList[position].ratedBy)
             this.root.setOnClickListener {_ -> listener.onItemCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, itemList[position])}
 
             // launch asynchronous process to download image
-            ImageDownload(itemView.context, this.foodImage,itemList[position].menu!!.pictureRefID)
+            ImageDownload(itemView.context, this.foodImage,itemList[position].pictureRefID)
         }
     }
 

@@ -6,7 +6,7 @@ import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersFragment
-import com.cozo.cozomvp.networkapi.CardMenuData
+import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 /*
@@ -111,8 +111,15 @@ Asks activity to return a reference to current ShowDeliverersFragment object.
     fun setUpNavigationDrawer(userName: String)
 
     /*
-    Asks activity to show a item details view. Passes View and CardMenuData objects as argument.
+    Asks activity to show a item details view inflated with menu layout. Passes View and MenuMetadata
+    objects as argument.
      */
-    fun showOrderDetailsMenu(sharedView: View, data: CardMenuData)
+    fun showOrderDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata)
+
+    /*
+    Asks activity to show a item details view inflated with delivery partner layout. Passes View and PartnerMenuData
+    objects as argument.
+     */
+    fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata)
 
 }

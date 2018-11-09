@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.RecyclerView
 import android.transition.Scene
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -30,7 +29,6 @@ import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.MapFragmentView
 import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersFragment
 import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersView
-import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
 import com.cozo.cozomvp.usercart.OrderModel
@@ -98,13 +96,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun hideOrderDetailsMenu(sharedView: View?) {
         if (sharedView != null){
-            DetailsLayout.hideScene(this, containerLayout!!, sharedView, "name")
+            MenuDetailsLayout.hideScene(this, containerLayout!!, sharedView, "name")
             detailsScene = null
             containerLayout?.removeAllViews()
         }
         else {
             // treat exception
-            Log.d("MVPdebug", "couldn't find view for transition $currentTransitionName")
         }
     }
 
@@ -183,14 +180,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onItemsCardDataReady()
     }
 
-    override fun onItemCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {
-        currentTransitionName = transitionName
-        if (containerLayout == null) {
-            containerLayout = findViewById(R.id.recyclerContainer)
-        }
-        presenter.onRestaurantCardViewClicked(data.menu?.restaurantID!!, sharedView, data)
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
@@ -218,6 +207,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun onCompleteListFragment(listFragment: LocalListFragment){
         mListFragment = listFragment
         isListFragmentReady = true
+        containerLayout = findViewById(R.id.recyclerContainer)
         presenter.onFragmentReady()
     }
 
@@ -294,20 +284,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         return true
     }
 
-    override fun onPartnerCardViewClicked(partnerID: String) {
-        presenter.onPartnerCardViewClicked(partnerID)
-    }
-
     override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
         presenter.onPartnersCardDataReady(locations, encodedPolylines)
-    }
-
-    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: CardMenuData) {
-        currentTransitionName = transitionName
-        if (containerLayout == null) {
-            containerLayout = findViewById(R.id.recyclerContainer)
-        }
-        presenter.onRestaurantCardViewClicked(data.menu!!.restaurantID, sharedView, data)
     }
 
     override fun onRestCardViewHighlighted(restID: String) {
@@ -340,9 +318,43 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
-    override fun showOrderDetailsMenu(sharedView: View, data: CardMenuData){
-        // shows up detailed view
-        detailsScene = DetailsLayout.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
+    override fun showOrderDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata){
+        // shows up detailed view with menu data
+        detailsScene = MenuDetailsLayout.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
+    }
+
+    override fun onItemCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) {
+        currentTransitionName = transitionName
+        presenter.onItemCardViewClicked(sharedView, data)
+    }
+
+    override fun onPartnerCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.PartnerMetadata) {
+        currentTransitionName = transitionName
+        presenter.onPartnerCardViewClicked(sharedView, data)
+    }
+
+    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) {
+        currentTransitionName = transitionName
+        presenter.onRestaurantCardViewClicked(sharedView, data)
+    }
+
+    override fun onItemCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) {
+        currentTransitionName = transitionName
+        presenter.onItemCardViewSwiped(sharedView, data)
+    }
+
+    override fun onPartnerCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.PartnerMetadata) {
+        currentTransitionName = transitionName
+        presenter.onPartnerCardViewSwiped(sharedView, data)
+    }
+
+    override fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) {
+        currentTransitionName = transitionName
+        presenter.onRestaurantCardViewSwiped(sharedView, data)
+    }
+
+    override fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata) {
+        //TODO show view with details about delivery partner
     }
 
     companion object {

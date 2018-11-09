@@ -3,7 +3,7 @@ package com.cozo.cozomvp.mainactivity
 import com.cozo.cozomvp.usercart.OrderModel
 
 /*
-Interface DetailsInterface contains the abstract methods implemented by MainActivity.kt and which are seen by DetailsLayout.
+Interface DetailsInterface contains the abstract methods implemented by MainActivity.kt and which are seen by MenuDetailsLayout.
  */
 interface DetailsInterface {
 
