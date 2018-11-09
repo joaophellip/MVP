@@ -136,10 +136,10 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onPartnerCardViewClicked(partnerID: String) {
+    override fun onPartnerCardViewClicked(sharedView: View, data: NetworkModel.PartnerMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
-            mapFragment.onPartnerCardViewClicked(partnerID)
+            mapFragment.onPartnerCardViewClicked(data.partnerID)
         }
     }
 
@@ -155,9 +155,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    /*
-    Informs map fragment the geolocation and routes of the delivery partners
-     */
     override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
         ifViewAttached {
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
@@ -170,24 +167,48 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    /*
-    Informs map fragment that other markers need to be invisible
-     */
-    override fun onRestaurantCardViewClicked(restID: String, sharedView: View, data: NetworkModel.MenuMetadata) {
+    override fun onRestaurantCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
-            mapFragment.onRestaurantCardViewClicked(restID)
+            mapFragment.onRestaurantCardViewClicked(data.restaurantID)
             it.showOrderDetailsMenu(sharedView, data)
         }
     }
 
-    /*
-    Informs map fragment that marker needs to be highlighted
-     */
+    override fun onItemCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata) {
+        ifViewAttached {
+            val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
+            mapFragment.onRestaurantCardViewClicked(data.restaurantID)
+            it.showOrderDetailsMenu(sharedView, data)
+        }
+    }
+
     override fun onRestCardViewHighlighted(restID: String){
         ifViewAttached {
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mMapFragment.highlightMapMarker(restID)
+        }
+    }
+
+    override fun onItemCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata) {
+        ifViewAttached {
+            val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
+            mapFragment.onRestaurantCardViewClicked(data.restaurantID)
+            it.showOrderDetailsMenu(sharedView, data)
+        }
+    }
+
+    override fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata) {
+        ifViewAttached {
+            it.showPartnerDetailsMenu(sharedView, data)
+        }
+    }
+
+    override fun onRestaurantCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata) {
+        ifViewAttached {
+            val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
+            mapFragment.onRestaurantCardViewClicked(data.restaurantID)
+            it.showOrderDetailsMenu(sharedView, data)
         }
     }
 
@@ -268,5 +289,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             mMapFragment.onUserLocationDataAvailable(location)
         }
     }
+
 
 }

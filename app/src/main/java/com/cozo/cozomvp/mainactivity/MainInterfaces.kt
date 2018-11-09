@@ -53,12 +53,6 @@ interface MainInterfaces {
     fun onShowDeliverersClicked()
 
     /*
-    Informs presenter that a card view for a delivery partner was clicked by user. Passes delivery
-    partner ID associated with the card view as argument.
-     */
-    fun onPartnerCardViewClicked(partnerID: String)
-
-    /*
     Informs presenter that a card view for a delivery partner was clicked by user. Passes the
     locations and routes for all available delivery partners as argument.
      */
@@ -71,20 +65,38 @@ interface MainInterfaces {
     fun onPaymentMenuClicked()
 
     /*
-    Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
-    ID, the menu data, and the View object as argument.
-     */
-    fun onRestaurantCardViewClicked(restID: String, sharedView: View, data: NetworkModel.MenuMetadata)
-
-    /*
-    Informs presenter that a card view for a restaurant was highlighted. Passes the restaurant ID
-    associated with the card view as argument.
-     */
+Informs presenter that a card view for a restaurant was highlighted. Passes the restaurant ID
+associated with the card view as argument.
+ */
     fun onRestCardViewHighlighted(restID: String)
 
     /*
     Informs presenter that settings menu was clicked.
      */
     fun onSettingsMenuClicked()
+
+    /*
+    Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
+    menu data and the View object as argument.
+     */
+    fun onRestaurantCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata)
+
+    /*
+Informs presenter that a card view for a delivery partner was clicked by user. Passes delivery
+partner ID associated with the card view as argument.
+ */
+    fun onPartnerCardViewClicked(sharedView: View, data: NetworkModel.PartnerMetadata)
+
+    /*
+    Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
+    menu data and the View object as argument.
+     */
+    fun onItemCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata)
+
+    fun onItemCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
+
+    fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata)
+
+    fun onRestaurantCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
 
 }

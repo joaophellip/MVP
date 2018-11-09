@@ -23,7 +23,7 @@ import com.cozo.cozomvp.transition.HideDetailsTransitionSet
 import com.cozo.cozomvp.transition.ShowDetailsTransitionSet
 import com.cozo.cozomvp.usercart.CartServiceImpl
 
-class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(context, attrs) {
+class MenuDetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(context, attrs) {
 
     @BindView(R.id.cardview) lateinit var cardViewContainer: CardView
     @BindView(R.id.headerImage) lateinit var imageViewPlaceDetails: ImageView
@@ -52,58 +52,58 @@ class DetailsLayout(context: Context, attrs: AttributeSet) : CoordinatorLayout(c
 
         fun showScene(activity: Activity, container: ViewGroup, sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) : Scene {
             listenerMainActivity = activity as DetailsInterface.MainActivityListener
-            val detailsLayout : DetailsLayout = activity.layoutInflater.inflate(R.layout.item_place, container, false) as DetailsLayout
+            val menuDetailsLayout : MenuDetailsLayout = activity.layoutInflater.inflate(R.layout.coordinator_layout_menu, container, false) as MenuDetailsLayout
 
-            detailsLayout.setData(data)
+            menuDetailsLayout.setData(data)
 
-            val set : Transition = ShowDetailsTransitionSet(activity, transitionName, sharedView, detailsLayout)
+            val set : Transition = ShowDetailsTransitionSet(activity, transitionName, sharedView, menuDetailsLayout)
 
-            val scene = Scene(container, detailsLayout as View)
+            val scene = Scene(container, menuDetailsLayout as View)
             TransitionManager.go(scene, set)
 
             //set Minus Button
-            val minusButton: Button = detailsLayout.findViewById(R.id.MinusButton)
-            minusButton.setOnClickListener { decrementQuantity(detailsLayout) }
+            val minusButton: Button = menuDetailsLayout.findViewById(R.id.MinusButton)
+            minusButton.setOnClickListener { decrementQuantity(menuDetailsLayout) }
 
             //set Plus Button
-            val plusButton: Button = detailsLayout.findViewById(R.id.PlusButton)
-            plusButton.setOnClickListener { incrementQuantity(detailsLayout)}
+            val plusButton: Button = menuDetailsLayout.findViewById(R.id.PlusButton)
+            plusButton.setOnClickListener { incrementQuantity(menuDetailsLayout)}
 
             //set Order Button
-            val orderButton : Button = detailsLayout.findViewById(R.id.OrderButton)
+            val orderButton : Button = menuDetailsLayout.findViewById(R.id.OrderButton)
             orderButton.setOnClickListener {
-                listenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data,getQuantity(detailsLayout), detailsLayout.notesText.text.toString()))
+                listenerMainActivity.onItemAddedToCart(CartServiceImpl.createOrder(data,getQuantity(menuDetailsLayout), menuDetailsLayout.notesText.text.toString()))
             }
 
             return scene
         }
 
         fun hideScene(activity: Activity, container: ViewGroup, sharedView: View, transitionName: String): Scene {
-            val detailsLayout : DetailsLayout = container.findViewById(R.id.bali_details_container) as DetailsLayout
-            val set : Transition = HideDetailsTransitionSet(activity, transitionName, sharedView, detailsLayout)
-            val scene = Scene(container, detailsLayout as View)
+            val menuDetailsLayout : MenuDetailsLayout = container.findViewById(R.id.menu_details_container) as MenuDetailsLayout
+            val set : Transition = HideDetailsTransitionSet(activity, transitionName, sharedView, menuDetailsLayout)
+            val scene = Scene(container, menuDetailsLayout as View)
             TransitionManager.go(scene, set)
             return scene
         }
 
-        private fun incrementQuantity(detailsLayout: DetailsLayout){
-            var auxQuantity : Int = detailsLayout.quantityTextView.text.toString().toInt()
+        private fun incrementQuantity(menuDetailsLayout: MenuDetailsLayout){
+            var auxQuantity : Int = menuDetailsLayout.quantityTextView.text.toString().toInt()
             if(auxQuantity < 10){
                 auxQuantity++
-                detailsLayout.quantityTextView.text = auxQuantity.toString()
+                menuDetailsLayout.quantityTextView.text = auxQuantity.toString()
             }
         }
 
-        private fun decrementQuantity(detailsLayout: DetailsLayout){
-            var auxQuantity : Int = detailsLayout.quantityTextView.text.toString().toInt()
+        private fun decrementQuantity(menuDetailsLayout: MenuDetailsLayout){
+            var auxQuantity : Int = menuDetailsLayout.quantityTextView.text.toString().toInt()
             if(auxQuantity > 1){
                 auxQuantity--
-                detailsLayout.quantityTextView.text = auxQuantity.toString()
+                menuDetailsLayout.quantityTextView.text = auxQuantity.toString()
             }
         }
 
-        private fun getQuantity(detailsLayout: DetailsLayout) : Int{
-            return detailsLayout.quantityTextView.text.toString().toInt()
+        private fun getQuantity(menuDetailsLayout: MenuDetailsLayout) : Int{
+            return menuDetailsLayout.quantityTextView.text.toString().toInt()
         }
     }
 }

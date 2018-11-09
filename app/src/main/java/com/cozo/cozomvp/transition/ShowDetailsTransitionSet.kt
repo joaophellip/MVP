@@ -6,9 +6,9 @@ import android.transition.TransitionInflater
 import android.transition.TransitionSet
 import android.view.View
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.mainactivity.DetailsLayout
+import com.cozo.cozomvp.mainactivity.MenuDetailsLayout
 
-internal class ShowDetailsTransitionSet(private val context: Context, private val transitionName: String, private val fromView: View, private val toView: DetailsLayout) : TransitionSet() {
+internal class ShowDetailsTransitionSet(private val context: Context, private val transitionName: String, private val fromView: View, private val toView: MenuDetailsLayout) : TransitionSet() {
 
     init {
         addTransition(textResize())
