@@ -33,6 +33,17 @@ class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListe
         holder.bindView(position)
     }
 
+    fun cardData(restID: String) : CardMenuData? {
+        itemList.forEach {
+            if (restID == it.menu?.restaurantID){
+                return it
+            }
+        }
+        return null
+    }
+
+    fun currentRestID(position: Int) : String = itemList[position].menu!!.restaurantID
+
     fun setItemList(items: List<NetworkModel.MenuMetadata>) {
         itemList = items.map { it ->
             CardMenuData(null, it)

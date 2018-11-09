@@ -92,6 +92,10 @@ interface ListFragmentView : MvpView {
          */
         fun onRestCardViewHighlighted(restID: String)
 
+        //fun onPartnerCardViewSwiped()
+        //fun onItemCardViewSwiped()
+        //fun onRestaurantCardViewSwiped()
+        //TODO create above abstract functions and implement their behavior inside MainAcitivty
     }
 }
 

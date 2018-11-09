@@ -8,17 +8,12 @@ import android.view.View
 import com.cozo.cozomvp.transition.TransitionUtils
 
 
-class SwipeController() : Callback() {
+class SwipeController(private val listener: OnSwipeClickListener) : Callback() {
 
-    private lateinit var listener: OnSwipeClickListener
     private var mSwipeBack : Boolean = false
 
-    constructor(listener: OnSwipeClickListener) : this(){
-        this.listener = listener
-    }
-
     interface OnSwipeClickListener {
-        fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, position: Int)
+        fun onCardViewSwiped(sharedView: View, transitionName: String, position: Int)
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -40,7 +35,7 @@ class SwipeController() : Callback() {
     }
 
     override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
-        listener.onRestaurantCardViewSwiped(viewHolder?.itemView!!,
+        listener.onCardViewSwiped(viewHolder?.itemView!!,
                 TransitionUtils.getRecyclerViewTransitionName(viewHolder.layoutPosition),
                 viewHolder.layoutPosition)
         super.clearView(recyclerView, viewHolder)
@@ -57,12 +52,16 @@ class SwipeController() : Callback() {
 
     private fun setTouchListener(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                                  dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-        recyclerView.setOnTouchListener(object : View.OnTouchListener {
+        /*recyclerView.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 mSwipeBack = event.action == MotionEvent.ACTION_CANCEL || event.action == MotionEvent.ACTION_UP
                 return false
             }
-        })
+        })*/
+        recyclerView.setOnTouchListener{v, event ->
+            mSwipeBack = event.action == MotionEvent.ACTION_CANCEL || event.action == MotionEvent.ACTION_UP
+            false
+        }
     }
 
 }

@@ -14,7 +14,6 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.CardMenuData
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
-import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 
 class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {
 
@@ -83,7 +82,7 @@ class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) 
             this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,restaurantList[position].menu?.prepTime)
             this.foodRating.rating = restaurantList[position].menu?.rating!!
             this.ratedBy.text = itemView.context.getString(R.string.ratedBy,restaurantList[position].menu?.ratedBy)
-            this.root.setOnClickListener {_ -> listener.onRestaurantCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList[position])}
+            this.root.setOnClickListener {listener.onRestaurantCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList[position])}
 
             // launch asynchronous process to download image
             ImageDownload(itemView.context, this.foodImage, restaurantList[position].menu!!.pictureRefID)
