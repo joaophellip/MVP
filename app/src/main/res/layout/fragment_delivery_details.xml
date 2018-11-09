@@ -69,9 +69,7 @@
                     />
 
             </LinearLayout>
-
         </ScrollView>
-
     </android.support.v7.widget.CardView>
 
 </com.cozo.cozomvp.mainactivity.deliverydetailsfragment.DeliveryDetailsFragment>
