@@ -51,7 +51,7 @@ class AuthModel : AuthInterfaces.Model {
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
-            val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
+            val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)!!
             firebaseAuthWithGoogle(account)
         } catch (e: ApiException) {
             mValidationService.signUserOut(this)

@@ -105,6 +105,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         mRestaurantsRecyclerAdapter = RestaurantRecyclerViewAdapter(this)
         partnersRecyclerAdapter = PartnersRecyclerViewAdapter(this)
         restaurantItemsRecyclerAdapter = RestaurantItemsRecyclerViewAdapter(this)
+        listenerMainActivity.onCompleteListFragment(this)
 
         mRootView = view as ViewGroup
     }
@@ -151,7 +152,6 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         mRecyclerView.addOnScrollListener(scrollHandler)
 
         ButterKnife.bind(mView)
-        listenerMainActivity.onCompleteListFragment(this)
 
         return mView
     }

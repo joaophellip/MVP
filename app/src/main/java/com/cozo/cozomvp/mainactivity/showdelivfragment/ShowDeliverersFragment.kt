@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_show_deliverers.*
+import kotlinx.android.synthetic.main.fragment_bottom_while_choosing_items.*
 
 class ShowDeliverersFragment : MvpFragment<ShowDeliverersView, ShowDeliverersPresenter>(){
 
@@ -18,13 +16,13 @@ class ShowDeliverersFragment : MvpFragment<ShowDeliverersView, ShowDeliverersPre
     override fun createPresenter(): ShowDeliverersPresenter = ShowDeliverersPresenter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_show_deliverers, container, false)
+        return inflater.inflate(R.layout.fragment_bottom_while_choosing_items, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listenerMainActivity.onCompleteShowDeliverersFragment(this)
-        showDeliverersFragment.setOnClickListener { listenerMainActivity.onFragmentClicked()}
+        choosingItemsContainer.setOnClickListener { listenerMainActivity.onFragmentClicked()}
     }
 
     override fun onAttach(context: Context?) {

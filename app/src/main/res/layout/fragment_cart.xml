@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="14dp"
                 android:layout_marginEnd="24dp"
-                android:text="@string/show_delivery_price"
+                android:text="@string/fragment_cart_items_price"
                 android:textColor="@color/cyan_500"
                 android:textSize="22sp"
                 android:textStyle="bold"

@@ -2,7 +2,7 @@ package com.cozo.cozomvp.mainactivity
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
+import com.cozo.cozomvp.mainactivity.bottomfragment.WhileChoosingItemsBottomFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersFragment
@@ -86,9 +86,9 @@ interface MainView : MvpView {
     fun onListFragmentRequired() : LocalListFragment
 
     /*
-    Asks activity to return a reference to current CheckoutFragment object.
+    Asks activity to return a reference to current WhileChoosingItemsBottomFragment object.
      */
-    fun onCheckoutFragmentRequired() : CheckoutFragment
+    fun onCheckoutFragmentRequired() : WhileChoosingItemsBottomFragment
 
     /*
     Asks activity to return a reference to current LocalMapFragment object.
@@ -123,4 +123,6 @@ Asks activity to return a reference to current ShowDeliverersFragment object.
     fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata)
 
     fun updateContainerQuantityText(quantity: Int)
+
+    fun updateContainerCheckoutPrice(currentPrice: String)
 }

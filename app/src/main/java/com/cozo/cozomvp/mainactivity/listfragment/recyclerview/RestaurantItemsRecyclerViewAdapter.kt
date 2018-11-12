@@ -64,14 +64,14 @@ class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListe
         fun bindView(position: Int){
 
             this.foodTitle.text = itemList[position].name
-            this.foodPrice.text = itemView.context.getString(R.string.price, String.format("%02.2f", itemList[position].price).replace(".",","))
+            this.foodPrice.text = itemView.context.getString(R.string.card_price, String.format("%02.2f", itemList[position].price).replace(".",","))
             this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,itemList[position].prepTime)
             this.foodRating.rating = itemList[position].rating
             this.ratedBy.text = itemView.context.getString(R.string.ratedBy,itemList[position].ratedBy)
             this.root.setOnClickListener {_ -> listener.onItemCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, itemList[position])}
 
             // launch asynchronous process to download image
-            ImageDownload(itemView.context, this.foodImage,itemList[position].pictureRefID)
+            ImageDownload(itemView.context, this.foodImage, itemList[position].pictureRefID)
         }
     }
 

@@ -21,8 +21,8 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
 import com.cozo.cozomvp.cartactivity.CartActivity
-import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutFragment
-import com.cozo.cozomvp.mainactivity.checkoutfragment.CheckoutView
+import com.cozo.cozomvp.mainactivity.bottomfragment.WhileChoosingItemsBottomFragment
+import com.cozo.cozomvp.mainactivity.bottomfragment.WhileChoosingItemsBottomView
 import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
@@ -38,21 +38,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
-        MapFragmentView.MainActivityListener, CheckoutView.MainActivityListener,
+        MapFragmentView.MainActivityListener, WhileChoosingItemsBottomView.MainActivityListener,
         ShowDeliverersView.MainActivityListener, DetailsInterface.MainActivityListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     // variables to hold reference to fragments
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
-    private lateinit var mCheckoutFragment: CheckoutFragment
+    private lateinit var mWhileChoosingItemsBottomFragment: WhileChoosingItemsBottomFragment
     private lateinit var mShowDeliverersFragment: ShowDeliverersFragment
 
     // variables to control state
     private var isListFragmentReady = false
     private var isMapFragmentReady = false
     private var isCheckoutFragmentReady = false
-    private var isShowDeliverersFragmentReady = false
+    private var isShowDeliverersFragmentReady = true
 
     // other variables
     private lateinit var currentTransitionName: String
@@ -124,16 +124,16 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun launchCheckoutFragment() {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.actionContainer, CheckoutFragment.newInstance(), CheckoutFragment.TAG)
-                .addToBackStack(CheckoutFragment.TAG)
+                .replace(R.id.actionContainer, WhileChoosingItemsBottomFragment.newInstance(), WhileChoosingItemsBottomFragment.TAG)
+                .addToBackStack(WhileChoosingItemsBottomFragment.TAG)
                 .commit()
     }
 
     override fun launchShowDeliverersFragment() {
-        supportFragmentManager
+        /*supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.actionContainer, ShowDeliverersFragment.newInstance(), ShowDeliverersFragment.TAG)
-                .commit()
+                .commit()*/
     }
 
     override fun displayContainer() {
@@ -199,8 +199,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    override fun onCompleteCheckoutFragment(checkoutFragment: CheckoutFragment) {
-        mCheckoutFragment = checkoutFragment
+    override fun onCompleteWhileChoosingItemsBottomFragment(whileChoosingItemsBottomFragment: WhileChoosingItemsBottomFragment) {
+        mWhileChoosingItemsBottomFragment = whileChoosingItemsBottomFragment
         isCheckoutFragmentReady = true
         presenter.onFragmentReady()
     }
@@ -250,8 +250,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun onShowDeliverersFragmentRequired(): ShowDeliverersFragment = mShowDeliverersFragment
 
-    override fun onCheckoutFragmentRequired(): CheckoutFragment {
-        return mCheckoutFragment
+    override fun onCheckoutFragmentRequired(): WhileChoosingItemsBottomFragment {
+        return mWhileChoosingItemsBottomFragment
     }
 
     override fun onMapMarkerClicked(restID: String) {
@@ -267,8 +267,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onCheckoutClicked() {
-        presenter.onCheckoutClicked()
+    override fun onChoosingItemsDeliveryPartnerButtonClicked() {
+        presenter.onChoosingItemsDeliveryPartnerButtonClicked()
     }
 
     override fun onFragmentClicked() {
@@ -321,6 +321,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun showOrderDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata){
         // shows up detailed view with menu data
+        //containerLayout = findViewById(R.id.recyclerContainer)
         detailsScene = MenuDetailsLayout.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
     }
 
@@ -360,7 +361,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun updateContainerQuantityText(quantity: Int) {
         showQuantityText.text = quantity.toString()
+    }
+
+    override fun updateContainerCheckoutPrice(currentPrice: String) {
         this.displayContainer()
+        mWhileChoosingItemsBottomFragment.updateContainerCheckoutPrice(currentPrice)
     }
 
     companion object {

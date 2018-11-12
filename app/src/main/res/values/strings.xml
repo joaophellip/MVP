@@ -81,7 +81,7 @@
     <!-- Strings for cardview -->
     <string name="ratedBy">( %1$d )</string>
     <string name="prepTime">%1$d min</string>
-    <string name="price">R$ %1$s</string>
+    <string name="card_price">R$ %1$s</string>
 
     <!-- Strings for partners cardview -->
     <string name="deliv_price">R$ %1$s</string>
@@ -102,11 +102,15 @@
     <!-- Strings for checkout fragment -->
     <string name="checkout_message">Checkout</string>
     <string name="checkout_quantity">1</string>
+    <string name="fragment_checkout_price">R$ 5,00</string>
 
-    <!-- Strings for show deliverers fragment -->
-    <string name="show_delivery_message">Delivery</string>
-    <string name="show_delivery_quantity">1</string>
-    <string name="show_delivery_price">R$ 15,00</string>
+    <!-- Strings for fragment_bottom_while_choosing_items.xml -->
+    <string name="fragment_bottom_while_choosing_items_button">Escolher entregador</string>
+    <string name="fragment_bottom_while_choosing_items_default_price">R$ 1,00</string>
+    <string name="fragment_bottom_while_choosing_items_price">R$ %1$s</string>
+
+    <!-- Strings for fragment_cart.xml -->
+    <string name="fragment_cart_items_price">R$ 0,00</string>
 
 </resources>
 

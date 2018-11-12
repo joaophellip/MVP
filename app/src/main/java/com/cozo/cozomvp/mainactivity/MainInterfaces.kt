@@ -45,7 +45,7 @@ interface MainInterfaces {
     /*
     Informs presenter that checkout view was clicked by user
      */
-    fun onCheckoutClicked()
+    fun onChoosingItemsDeliveryPartnerButtonClicked()
 
     /*
     Informs presenter that show deliverers view was clicked by user

@@ -91,7 +91,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
             // informs show deliverer fragment that item was added to cart
             if(checkCheckoutStatus()){
-                //it.onShowDeliverersFragmentRequired().updateContainerQuantityText()
+                var currentPrice = 0f
+                CartServiceImpl.myInstance.getOrders().forEach {
+                    currentPrice += it.totalPrice
+                }
+                it.updateContainerCheckoutPrice(String.format("%02.2f", currentPrice).replace(".",","))
                 it.updateContainerQuantityText(CartServiceImpl.myInstance.getOrders().size)
             }
         }
@@ -120,11 +124,18 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onCheckoutClicked() {
-        ifViewAttached{
+    override fun onChoosingItemsDeliveryPartnerButtonClicked() {
+        ifViewAttached {
+            // update listFragment with delivery partners now. in order to do that,
+            // send restaurant location to listFragment
+            val mListFragment: LocalListFragment = it.onListFragmentRequired()
+            val restID: String = mListFragment.currentRestID(0)
+            provideRestLocation(restID)
+        }
+        /*ifViewAttached{
             // launch cart activity
             it.goToCartActivity()
-        }
+        }*/
     }
 
     override fun onShowDeliverersClicked() {

@@ -75,7 +75,7 @@ class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) 
         fun bindView(position: Int){
 
             this.foodTitle.text = restaurantList[position].name
-            this.foodPrice.text = itemView.context.getString(R.string.price, String.format("%02.2f", restaurantList[position].price).replace(".",","))
+            this.foodPrice.text = itemView.context.getString(R.string.card_price, String.format("%02.2f", restaurantList[position].price).replace(".",","))
             this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,restaurantList[position].prepTime)
             this.foodRating.rating = restaurantList[position].rating
             this.ratedBy.text = itemView.context.getString(R.string.ratedBy,restaurantList[position].ratedBy)
