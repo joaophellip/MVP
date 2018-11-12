@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.mainactivity.MainActivity
-import com.cozo.cozomvp.userprofile.ProfileServiceImpl
-import com.cozo.cozomvp.userprofile.UserModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 
 class EmptyActivity : MvpActivity<EmptyView, EmptyPresenter>(), EmptyView {

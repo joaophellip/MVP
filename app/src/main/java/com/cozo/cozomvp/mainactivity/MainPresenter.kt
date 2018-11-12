@@ -91,7 +91,8 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
             // informs show deliverer fragment that item was added to cart
             if(checkCheckoutStatus()){
-                it.onShowDeliverersFragmentRequired().updateContainerQuantityText()
+                //it.onShowDeliverersFragmentRequired().updateContainerQuantityText()
+                it.updateContainerQuantityText(CartServiceImpl.myInstance.getOrders().size)
             }
         }
     }

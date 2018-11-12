@@ -122,4 +122,5 @@ Asks activity to return a reference to current ShowDeliverersFragment object.
      */
     fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata)
 
+    fun updateContainerQuantityText(quantity: Int)
 }

@@ -41,7 +41,6 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private
                         // get user token
                         user.getIdToken(true).addOnSuccessListener{
                             // create userProfile inside ProfileService
-                            Log.d("UserProfileDebug","linkedWithCredentual - ${user.phoneNumber}")
                             ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
                                     brPhone.countryCode.toString(), user.phoneNumber!!.substring(3,5), user.phoneNumber!!.substring(5))
                         }
@@ -69,7 +68,6 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private
                                                 // get user token
                                                 user.getIdToken(true).addOnSuccessListener{
                                                     // create userProfile inside ProfileService
-                                                    Log.d("UserProfileDebug","signInWithCredential - ${user.phoneNumber}")
                                                     ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
                                                             brPhone.countryCode.toString(), signInData.phoneNumber.substring(3,5), signInData.phoneNumber.substring(5))
                                                 }

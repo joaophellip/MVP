@@ -138,6 +138,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun displayContainer() {
         actionContainer.visibility = View.VISIBLE
+        cartContainer.visibility = View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -355,6 +356,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata) {
         //TODO show view with details about delivery partner
+    }
+
+    override fun updateContainerQuantityText(quantity: Int) {
+        showQuantityText.text = quantity.toString()
+        this.displayContainer()
     }
 
     companion object {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_deliverers.*
 
 class ShowDeliverersFragment : MvpFragment<ShowDeliverersView, ShowDeliverersPresenter>(){
@@ -36,7 +37,7 @@ class ShowDeliverersFragment : MvpFragment<ShowDeliverersView, ShowDeliverersPre
     }
 
     fun updateContainerQuantityText(){
-        showQuantityText.text = CartServiceImpl.myInstance.getOrders().size.toString()
+        //showQuantityText.text = CartServiceImpl.myInstance.getOrders().size.toString()
         listenerMainActivity.displayContainer()
     }
 
