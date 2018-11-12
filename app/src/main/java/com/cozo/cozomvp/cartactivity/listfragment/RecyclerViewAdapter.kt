@@ -1,12 +1,10 @@
 package com.cozo.cozomvp.cartactivity.listfragment
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
@@ -46,7 +44,6 @@ class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerVi
         @BindView(R.id.MinusButton) lateinit var minusButton: Button
         @BindView(R.id.txtQuantity) lateinit var txtQuantity: TextView
         @BindView(R.id.PlusButton) lateinit var plusButton: Button
-        @BindView(R.id.deleteItemButton) lateinit var deleteItemButton: ImageButton
 
         init {
             ButterKnife.bind(this, itemView)
@@ -63,7 +60,6 @@ class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerVi
             // set buttons' triggers
             minusButton.setOnClickListener {listener.onMinusButtonClicked(orders[position].id,orders[position].quantity-1,orders[position].notes) }
             plusButton.setOnClickListener {listener.onPlusButtonClicked(orders[position].id,orders[position].quantity+1,orders[position].notes) }
-            deleteItemButton.setOnClickListener {listener.onDeleteButtonClicked(orders[position]) }
 
         }
     }
