@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cozo.cozomvp.mainactivity.cartfragment.CartFragment
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cozo.cozomvp.mainactivity.cartfragment.CartFragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cartContainer"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
+    android:id="@+id/reviewCartContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="bottom">
+    android:layout_gravity="bottom"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,12 +14,12 @@
         android:layout_gravity="bottom">
 
         <TextView
-            android:id="@+id/cartText"
+            android:id="@+id/reviewCartTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:background="@drawable/ripple_effect"
-            android:text="Sua cesta"
+            android:text="@string/fragment_review_cart_title"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -30,28 +29,29 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/restaurantNameText"
+            android:id="@+id/reviewCartRestaurantName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="TagBurger"
+            android:text="@string/fragment_review_cart_restaurant_name"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cartText" />
+            app:layout_constraintTop_toBottomOf="@+id/reviewCartTitle" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/reviewCartRecyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/restaurantNameText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reviewCartRestaurantName" />
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/reviewCartFooter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -59,43 +59,43 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
-                android:id="@+id/totalLabel"
+                android:id="@+id/reviewCartTotalLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="14dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginBottom="16dp"
-                android:text="Total"
+                android:text="@string/fragment_review_cart_total_label"
                 android:textColor="@color/cyan_500"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:transitionName="titleTransition"
-                app:layout_constraintBottom_toTopOf="@+id/chooseDeliveryButton"
+                app:layout_constraintBottom_toTopOf="@+id/reviewCartChooseDeliveryPartnerButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/cartPriceText"
+                android:id="@+id/reviewCartPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="14dp"
                 android:layout_marginEnd="24dp"
-                android:text="@string/fragment_cart_items_price"
+                android:text="@string/fragment_review_cart_default_price"
                 android:textColor="@color/cyan_500"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/totalLabel"
+                app:layout_constraintBaseline_toBaselineOf="@+id/reviewCartTotalLabel"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
-                android:id="@+id/chooseDeliveryButton"
+                android:id="@+id/reviewCartChooseDeliveryPartnerButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/ripple_effect"
                 android:elevation="18dp"
                 android:pointerIcon="arrow"
-                android:text="Escolher entregador"
+                android:text="@string/fragment_review_cart_button"
                 android:textColor="@color/white100"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

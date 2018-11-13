@@ -35,7 +35,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="Detalhes da entrega"
+            android:text="@string/cardview_delivery_label"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -44,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@id/deliveryDivider" />
 
         <ImageView
-            android:id="@+id/partnerDeliveryImage"
+            android:id="@+id/deliveryPartnerImage"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="24dp"
@@ -57,20 +57,20 @@
             app:layout_constraintTop_toBottomOf="@+id/deliveryLabel" />
 
         <TextView
-            android:id="@+id/partnerDeliveryName"
+            android:id="@+id/deliveryPartnerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="-16dp"
-            android:text="José da Silva"
+            android:text="@string/cardview_delivery_default_delivery_partner_name"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/partnerDeliveryImage"
-            app:layout_constraintTop_toTopOf="@+id/partnerDeliveryImage" />
+            app:layout_constraintStart_toEndOf="@+id/deliveryPartnerImage"
+            app:layout_constraintTop_toTopOf="@+id/deliveryPartnerImage" />
 
         <ImageView
-            android:id="@+id/timeDeliveryImage"
+            android:id="@+id/deliveryTimeImage"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
@@ -78,49 +78,49 @@
             android:layout_marginBottom="-16dp"
             android:contentDescription="TODO"
             android:src="@drawable/baseline_schedule_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/partnerDeliveryImage"
-            app:layout_constraintStart_toEndOf="@+id/partnerDeliveryImage"
-            app:layout_constraintTop_toBottomOf="@+id/partnerDeliveryName" />
+            app:layout_constraintBottom_toBottomOf="@+id/deliveryPartnerImage"
+            app:layout_constraintStart_toEndOf="@+id/deliveryPartnerImage"
+            app:layout_constraintTop_toBottomOf="@+id/deliveryPartnerName" />
 
         <TextView
-            android:id="@+id/timeDeliveryText"
+            android:id="@+id/deliveryTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="13min - 31min"
+            android:text="@string/cardview_delivery_default_delivery_time"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/timeDeliveryImage"
-            app:layout_constraintStart_toEndOf="@+id/timeDeliveryImage"
-            app:layout_constraintTop_toTopOf="@+id/timeDeliveryImage" />
+            app:layout_constraintBottom_toBottomOf="@+id/deliveryTimeImage"
+            app:layout_constraintStart_toEndOf="@+id/deliveryTimeImage"
+            app:layout_constraintTop_toTopOf="@+id/deliveryTimeImage" />
 
 
         <TextView
-            android:id="@+id/priceDeliveryText"
+            android:id="@+id/deliveryPriceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="R$ 7,50"
+            android:text="@string/cardview_delivery_default_delivery_price"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/timeDeliveryText"
-            app:layout_constraintEnd_toStartOf="@+id/moreDeliveryImage"
-            app:layout_constraintTop_toTopOf="@+id/partnerDeliveryName" />
+            app:layout_constraintBottom_toBottomOf="@+id/deliveryTimeText"
+            app:layout_constraintEnd_toStartOf="@+id/deliveryMoreInfoImage"
+            app:layout_constraintTop_toTopOf="@+id/deliveryPartnerName" />
 
         <ImageView
-            android:id="@+id/moreDeliveryImage"
+            android:id="@+id/deliveryMoreInfoImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:contentDescription="TODO"
             android:src="@drawable/baseline_more_vert_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/partnerDeliveryImage"
+            app:layout_constraintBottom_toBottomOf="@+id/deliveryPartnerImage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/partnerDeliveryImage" />
+            app:layout_constraintTop_toTopOf="@+id/deliveryPartnerImage" />
 
     </android.support.constraint.ConstraintLayout>
 

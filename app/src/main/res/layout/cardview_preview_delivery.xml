@@ -35,7 +35,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="Previsão de entrega"
+            android:text="@string/cardview_preview_delivery_label"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -44,12 +44,12 @@
             app:layout_constraintTop_toBottomOf="@id/previewDeliveryDivider" />
 
         <TextView
-            android:id="@+id/previewTimeLabel"
+            android:id="@+id/previewDeliveryTimeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="4dp"
-            android:text="Tempo:"
+            android:text="@string/cardview_preview_delivery_time_label"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -57,28 +57,28 @@
             app:layout_constraintTop_toBottomOf="@+id/previewDeliveryLabel" />
 
         <ImageView
-            android:id="@+id/previewTimeInfo"
+            android:id="@+id/previewDeliveryTimeInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:contentDescription="TODO"
             android:src="@drawable/outline_info_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/previewTimeText"
+            app:layout_constraintBottom_toBottomOf="@+id/previewDeliveryTime"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/previewTimeText" />
+            app:layout_constraintTop_toTopOf="@+id/previewDeliveryTime" />
 
         <TextView
-            android:id="@+id/previewTimeText"
+            android:id="@+id/previewDeliveryTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="13min - 31min"
+            android:text="@string/cardview_preview_delivery_time"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/previewTimeLabel"
-            app:layout_constraintEnd_toStartOf="@+id/previewTimeInfo"
-            app:layout_constraintStart_toEndOf="@+id/previewTimeLabel" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/previewDeliveryTimeLabel"
+            app:layout_constraintEnd_toStartOf="@+id/previewDeliveryTimeInfo"
+            app:layout_constraintStart_toEndOf="@+id/previewDeliveryTimeLabel" />
 
         <TextView
             android:id="@+id/previewDeliveryPriceLabel"
@@ -87,37 +87,37 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Preço:"
+            android:text="@string/cardview_preview_delivery_price_label"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/previewTimeLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/previewDeliveryTimeLabel" />
 
         <TextView
-            android:id="@+id/previewDeliveryPriceText"
+            android:id="@+id/previewDeliveryPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="R$13,00 - R$31,00"
+            android:text="@string/cardview_preview_delivery_price"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/previewDeliveryPriceLabel"
-            app:layout_constraintEnd_toStartOf="@+id/previewPriceInfo"
+            app:layout_constraintEnd_toStartOf="@+id/previewDeliveryPriceInfo"
             app:layout_constraintStart_toEndOf="@+id/previewDeliveryPriceLabel" />
 
         <ImageView
-            android:id="@+id/previewPriceInfo"
+            android:id="@+id/previewDeliveryPriceInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/outline_info_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/previewDeliveryPriceText"
+            app:layout_constraintBottom_toBottomOf="@+id/previewDeliveryPrice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/previewDeliveryPriceText"
+            app:layout_constraintTop_toTopOf="@+id/previewDeliveryPrice"
             android:contentDescription="TODO" />
 
     </android.support.constraint.ConstraintLayout>

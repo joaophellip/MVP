@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.paymentactivity.CardListFragment
 
-import android.graphics.BitmapFactory
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
@@ -41,9 +39,9 @@ class CardListRecyclerAdapter(private var listener: CardListeners): RecyclerView
     }
 
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        @BindView(R.id.cardNumberText) lateinit var cardNumber:TextView
+        @BindView(R.id.creditCardNumber) lateinit var cardNumber:TextView
         @BindView(R.id.nameText) lateinit var cardName:TextView
-        @BindView(R.id.cardNetwork) lateinit var cardNet:ImageView
+        @BindView(R.id.creditCardNetwork) lateinit var cardNet:ImageView
         @BindView(R.id.removeCard) lateinit var deleteCard:ImageView
         @BindView(R.id.cardCardView) lateinit var cardView:CardView
 

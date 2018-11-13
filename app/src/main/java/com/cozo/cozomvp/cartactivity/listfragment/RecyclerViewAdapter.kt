@@ -40,7 +40,7 @@ class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerVi
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         @BindView(R.id.foodImage) lateinit var foodImage: ImageView
-        @BindView(R.id.itemName) lateinit var itemName: TextView
+        @BindView(R.id.orderItemName) lateinit var itemName: TextView
         @BindView(R.id.MinusButton) lateinit var minusButton: Button
         @BindView(R.id.txtQuantity) lateinit var txtQuantity: TextView
         @BindView(R.id.PlusButton) lateinit var plusButton: Button

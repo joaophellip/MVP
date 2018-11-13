@@ -11,12 +11,12 @@
     android:layout_gravity="bottom">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/deliveryCardView"
+        android:id="@+id/deliveryPartnerCardView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        app:cardCornerRadius="8dp"
+        android:layout_gravity="bottom"
         android:background="@color/white"
-        android:layout_gravity="bottom">
+        app:cardCornerRadius="8dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -26,47 +26,45 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/deliveryImage"
+                    android:id="@+id/deliveryPartnerImage"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginBottom="14dp"
-                    android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    />
+                    android:scaleType="centerCrop" />
 
                 <TextView
-                    android:id="@+id/deliveryName"
+                    android:id="@+id/deliveryPartnerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="14dp"
                     android:gravity="center"
-                    tools:text="João"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:transitionName="titleTransition" />
+                    android:transitionName="titleTransition"
+                    tools:text="@string/fragment_delivery_partner_default_partner_name" />
 
                 <EditText
-                    android:id="@+id/deliveryNotesText"
+                    android:id="@+id/deliveryPartnerNotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Adicione um comentário ao entregador..."
                     android:layout_margin="14dp"
+                    android:hint="@string/fragment_delivery_partner_notes"
                     android:inputType="text" />
 
                 <Button
-                    android:id="@+id/deliveryCheckoutButton"
+                    android:id="@+id/deliveryPartnerConfirmButton"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@drawable/ripple_effect"
                     android:elevation="18dp"
                     android:pointerIcon="arrow"
-                    android:text="Checkout"
-                    android:textColor="@color/white100"
-                    />
+                    android:text="@string/fragment_delivery_partner_button"
+                    android:textColor="@color/white100" />
 
             </LinearLayout>
         </ScrollView>
