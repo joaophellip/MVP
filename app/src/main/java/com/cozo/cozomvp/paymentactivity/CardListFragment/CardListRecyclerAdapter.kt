@@ -40,9 +40,8 @@ class CardListRecyclerAdapter(private var listener: CardListeners): RecyclerView
 
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         @BindView(R.id.creditCardNumber) lateinit var cardNumber:TextView
-        @BindView(R.id.nameText) lateinit var cardName:TextView
         @BindView(R.id.creditCardNetwork) lateinit var cardNet:ImageView
-        @BindView(R.id.removeCard) lateinit var deleteCard:ImageView
+        @BindView(R.id.removeCreditCardButton) lateinit var deleteCard:ImageView
         @BindView(R.id.cardCardView) lateinit var cardView:CardView
 
         init {
@@ -51,7 +50,6 @@ class CardListRecyclerAdapter(private var listener: CardListeners): RecyclerView
 
         fun bindView(position: Int){
             this.cardNumber.text = itemView.context.getString(R.string.credit_card_number,cardList[position].cardNumber)
-            this.cardName.text = cardList[position].name
             this.cardNet.image = itemView.context.getDrawable(cardList[position].cardNetwork)
             this.deleteCard.setOnClickListener {
                 listener.deleteCard(cardList[position].cardId)
