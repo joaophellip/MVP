@@ -4,10 +4,7 @@
     android:id="@+id/cardViewPreviewDelivery"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="2dp"
     android:layout_alignParentBottom="true"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_anchorGravity="top">
@@ -16,7 +13,7 @@
         android:id="@+id/previewDeliveryContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="parent">
+        android:background="#EFEFEF">
 
         <View
             android:id="@+id/previewDeliveryDivider"
@@ -52,7 +49,6 @@
             android:text="@string/cardview_preview_delivery_time_label"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/previewDeliveryLabel" />
 
@@ -75,7 +71,6 @@
             android:text="@string/cardview_preview_delivery_time"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/previewDeliveryTimeLabel"
             app:layout_constraintEnd_toStartOf="@+id/previewDeliveryTimeInfo"
             app:layout_constraintStart_toEndOf="@+id/previewDeliveryTimeLabel" />
@@ -90,7 +85,6 @@
             android:text="@string/cardview_preview_delivery_price_label"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/previewDeliveryTimeLabel" />
@@ -103,7 +97,6 @@
             android:text="@string/cardview_preview_delivery_price"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/previewDeliveryPriceLabel"
             app:layout_constraintEnd_toStartOf="@+id/previewDeliveryPriceInfo"
             app:layout_constraintStart_toEndOf="@+id/previewDeliveryPriceLabel" />

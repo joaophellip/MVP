@@ -18,7 +18,9 @@ interface MainInterfaces {
     Informs presenter that back button has been pressed in main activity. Passes position within
     RecyclerView that had been previously inflated as argument.
      */
-    fun onBackPressed(listPosition: Int)
+    fun onBackPressedFromItemDetailsMenu(listPosition: Int)
+
+    fun onBackPressedFromItemReviewCartMenu(listPosition: Int)
 
     /*
     Informs presenter that initial fragments are ready to be used.

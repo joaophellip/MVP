@@ -58,13 +58,6 @@ data class MapPresenterData(
         val restID: String,
         val location: NetworkModel.Location)
 
-data class CardMenuData(
-        var image: Bitmap?,
-        var menu: NetworkModel.MenuMetadata?)
-data class CardInfoData(
-        var image: Bitmap?,
-        var info: NetworkModel.PartnerMetadata?)
-
 data class CreditCardData(
         var externalAPIId: String?,
         var creditCardList: List<PaymentActivity.CardData>

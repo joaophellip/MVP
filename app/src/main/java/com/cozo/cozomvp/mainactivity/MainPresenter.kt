@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
+import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
@@ -40,15 +41,36 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onBackPressed(listPosition: Int) {
+    override fun onBackPressedFromItemDetailsMenu(listPosition: Int) {
         ifViewAttached {
 
+            // force map to update zoom level and add markers back
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mMapFragment.onBackPressed()
+
+            // force recycler view to request layout again
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             mListFragment.requestLayout()
 
+            // ask activity to hide OrderDetailsMenu
             it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
+
+            // ask activity to show recycler view again
+            it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
+        }
+    }
+
+    override fun onBackPressedFromItemReviewCartMenu(listPosition: Int) {
+        ifViewAttached {
+
+            // force recycler view to request layout again
+            val mListFragment: LocalListFragment = it.onListFragmentRequired()
+            mListFragment.requestLayout()
+
+            // ask activity to hide ReviewCartMenu
+            it.hideReviewCartMenu(mListFragment.sharedViewByPosition(listPosition))
+
+            // ask activity to show recycler view again
             it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
         }
     }

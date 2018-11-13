@@ -4,10 +4,6 @@
     android:id="@+id/cardViewOrderLabel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginBottom="12dp"
     android:layout_alignParentBottom="true"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_anchorGravity="top">
@@ -16,9 +12,7 @@
         android:id="@+id/orderContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent">
+        android:background="#EFEFEF">
 
         <View
             android:id="@+id/orderDivider"

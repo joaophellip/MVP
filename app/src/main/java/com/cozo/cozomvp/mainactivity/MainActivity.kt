@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.RecyclerView
 import android.transition.Scene
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -58,15 +59,17 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     // variables to control inflate
     private lateinit var currentTransitionName: String
-    private var containerLayout: ViewGroup? = null
-    private var inflationScene: Scene? = null
+    private var recyclerViewContainerLayout: ViewGroup? = null
+    private var bottomFragmentContainerLayout: ViewGroup? = null
+    private var bottomFragmentInflationScene: Scene? = null
+    private var recyclerViewInflationScene: Scene? = null
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
 
     override fun addRecyclerViewToContainer(recyclerView : RecyclerView) {
-        containerLayout?.removeAllViews()
-        containerLayout?.addView(recyclerView)
+        recyclerViewContainerLayout?.removeAllViews()
+        recyclerViewContainerLayout?.addView(recyclerView)
     }
 
     override fun areInitialFragmentsReady(): Boolean{
@@ -99,13 +102,25 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun hideOrderDetailsMenu(sharedView: View?) {
         if (sharedView != null){
-            ItemDetailsMenu.hideScene(this, containerLayout!!, sharedView, "name")
-            inflationScene = null
-            containerLayout?.removeAllViews()
+            ItemDetailsMenu.hideScene(this, recyclerViewContainerLayout!!, sharedView, "name")
+            recyclerViewInflationScene = null
+            recyclerViewContainerLayout?.removeAllViews()
         }
         else {
             // treat exception
         }
+    }
+
+    override fun hideReviewCartMenu(sharedView: View?) {
+        ReviewCartMenu.hideScene(this, bottomFragmentContainerLayout!!, "name")
+        bottomFragmentInflationScene = null
+        /*if (sharedView != null){
+            ReviewCartMenu.hideScene(this, bottomFragmentContainerLayout!!, sharedView, "name")
+            bottomFragmentInflationScene = null
+        }
+        else {
+            // treat exception
+        }*/
     }
 
     override fun launchListFragment() {
@@ -168,9 +183,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun onBackPressed() {
-        if (inflationScene != null) {
+        if (recyclerViewInflationScene != null) {
             val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
-            presenter.onBackPressed(childPosition)
+            presenter.onBackPressedFromItemDetailsMenu(childPosition)
+        } else if (bottomFragmentInflationScene != null) {
+            val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
+            presenter.onBackPressedFromItemReviewCartMenu(childPosition)
         }
     }
 
@@ -204,13 +222,14 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun onCompleteWhileChoosingItemsBottomFragment(whileChoosingItemsBottomFragment: WhileChoosingItemsBottomFragment) {
         this.whileChoosingItemsBottomFragment = whileChoosingItemsBottomFragment
         isWhileChoosingItemsBottomFragmentReady = true
+        bottomFragmentContainerLayout = findViewById(R.id.listContainer)
         presenter.onInitialFragmentReady()
     }
 
     override fun onCompleteListFragment(listFragment: LocalListFragment){
         mListFragment = listFragment
         isListFragmentReady = true
-        containerLayout = findViewById(R.id.recyclerContainer)
+        recyclerViewContainerLayout = findViewById(R.id.recyclerContainer)
         presenter.onInitialFragmentReady()
     }
 
@@ -315,13 +334,19 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun showItemDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata){
         // show up itemDetailsMenu view
-        inflationScene = ItemDetailsMenu.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
+        recyclerViewContainerLayout?.removeAllViews()
+        recyclerViewInflationScene = ItemDetailsMenu.showScene(this, recyclerViewContainerLayout!!, sharedView, currentTransitionName, data)
     }
 
     override fun showReviewCartMenu(sharedView: View) {
         // show up reviewCartMenu view
+        recyclerViewContainerLayout?.removeAllViews()
+        bottomFragmentContainerLayout?.removeAllViews()
         val fromView: View = findViewById(R.id.actionContainer)
-        inflationScene = ReviewCartMenu.showScene(this, containerLayout!!, fromView, currentTransitionName)
+        bottomFragmentInflationScene = ReviewCartMenu.showScene(this, bottomFragmentContainerLayout!!, fromView, currentTransitionName)
+
+        // hide actionContainer
+        actionContainer.visibility = View.GONE
     }
 
     override fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata) {

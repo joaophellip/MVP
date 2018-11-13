@@ -55,6 +55,8 @@ interface MainView : MvpView {
      */
     fun hideOrderDetailsMenu(sharedView: View?)
 
+    fun hideReviewCartMenu(sharedView: View?)
+
     /*
     Asks activity to launch a new map fragment.
      */

@@ -22,7 +22,6 @@ class ItemDetailsMenu(context: Context, attrs: AttributeSet) : CoordinatorLayout
 
     private fun setData(data: NetworkModel.MenuMetadata){
         title.text = data.name
-        title.text = data.name
         description.text = data.ingredients
         txtQuantity.text = "1"
 
