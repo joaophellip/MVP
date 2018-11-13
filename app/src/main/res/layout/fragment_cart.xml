@@ -67,7 +67,7 @@
                 android:layout_marginBottom="16dp"
                 android:text="Total"
                 android:textColor="@color/cyan_500"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:transitionName="titleTransition"
                 app:layout_constraintBottom_toTopOf="@+id/chooseDeliveryButton"
