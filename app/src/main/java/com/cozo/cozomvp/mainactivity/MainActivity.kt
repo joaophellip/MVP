@@ -52,7 +52,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private var isListFragmentReady = false
     private var isMapFragmentReady = false
     private var isWhileChoosingItemsBottomFragmentReady = false
-    private var isWhileChoosingDeliveryPartnerBottomFragmentReady = false
 
     // other variables
     private lateinit var currentTransitionName: String
@@ -201,26 +200,24 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun onCompleteWhileChoosingItemsBottomFragment(whileChoosingItemsBottomFragment: WhileChoosingItemsBottomFragment) {
         this.whileChoosingItemsBottomFragment = whileChoosingItemsBottomFragment
         isWhileChoosingItemsBottomFragmentReady = true
-        presenter.onFragmentReady()
+        presenter.onInitialFragmentReady()
     }
 
     override fun onCompleteListFragment(listFragment: LocalListFragment){
         mListFragment = listFragment
         isListFragmentReady = true
         containerLayout = findViewById(R.id.recyclerContainer)
-        presenter.onFragmentReady()
+        presenter.onInitialFragmentReady()
     }
 
     override fun onCompleteMapFragment(mapFragment: LocalMapFragment){
         mMapFragment = mapFragment
         isMapFragmentReady = true
-        presenter.onFragmentReady()
+        presenter.onInitialFragmentReady()
     }
 
-    override fun onCompleteShowDeliverersFragment(whileChoosingDeliveryPartnerFragment: WhileChoosingDeliveryPartnerFragment) {
+    override fun onCompleteWhileChoosingDeliveryPartnerFragment(whileChoosingDeliveryPartnerFragment: WhileChoosingDeliveryPartnerFragment) {
         this.whileChoosingDeliveryPartnerFragment = whileChoosingDeliveryPartnerFragment
-        isWhileChoosingDeliveryPartnerBottomFragmentReady = true
-        presenter.onFragmentReady()
     }
 
     override fun onCreate(savedState: Bundle?) {
@@ -270,7 +267,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onChoosingItemsDeliveryPartnerButtonClicked()
     }
 
-    override fun onChoosingDeliveryPartnerCheckoutButtonClicked() {
+    override fun onChoosingDeliveryPartnerConfirmButtonClicked() {
         //checkout flow now
         //presenter.onShowDeliverersClicked()
     }
@@ -365,7 +362,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun updateContainerCheckoutPrice(currentPrice: String) {
         this.displayContainer()
-        whileChoosingItemsBottomFragment.updateContainerCheckoutPrice(currentPrice)
+        whileChoosingItemsBottomFragment.updateContainerPrice(currentPrice)
     }
 
     private fun displayContainer() {

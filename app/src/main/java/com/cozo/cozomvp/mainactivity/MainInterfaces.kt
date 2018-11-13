@@ -21,11 +21,9 @@ interface MainInterfaces {
     fun onBackPressed(listPosition: Int)
 
     /*
-    Informs presenter that both list and map fragments are ready to be used.
+    Informs presenter that initial fragments are ready to be used.
      */
-    fun onFragmentReady(){
-
-    }
+    fun onInitialFragmentReady()
 
     fun onLocationServiceReady()
 

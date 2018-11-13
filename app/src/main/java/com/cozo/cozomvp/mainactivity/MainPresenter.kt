@@ -53,7 +53,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onFragmentReady(){
+    override fun onInitialFragmentReady(){
         ifViewAttached {
             if (it.areInitialFragmentsReady()) {
 

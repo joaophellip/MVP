@@ -7,14 +7,14 @@ interface WhileChoosingDeliveryPartnerView : MvpView {
     interface MainActivityListener{
 
         /*
-        Informs activity that method onViewCreated from WhileChoosingDeliveryPartnerView was invoked. Passes
+        Informs activity that method onViewCreated from WhileChoosingDeliveryPartnerFragment was invoked. Passes
         reference to the class as argument.
          */
-        fun onCompleteShowDeliverersFragment(whileChoosingDeliveryPartnerFragment: WhileChoosingDeliveryPartnerFragment)
+        fun onCompleteWhileChoosingDeliveryPartnerFragment(whileChoosingDeliveryPartnerFragment: WhileChoosingDeliveryPartnerFragment)
 
         /*
         Informs activity that button ChoosingDeliveryPartnerCheckoutButton was clicked.
          */
-        fun onChoosingDeliveryPartnerCheckoutButtonClicked()
+        fun onChoosingDeliveryPartnerConfirmButtonClicked()
     }
 }
