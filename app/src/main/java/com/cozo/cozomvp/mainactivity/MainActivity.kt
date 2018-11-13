@@ -56,12 +56,13 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private var isMapFragmentReady = false
     private var isWhileChoosingItemsBottomFragmentReady = false
 
-    // other variables
+    // variables to control inflate
     private lateinit var currentTransitionName: String
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var userNameText: TextView
     private var containerLayout: ViewGroup? = null
     private var inflationScene: Scene? = null
+
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var userNameText: TextView
 
     override fun addRecyclerViewToContainer(recyclerView : RecyclerView) {
         containerLayout?.removeAllViews()
@@ -319,8 +320,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun showReviewCartMenu(sharedView: View) {
         // show up reviewCartMenu view
-        //inflationScene = ReviewCartMenu.showScene(this, container, sharedView, currentTransitionName)
-        //TODO find a container and the correct transition
+        val fromView: View = findViewById(R.id.actionContainer)
+        inflationScene = ReviewCartMenu.showScene(this, containerLayout!!, fromView, currentTransitionName)
     }
 
     override fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata) {

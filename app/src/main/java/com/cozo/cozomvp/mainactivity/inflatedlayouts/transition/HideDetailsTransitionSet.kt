@@ -7,6 +7,7 @@ import android.transition.TransitionSet
 import android.view.View
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.inflatedlayouts.ItemDetailsMenu
+import kotlinx.android.synthetic.main.coordinator_layout_item_details_menu.view.*
 
 class HideDetailsTransitionSet(private val context: Context, private val transitionName: String, private val fromView: View, private val toView: ItemDetailsMenu) : TransitionSet() {
 
@@ -21,7 +22,7 @@ class HideDetailsTransitionSet(private val context: Context, private val transit
 
     private fun textResize(): Transition {
         return TransitionBuilder(TextResizeTransition())
-            .link(fromView.findViewById(R.id.foodTitle), toView.textViewTitle, titleTransitionName())
+            .link(fromView.findViewById(R.id.foodTitle), toView.title, titleTransitionName())
             .build()
     }
 
@@ -31,8 +32,8 @@ class HideDetailsTransitionSet(private val context: Context, private val transit
 
     private fun shared(): Transition {
         return TransitionBuilder(TransitionInflater.from(context).inflateTransition(android.R.transition.move))
-                .link(fromView.findViewById(R.id.foodImage), toView.imageViewPlaceDetails, transitionName)
-                .link(fromView, toView.cardViewContainer, cardViewTransitionName())
+                .link(fromView.findViewById(R.id.foodImage), toView.headerImage, transitionName)
+                .link(fromView, toView.cardview, cardViewTransitionName())
                 .build()
     }
 
