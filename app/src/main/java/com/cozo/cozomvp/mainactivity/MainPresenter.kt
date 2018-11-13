@@ -74,6 +74,20 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     }
 
+    override fun onWhileChoosingDeliveryPartnerFragmentReady() {
+        ifViewAttached {
+            if(areThereOrdersInCart()) {
+                var currentPrice = 0f
+                CartServiceImpl.myInstance.getOrders().forEach {
+                    currentPrice += it.totalPrice
+                }
+
+                // update price text in whileChoosingDeliveryPartnerFragment
+                it.updateWhileChoosingDeliveryPartnerFragmentReadyPrice(String.format("%02.2f", currentPrice).replace(".", ","))
+            }
+        }
+    }
+
     override fun onItemAddedToCart(position: Int, order: OrderModel) {
         ifViewAttached {
             // add order to CartService singleton
@@ -154,6 +168,13 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
+    override fun onCartContainerClicked(sharedView: View) {
+        ifViewAttached {
+            // start transition from actionContainer to reviewCart coordinator layout
+            it.showReviewCartMenu(sharedView)
+        }
+    }
+
     override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
         ifViewAttached {
             // send list to mapFragment
@@ -176,7 +197,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(sharedView, data)
         }
     }
 
@@ -184,7 +205,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(sharedView, data)
         }
     }
 
@@ -199,7 +220,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(sharedView, data)
         }
     }
 
@@ -213,7 +234,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(sharedView, data)
         }
     }
 
@@ -306,7 +327,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 }
 
                 // update price text in whileChoosingItemsBottomFragment
-                it.updateContainerCheckoutPrice(String.format("%02.2f", currentPrice).replace(".",","))
+                it.updateWhileChoosingItemsBottomFragmentPrice(String.format("%02.2f", currentPrice).replace(".",","))
 
                 // update item count in cartContainer inside MainActivity
                 it.updateCartIconQuantityText(CartServiceImpl.myInstance.getOrders().size)

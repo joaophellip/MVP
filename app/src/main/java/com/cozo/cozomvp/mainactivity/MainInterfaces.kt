@@ -25,6 +25,8 @@ interface MainInterfaces {
      */
     fun onInitialFragmentReady()
 
+    fun onWhileChoosingDeliveryPartnerFragmentReady()
+
     fun onLocationServiceReady()
 
     /*
@@ -61,6 +63,8 @@ interface MainInterfaces {
     Informs presenter that payment menu was clicked.
      */
     fun onPaymentMenuClicked()
+
+    fun onCartContainerClicked(sharedView: View)
 
     /*
 Informs presenter that a card view for a restaurant was highlighted. Passes the restaurant ID

@@ -114,7 +114,7 @@ Asks activity to return a reference to current WhileChoosingDeliveryPartnerFragm
     Asks activity to show a item details view inflated with menu layout. Passes View and MenuMetadata
     objects as argument.
      */
-    fun showOrderDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata)
+    fun showItemDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata)
 
     /*
     Asks activity to show a item details view inflated with delivery partner layout. Passes View and PartnerMenuData
@@ -122,7 +122,11 @@ Asks activity to return a reference to current WhileChoosingDeliveryPartnerFragm
      */
     fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata)
 
+    fun showReviewCartMenu(sharedView: View)
+
     fun updateCartIconQuantityText(quantity: Int)
 
-    fun updateContainerCheckoutPrice(currentPrice: String)
+    fun updateWhileChoosingItemsBottomFragmentPrice(currentPrice: String)
+
+    fun updateWhileChoosingDeliveryPartnerFragmentReadyPrice(currentPrice: String)
 }

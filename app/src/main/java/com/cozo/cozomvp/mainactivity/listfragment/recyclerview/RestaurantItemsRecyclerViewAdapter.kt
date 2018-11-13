@@ -12,7 +12,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.NetworkModel
-import com.cozo.cozomvp.transition.TransitionUtils
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.transition.TransitionUtils
 
 class RestaurantItemsRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<RestaurantItemsRecyclerViewAdapter.RecyclerViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.transition
+package com.cozo.cozomvp.mainactivity.inflatedlayouts.transition
 
 import android.content.Context
 import com.cozo.cozomvp.R

@@ -29,8 +29,11 @@ import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.MapFragmentView
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingDeliveryPartnerFragment
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingDeliveryPartnerView
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.InflatedLayoutsInterface
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.ItemDetailsMenu
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.ReviewCartMenu
 import com.cozo.cozomvp.networkapi.NetworkModel
-import com.cozo.cozomvp.transition.TransitionUtils
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.transition.TransitionUtils
 import com.cozo.cozomvp.usercart.OrderModel
 import com.cozo.cozomvp.userprofileactivity.UserProfileActivity
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
@@ -39,8 +42,8 @@ import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
         MapFragmentView.MainActivityListener, WhileChoosingItemsBottomView.MainActivityListener,
-        WhileChoosingDeliveryPartnerView.MainActivityListener, DetailsInterface.MainActivityListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        WhileChoosingDeliveryPartnerView.MainActivityListener, InflatedLayoutsInterface.MainActivityListener,
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     // variables to hold reference to fragments
     private lateinit var mListFragment : LocalListFragment
@@ -58,7 +61,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var userNameText: TextView
     private var containerLayout: ViewGroup? = null
-    private var detailsScene: Scene? = null
+    private var inflationScene: Scene? = null
 
     override fun addRecyclerViewToContainer(recyclerView : RecyclerView) {
         containerLayout?.removeAllViews()
@@ -95,8 +98,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun hideOrderDetailsMenu(sharedView: View?) {
         if (sharedView != null){
-            MenuDetailsLayout.hideScene(this, containerLayout!!, sharedView, "name")
-            detailsScene = null
+            ItemDetailsMenu.hideScene(this, containerLayout!!, sharedView, "name")
+            inflationScene = null
             containerLayout?.removeAllViews()
         }
         else {
@@ -164,7 +167,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun onBackPressed() {
-        if (detailsScene != null) {
+        if (inflationScene != null) {
             val childPosition : Int = TransitionUtils.getItemPositionFromTransition(currentTransitionName)
             presenter.onBackPressed(childPosition)
         }
@@ -218,6 +221,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun onCompleteWhileChoosingDeliveryPartnerFragment(whileChoosingDeliveryPartnerFragment: WhileChoosingDeliveryPartnerFragment) {
         this.whileChoosingDeliveryPartnerFragment = whileChoosingDeliveryPartnerFragment
+        presenter.onWhileChoosingDeliveryPartnerFragmentReady()
     }
 
     override fun onCreate(savedState: Bundle?) {
@@ -232,6 +236,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             linear_layout_permission_box.visibility = View.GONE
             requestUserPermissionForLocation()
         }
+        cartContainer.setOnClickListener(this)
 
         ButterKnife.bind(this)
     }
@@ -254,22 +259,13 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onMapMarkerClicked(restID)
     }
 
-    override fun onMinusButtonClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
-    }
-
-    override fun onPlusButtonClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun onChoosingItemsDeliveryPartnerButtonClicked() {
         presenter.onChoosingItemsDeliveryPartnerButtonClicked()
     }
 
     override fun onChoosingDeliveryPartnerConfirmButtonClicked() {
-        //checkout flow now
-        //presenter.onShowDeliverersClicked()
+        //before changing this, work on swipe functionality for container + click on CartIcon
+        //TODO: presenter.onSomething()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -316,10 +312,19 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
-    override fun showOrderDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata){
-        // shows up detailed view with menu data
-        //containerLayout = findViewById(R.id.recyclerContainer)
-        detailsScene = MenuDetailsLayout.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
+    override fun showItemDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata){
+        // show up itemDetailsMenu view
+        inflationScene = ItemDetailsMenu.showScene(this, containerLayout!!, sharedView, currentTransitionName, data)
+    }
+
+    override fun showReviewCartMenu(sharedView: View) {
+        // show up reviewCartMenu view
+        //inflationScene = ReviewCartMenu.showScene(this, container, sharedView, currentTransitionName)
+        //TODO find a container and the correct transition
+    }
+
+    override fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata) {
+        //TODO as in showReviewCartMenu
     }
 
     override fun onItemCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) {
@@ -352,17 +357,26 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onRestaurantCardViewSwiped(sharedView, data)
     }
 
-    override fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata) {
-        //TODO show view with details about delivery partner
-    }
-
     override fun updateCartIconQuantityText(quantity: Int) {
         showQuantityText.text = quantity.toString()
     }
 
-    override fun updateContainerCheckoutPrice(currentPrice: String) {
+    override fun updateWhileChoosingItemsBottomFragmentPrice(currentPrice: String) {
         this.displayContainer()
         whileChoosingItemsBottomFragment.updateContainerPrice(currentPrice)
+    }
+
+    override fun updateWhileChoosingDeliveryPartnerFragmentReadyPrice(currentPrice: String) {
+        this.displayContainer()
+        whileChoosingDeliveryPartnerFragment.updateContainerPrice(currentPrice)
+    }
+
+    override fun onClick(v: View?) {
+        when(v){
+            cartContainer -> {
+                presenter.onCartContainerClicked(v!!)
+            }
+        }
     }
 
     private fun displayContainer() {

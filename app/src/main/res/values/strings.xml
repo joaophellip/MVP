@@ -114,7 +114,7 @@
     <string name="fragment_bottom_while_choosing_delivery_partner_default_price">R$ 1,00</string>
     <string name="fragment_bottom_while_choosing_delivery_partner_price">R$ %1$s</string>
 
-    <!-- Strings for fragment_review_cart.xml -->
+    <!-- Strings for coordinator_layout_review_cart_menu.xmlw_cart_menu.xml -->
     <string name="fragment_review_cart_title">Sua cesta</string>
     <string name="fragment_review_cart_restaurant_name">TagBurger</string>
     <string name="fragment_review_cart_total_label">Total</string>

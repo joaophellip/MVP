@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.transition
+package com.cozo.cozomvp.mainactivity.inflatedlayouts.transition
 
 import android.content.Context
 import android.transition.Transition
@@ -6,13 +6,12 @@ import android.transition.TransitionInflater
 import android.transition.TransitionSet
 import android.view.View
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.mainactivity.MenuDetailsLayout
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.ItemDetailsMenu
 
-internal class ShowDetailsTransitionSet(private val context: Context, private val transitionName: String, private val fromView: View, private val toView: MenuDetailsLayout) : TransitionSet() {
+class HideDetailsTransitionSet(private val context: Context, private val transitionName: String, private val fromView: View, private val toView: ItemDetailsMenu) : TransitionSet() {
 
     init {
         addTransition(textResize())
-        addTransition(slide())
         addTransition(shared())
     }
 
@@ -28,14 +27,6 @@ internal class ShowDetailsTransitionSet(private val context: Context, private va
 
     private fun cardViewTransitionName(): String {
         return transitionName + CARD_VIEW_TRANSITION_NAME
-    }
-
-    private fun slide(): Transition {
-        return TransitionBuilder(TransitionInflater.from(context).inflateTransition(R.transition.enter_transition))
-                .excludeTarget(transitionName, true)
-                .excludeTarget(toView.textViewTitle, true)
-                .excludeTarget(toView.cardViewContainer, true)
-                .build()
     }
 
     private fun shared(): Transition {

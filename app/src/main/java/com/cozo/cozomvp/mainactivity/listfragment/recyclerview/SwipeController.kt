@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper.*
 import android.view.MotionEvent
 import android.view.View
-import com.cozo.cozomvp.transition.TransitionUtils
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.transition.TransitionUtils
 
 
 class SwipeController(private val listener: OnSwipeClickListener) : Callback() {

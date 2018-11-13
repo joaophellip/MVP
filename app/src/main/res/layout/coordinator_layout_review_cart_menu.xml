@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cozo.cozomvp.mainactivity.cartfragment.CartFragment xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cozo.cozomvp.mainactivity.inflatedlayouts.ReviewCartMenu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/reviewCartContainer"
     android:layout_width="match_parent"
@@ -104,4 +104,4 @@
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
-</com.cozo.cozomvp.mainactivity.cartfragment.CartFragment>
+</com.cozo.cozomvp.mainactivity.inflatedlayouts.ReviewCartMenu>

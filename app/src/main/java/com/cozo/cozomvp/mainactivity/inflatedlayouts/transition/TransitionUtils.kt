@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.transition
+package com.cozo.cozomvp.mainactivity.inflatedlayouts.transition
 
 object TransitionUtils {
     private const val DEFAULT_TRANSITION_NAME = "transition"
