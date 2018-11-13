@@ -2,10 +2,10 @@ package com.cozo.cozomvp.mainactivity
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.cozo.cozomvp.mainactivity.bottomfragment.WhileChoosingItemsBottomFragment
+import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
-import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersFragment
+import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingDeliveryPartnerFragment
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
@@ -23,7 +23,7 @@ interface MainView : MvpView {
     /*
     Asks activity whether all fragments are ready to be used.
      */
-    fun areFragmentsReady() : Boolean
+    fun areInitialFragmentsReady() : Boolean
 
     /*
     Asks activity to display a message as Toast
@@ -68,12 +68,12 @@ interface MainView : MvpView {
     /*
     Asks activity to launch a new checkout fragment.
      */
-    fun launchCheckoutFragment()
+    fun launchWhileChoosingItemsBottomFragment()
 
     /*
     Asks activity to launch a new show deliverers fragment.
      */
-    fun launchShowDeliverersFragment()
+    fun launchWhileChoosingDeliveryPartnerFragment()
 
     /*
     Asks activity to return a reference to the very activity.
@@ -88,7 +88,7 @@ interface MainView : MvpView {
     /*
     Asks activity to return a reference to current WhileChoosingItemsBottomFragment object.
      */
-    fun onCheckoutFragmentRequired() : WhileChoosingItemsBottomFragment
+    fun onWhileChoosingItemsBottomFragmentRequired() : WhileChoosingItemsBottomFragment
 
     /*
     Asks activity to return a reference to current LocalMapFragment object.
@@ -96,9 +96,9 @@ interface MainView : MvpView {
     fun onMapFragmentRequired() : LocalMapFragment
 
     /*
-Asks activity to return a reference to current ShowDeliverersFragment object.
+Asks activity to return a reference to current WhileChoosingDeliveryPartnerFragment object.
  */
-    fun onShowDeliverersFragmentRequired() : ShowDeliverersFragment
+    fun onShowDeliverersFragmentRequired() : WhileChoosingDeliveryPartnerFragment
 
     /*
     Asks activity to request permission for accessing user location
@@ -122,7 +122,7 @@ Asks activity to return a reference to current ShowDeliverersFragment object.
      */
     fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata)
 
-    fun updateContainerQuantityText(quantity: Int)
+    fun updateCartIconQuantityText(quantity: Int)
 
     fun updateContainerCheckoutPrice(currentPrice: String)
 }

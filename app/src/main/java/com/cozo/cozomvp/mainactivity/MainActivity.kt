@@ -21,14 +21,14 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
 import com.cozo.cozomvp.cartactivity.CartActivity
-import com.cozo.cozomvp.mainactivity.bottomfragment.WhileChoosingItemsBottomFragment
-import com.cozo.cozomvp.mainactivity.bottomfragment.WhileChoosingItemsBottomView
+import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomFragment
+import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomView
 import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.MapFragmentView
-import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersFragment
-import com.cozo.cozomvp.mainactivity.showdelivfragment.ShowDeliverersView
+import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingDeliveryPartnerFragment
+import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingDeliveryPartnerView
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.transition.TransitionUtils
 import com.cozo.cozomvp.usercart.OrderModel
@@ -39,20 +39,20 @@ import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
         MapFragmentView.MainActivityListener, WhileChoosingItemsBottomView.MainActivityListener,
-        ShowDeliverersView.MainActivityListener, DetailsInterface.MainActivityListener,
+        WhileChoosingDeliveryPartnerView.MainActivityListener, DetailsInterface.MainActivityListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     // variables to hold reference to fragments
     private lateinit var mListFragment : LocalListFragment
     private lateinit var mMapFragment : LocalMapFragment
-    private lateinit var mWhileChoosingItemsBottomFragment: WhileChoosingItemsBottomFragment
-    private lateinit var mShowDeliverersFragment: ShowDeliverersFragment
+    private lateinit var whileChoosingItemsBottomFragment: WhileChoosingItemsBottomFragment
+    private lateinit var whileChoosingDeliveryPartnerFragment: WhileChoosingDeliveryPartnerFragment
 
     // variables to control state
     private var isListFragmentReady = false
     private var isMapFragmentReady = false
-    private var isCheckoutFragmentReady = false
-    private var isShowDeliverersFragmentReady = true
+    private var isWhileChoosingItemsBottomFragmentReady = false
+    private var isWhileChoosingDeliveryPartnerBottomFragmentReady = false
 
     // other variables
     private lateinit var currentTransitionName: String
@@ -66,8 +66,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         containerLayout?.addView(recyclerView)
     }
 
-    override fun areFragmentsReady(): Boolean{
-        return isListFragmentReady && isMapFragmentReady && isCheckoutFragmentReady && isShowDeliverersFragmentReady
+    override fun areInitialFragmentsReady(): Boolean{
+        return isListFragmentReady && isMapFragmentReady && isWhileChoosingItemsBottomFragmentReady
     }
 
     override fun createPresenter(): MainPresenter {
@@ -108,7 +108,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun launchListFragment() {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.listContainer, LocalListFragment.newInstance(), LocalListFragment.TAG)
+                .replace(R.id.listContainer, LocalListFragment.newInstance(),
+                        LocalListFragment.TAG)
                 .addToBackStack(LocalListFragment.TAG)
                 .commit()
     }
@@ -116,29 +117,27 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     override fun launchMapFragment() {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.mapContainer, LocalMapFragment.newInstance(), LocalMapFragment.TAG)
+                .replace(R.id.mapContainer, LocalMapFragment.newInstance(),
+                        LocalMapFragment.TAG)
                 .addToBackStack(LocalMapFragment.TAG)
                 .commit()
     }
 
-    override fun launchCheckoutFragment() {
+    override fun launchWhileChoosingItemsBottomFragment() {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.actionContainer, WhileChoosingItemsBottomFragment.newInstance(), WhileChoosingItemsBottomFragment.TAG)
+                .replace(R.id.actionContainer, WhileChoosingItemsBottomFragment.newInstance(),
+                        WhileChoosingItemsBottomFragment.TAG)
                 .addToBackStack(WhileChoosingItemsBottomFragment.TAG)
                 .commit()
     }
 
-    override fun launchShowDeliverersFragment() {
-        /*supportFragmentManager
+    override fun launchWhileChoosingDeliveryPartnerFragment() {
+        supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.actionContainer, ShowDeliverersFragment.newInstance(), ShowDeliverersFragment.TAG)
-                .commit()*/
-    }
-
-    override fun displayContainer() {
-        actionContainer.visibility = View.VISIBLE
-        cartContainer.visibility = View.VISIBLE
+                .replace(R.id.actionContainer, WhileChoosingDeliveryPartnerFragment.newInstance(),
+                        WhileChoosingDeliveryPartnerFragment.TAG)
+                .commit()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -200,8 +199,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun onCompleteWhileChoosingItemsBottomFragment(whileChoosingItemsBottomFragment: WhileChoosingItemsBottomFragment) {
-        mWhileChoosingItemsBottomFragment = whileChoosingItemsBottomFragment
-        isCheckoutFragmentReady = true
+        this.whileChoosingItemsBottomFragment = whileChoosingItemsBottomFragment
+        isWhileChoosingItemsBottomFragmentReady = true
         presenter.onFragmentReady()
     }
 
@@ -218,9 +217,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onFragmentReady()
     }
 
-    override fun onCompleteShowDeliverersFragment(showDeliverersFragment: ShowDeliverersFragment) {
-        mShowDeliverersFragment = showDeliverersFragment
-        isShowDeliverersFragmentReady = true
+    override fun onCompleteShowDeliverersFragment(whileChoosingDeliveryPartnerFragment: WhileChoosingDeliveryPartnerFragment) {
+        this.whileChoosingDeliveryPartnerFragment = whileChoosingDeliveryPartnerFragment
+        isWhileChoosingDeliveryPartnerBottomFragmentReady = true
         presenter.onFragmentReady()
     }
 
@@ -248,10 +247,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         return mMapFragment
     }
 
-    override fun onShowDeliverersFragmentRequired(): ShowDeliverersFragment = mShowDeliverersFragment
+    override fun onShowDeliverersFragmentRequired(): WhileChoosingDeliveryPartnerFragment = whileChoosingDeliveryPartnerFragment
 
-    override fun onCheckoutFragmentRequired(): WhileChoosingItemsBottomFragment {
-        return mWhileChoosingItemsBottomFragment
+    override fun onWhileChoosingItemsBottomFragmentRequired(): WhileChoosingItemsBottomFragment {
+        return whileChoosingItemsBottomFragment
     }
 
     override fun onMapMarkerClicked(restID: String) {
@@ -271,8 +270,9 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onChoosingItemsDeliveryPartnerButtonClicked()
     }
 
-    override fun onFragmentClicked() {
-        presenter.onShowDeliverersClicked()
+    override fun onChoosingDeliveryPartnerCheckoutButtonClicked() {
+        //checkout flow now
+        //presenter.onShowDeliverersClicked()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -359,13 +359,18 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         //TODO show view with details about delivery partner
     }
 
-    override fun updateContainerQuantityText(quantity: Int) {
+    override fun updateCartIconQuantityText(quantity: Int) {
         showQuantityText.text = quantity.toString()
     }
 
     override fun updateContainerCheckoutPrice(currentPrice: String) {
         this.displayContainer()
-        mWhileChoosingItemsBottomFragment.updateContainerCheckoutPrice(currentPrice)
+        whileChoosingItemsBottomFragment.updateContainerCheckoutPrice(currentPrice)
+    }
+
+    private fun displayContainer() {
+        actionContainer.visibility = View.VISIBLE
+        cartContainer.visibility = View.VISIBLE
     }
 
     companion object {

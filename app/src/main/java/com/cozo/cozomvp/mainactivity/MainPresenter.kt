@@ -40,9 +40,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    /*
-    Informs map fragment that all markers need to be visible
-      */
     override fun onBackPressed(listPosition: Int) {
         ifViewAttached {
 
@@ -58,21 +55,20 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onFragmentReady(){
         ifViewAttached {
-            if (it.areFragmentsReady()) {
-                // relays location to fragments
+            if (it.areInitialFragmentsReady()) {
+
+                // relay location to fragments
                 relayUserLocationToListFragment(mUserLocation)
                 relayUserLocationToMapFragment(mUserLocation)
 
-                // displays welcome message to user
+                // display welcome message to user
                 it.displayMessage("Bem vindo " + mUser?.displayName!!)
 
-                // sets up navigation drawer
+                // set up navigation drawer
                 it.setUpNavigationDrawer(mUser.displayName!!)
 
-                // informs checkout fragment that item was added to cart
-                if(checkCheckoutStatus()){
-                    it.onCheckoutFragmentRequired().updateContainer()
-                }
+                // update cart related elements in UI
+                updateCartElementsInUI()
             }
         }
 
@@ -86,25 +82,21 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             // hide OrderDetailsMenu
             it.hideOrderDetailsMenu(it.onListFragmentRequired().sharedViewByPosition(position))
 
-            // informs list fragment that item was added to cart
+            // inform list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
 
-            // informs show deliverer fragment that item was added to cart
-            if(checkCheckoutStatus()){
-                var currentPrice = 0f
-                CartServiceImpl.myInstance.getOrders().forEach {
-                    currentPrice += it.totalPrice
-                }
-                it.updateContainerCheckoutPrice(String.format("%02.2f", currentPrice).replace(".",","))
-                it.updateContainerQuantityText(CartServiceImpl.myInstance.getOrders().size)
-            }
+            // update cart related elements in UI
+            updateCartElementsInUI()
         }
     }
 
     override fun onItemsCardDataReady() {
         ifViewAttached {
+            // force recycler view to request layout
             val listFragment: LocalListFragment = it.onListFragmentRequired()
             listFragment.requestLayout()
+
+            // add recycler view to container
             it.addRecyclerViewToContainer(listFragment.onRecyclerViewRequired())
         }
     }
@@ -114,9 +106,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         retrieveUserLocation("", true)
     }
 
-    /*
-    Informs list fragment that card needs to be highlighted
-      */
     override fun onMapMarkerClicked(restID: String) {
         ifViewAttached {
             val mListFragment : LocalListFragment = it.onListFragmentRequired()
@@ -126,16 +115,14 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onChoosingItemsDeliveryPartnerButtonClicked() {
         ifViewAttached {
-            // update listFragment with delivery partners now. in order to do that,
             // send restaurant location to listFragment
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             val restID: String = mListFragment.currentRestID(0)
             provideRestLocation(restID)
+
+            // launch WhileChoosingDeliveryPartnerFragment
+            it.launchWhileChoosingDeliveryPartnerFragment()
         }
-        /*ifViewAttached{
-            // launch cart activity
-            it.goToCartActivity()
-        }*/
     }
 
     override fun onShowDeliverersClicked() {
@@ -169,13 +156,19 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
         ifViewAttached {
+            // send list to mapFragment
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mMapFragment.onPartLocationDataAvailable(locations, encodedPolylines)
 
+            // force recycler view to request layout
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             mListFragment.requestLayout()
 
+            // add recycler view to container
             it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
+
+            //
+
         }
     }
 
@@ -224,7 +217,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    private fun checkCheckoutStatus() : Boolean{
+    private fun areThereOrdersInCart() : Boolean{
         return (!CartServiceImpl.myInstance.getOrders().isEmpty())
     }
 
@@ -245,22 +238,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 return mActivity
             }
             override fun onUserLocationRequestCompleted(location: NetworkModel.Location) {
-                ifViewAttached {
-                    // stores location
-                    mUserLocation = location
+                // store location
+                mUserLocation = location
 
-                    // launches map fragment
-                    it.launchMapFragment()
-
-                    // launches list fragment
-                    it.launchListFragment()
-
-                    // launches checkout fragment
-                    it.launchCheckoutFragment()
-
-                    // launches show deliverers fragment
-                    it.launchShowDeliverersFragment()
-                }
+                // launch initial fragments
+                launchInitialFragments()
             }
             override fun onUserLocationRequestFailed(e: Throwable) {
                 when (e) {
@@ -302,5 +284,34 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
+    private fun launchInitialFragments(){
+        ifViewAttached {
+            // launches map fragment
+            it.launchMapFragment()
+
+            // launches list fragment
+            it.launchListFragment()
+
+            // launches whileChoosingItemsBottomFragment
+            it.launchWhileChoosingItemsBottomFragment()
+        }
+    }
+
+    private fun updateCartElementsInUI(){
+        ifViewAttached {
+            if(areThereOrdersInCart()){
+                var currentPrice = 0f
+                CartServiceImpl.myInstance.getOrders().forEach {
+                    currentPrice += it.totalPrice
+                }
+
+                // update price text in whileChoosingItemsBottomFragment
+                it.updateContainerCheckoutPrice(String.format("%02.2f", currentPrice).replace(".",","))
+
+                // update item count in cartContainer inside MainActivity
+                it.updateCartIconQuantityText(CartServiceImpl.myInstance.getOrders().size)
+            }
+        }
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.cozo.cozomvp.mainactivity.bottomfragment
+package com.cozo.cozomvp.mainactivity.bottomfragments
 
 import android.content.Context
 import android.os.Bundle
@@ -36,10 +36,6 @@ class WhileChoosingItemsBottomFragment : MvpFragment<WhileChoosingItemsBottomVie
         } catch (e: ClassCastException) {
             throw ClassCastException(activity.toString() + " must implement WhileChoosingItemsBottomView.MainActivityListener ")
         }
-    }
-
-    fun updateContainer(){
-        listenerMainActivity.displayContainer()
     }
 
     fun updateContainerCheckoutPrice(currentPrice: String){
