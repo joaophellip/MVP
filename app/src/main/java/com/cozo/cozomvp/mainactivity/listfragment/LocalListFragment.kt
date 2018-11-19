@@ -93,21 +93,11 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         presenter.dishNew(this.currentRestID(listPosition))
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-
-        //Adds Swipe Controller to recyclerView
-        val mSwipeController = SwipeController(this)
-        val mItemTouchHelper = ItemTouchHelper(mSwipeController)
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
         mRestaurantsRecyclerAdapter = RestaurantRecyclerViewAdapter(this)
         partnersRecyclerAdapter = PartnersRecyclerViewAdapter(this)
         restaurantItemsRecyclerAdapter = RestaurantItemsRecyclerViewAdapter(this)
-        listenerMainActivity.onCompleteListFragment(this)
-
-        mRootView = view as ViewGroup
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -156,12 +146,31 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         return mView
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+        //Adds Swipe Controller to recyclerView
+        val mSwipeController = SwipeController(this)
+        val mItemTouchHelper = ItemTouchHelper(mSwipeController)
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView)
+
+        when(currentCardViewContent){
+            -1 -> listenerMainActivity.onCompleteListFragment(this)
+            DIFF_RESTAURANT_ITEMS -> mRecyclerView.adapter = mRestaurantsRecyclerAdapter
+            SAME_RESTAURANT_ITEMS -> mRecyclerView.adapter = restaurantItemsRecyclerAdapter
+            DELIVERY_PARTNERS -> mRecyclerView.adapter = partnersRecyclerAdapter
+        }
+
+        mRootView = view as ViewGroup
+    }
+
     override fun onActivityRequired(): MainActivity {
         return listenerMainActivity.onActivityRequired()
     }
 
     override fun onItemCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata) {
-        listenerMainActivity.onItemCardViewClicked(sharedView, transitionName, data)
+        listenerMainActivity.onItemCardViewClicked(position, data)
     }
 
     override fun onUserLocationDataAvailable(location: NetworkModel.Location) {
@@ -177,7 +186,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
     }
 
     override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata) {
-        listenerMainActivity.onRestaurantCardViewClicked(sharedView, transitionName, data)
+        listenerMainActivity.onRestaurantCardViewClicked(position, data)
     }
 
     override fun onCardViewSwiped(sharedView: View, transitionName: String, position: Int) {
@@ -201,7 +210,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
     }
 
     override fun onPartnerCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.PartnerMetadata) {
-        listenerMainActivity.onPartnerCardViewClicked(sharedView, transitionName, data)
+        listenerMainActivity.onPartnerCardViewClicked(position, data)
     }
 
     override fun highlightRestCardView(restID: String) {

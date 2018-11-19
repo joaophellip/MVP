@@ -5,9 +5,11 @@ import retrofit2.http.Query
 import io.reactivex.Observable
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
 /**
@@ -18,6 +20,18 @@ interface APIServices{
     @GET("location/main")
     fun userMainLocation(@Query("idToken") idToken: String):
             Observable<NetworkModel.Location>
+
+    @GET("/location/reverse-geocoding/{id}")
+    fun userReverseGeocoding(@Path("id") id: String, @Query("latitude") latitude: Double,
+                             @Query("longitude") longitude: Double) :
+            Observable<UserReverseGeocodingResponse>
+
+    @GET("/location/preview/{id}")
+    fun userPreviewDeliveryInfo(@Path("id") id: String, @Query("userLatitude") userLatitude: Double,
+                                @Query("userLongitude") userLongitude: Double,
+                                @Query("restLatitude") restLatitude: Double,
+                                @Query("restLongitude") restLongitude: Double) :
+            Observable<UserPreviewDeliveryInfoResponse>
 
     @GET ("restaurants/nearest/location")
     fun restaurantsNearestLocation(@Query("radius") radius: Int,

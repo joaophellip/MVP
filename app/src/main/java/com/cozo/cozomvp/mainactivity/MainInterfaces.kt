@@ -18,9 +18,11 @@ interface MainInterfaces {
     Informs presenter that back button has been pressed in main activity. Passes position within
     RecyclerView that had been previously inflated as argument.
      */
-    fun onBackPressedFromItemDetailsMenu(listPosition: Int)
+    fun onBackPressedFromItemDetailsMenu()
 
-    fun onBackPressedFromItemReviewCartMenu(listPosition: Int)
+    fun onBackPressedFromItemReviewCartMenu()
+
+    fun onBackPressedFromListFragment()
 
     /*
     Informs presenter that initial fragments are ready to be used.
@@ -83,19 +85,19 @@ associated with the card view as argument.
     Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
     menu data and the View object as argument.
      */
-    fun onRestaurantCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata)
+    fun onRestaurantCardViewClicked(data: NetworkModel.MenuMetadata)
 
     /*
 Informs presenter that a card view for a delivery partner was clicked by user. Passes delivery
 partner ID associated with the card view as argument.
  */
-    fun onPartnerCardViewClicked(sharedView: View, data: NetworkModel.PartnerMetadata)
+    fun onPartnerCardViewClicked(data: NetworkModel.PartnerMetadata)
 
     /*
     Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
     menu data and the View object as argument.
      */
-    fun onItemCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata)
+    fun onItemCardViewClicked(data: NetworkModel.MenuMetadata)
 
     fun onItemCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
 

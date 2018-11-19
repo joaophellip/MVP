@@ -4,8 +4,7 @@
     android:id="@+id/cardViewRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    app:layout_constraintBottom_toBottomOf="parent"
+    app:cardElevation="0dp"
     app:layout_anchorGravity="top">
 
     <android.support.constraint.ConstraintLayout
@@ -51,7 +50,7 @@
             android:id="@+id/orderMoreInfoItemsImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="12dp"
             android:src="@drawable/baseline_more_vert_black_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/orderItemsPrice"
             app:layout_constraintEnd_toEndOf="parent"

@@ -21,7 +21,7 @@ class ReviewCartMenu(context: Context, attrs: AttributeSet) : CoordinatorLayout(
     private lateinit var recyclerView: RecyclerView
     private lateinit var cartItemsRecyclerViewAdapter: CartItemsRecyclerViewAdapter
 
-    private fun setupRecyclerView(data: List<OrderModel>){
+    /*private fun setupRecyclerView(data: List<OrderModel>){
 
         // initialize RecyclerView object
         val view: View = this
@@ -35,7 +35,7 @@ class ReviewCartMenu(context: Context, attrs: AttributeSet) : CoordinatorLayout(
         cartItemsRecyclerViewAdapter.setOrderList(data)
         recyclerView.adapter = cartItemsRecyclerViewAdapter
 
-    }
+    }*/
 
     companion object {
 
@@ -45,7 +45,7 @@ class ReviewCartMenu(context: Context, attrs: AttributeSet) : CoordinatorLayout(
             listenerMainActivity = activity as InflatedLayoutsInterface.MainActivityListener
             val reviewCartMenu : ReviewCartMenu = activity.layoutInflater.inflate(R.layout.coordinator_layout_review_cart_menu, container, false) as ReviewCartMenu
 
-            reviewCartMenu.setupRecyclerView(CartServiceImpl.myInstance.getOrders())
+            //reviewCartMenu.setupRecyclerView(CartServiceImpl.myInstance.getOrders())
 
             var totalPrice = 0f
             CartServiceImpl.myInstance.getOrders().forEach {

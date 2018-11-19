@@ -4,9 +4,7 @@
     android:id="@+id/cardViewAddress"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:layout_alignParentBottom="true"
-    app:layout_constraintBottom_toBottomOf="parent"
+    app:cardElevation="0dp"
     app:layout_anchorGravity="top">
 
     <android.support.constraint.ConstraintLayout
@@ -14,16 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EFEFEF">
-
-        <View
-            android:id="@+id/addressDivider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="0dp"
-            android:background="#ababab"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/addressLabel"
@@ -38,8 +26,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addressDivider" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/addressText"
@@ -50,8 +37,9 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:text="@string/cardview_address_default_address"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/black"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -63,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/baseline_edit_black_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/addressText"

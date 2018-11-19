@@ -74,3 +74,12 @@ data class SaveFavoriteCreditCardResponse (
 data class AuthorizationToken(
         val encryptedToken: String
 )
+
+data class UserReverseGeocodingResponse (
+        val formattedAddress: String)
+
+data class UserPreviewDeliveryInfoResponse(
+        val minTime: Int,
+        val maxTime: Int,
+        val minPrice: Float,
+        val maxPrice: Float)

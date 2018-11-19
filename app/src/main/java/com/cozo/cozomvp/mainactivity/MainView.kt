@@ -1,12 +1,14 @@
 package com.cozo.cozomvp.mainactivity
 
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingDeliveryPartnerFragment
 import com.cozo.cozomvp.networkapi.NetworkModel
+import com.cozo.cozomvp.usercart.OrderModel
+import com.cozo.cozomvp.usercart.PriceRange
+import com.cozo.cozomvp.usercart.TimeRange
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 /*
@@ -53,9 +55,9 @@ interface MainView : MvpView {
     /*
     Asks activity to hide a item details view. Passes View object as argument.
      */
-    fun hideOrderDetailsMenu(sharedView: View?)
+    fun hideOrderDetailsMenu()
 
-    fun hideReviewCartMenu(sharedView: View?)
+    fun hideReviewCartMenu()
 
     /*
     Asks activity to launch a new map fragment.
@@ -116,15 +118,15 @@ Asks activity to return a reference to current WhileChoosingDeliveryPartnerFragm
     Asks activity to show a item details view inflated with menu layout. Passes View and MenuMetadata
     objects as argument.
      */
-    fun showItemDetailsMenu(sharedView: View, data: NetworkModel.MenuMetadata)
+    fun showItemDetailsMenu(data: NetworkModel.MenuMetadata)
 
     /*
     Asks activity to show a item details view inflated with delivery partner layout. Passes View and PartnerMenuData
     objects as argument.
      */
-    fun showPartnerDetailsMenu(sharedView: View, data: NetworkModel.PartnerMetadata)
+    fun showPartnerDetailsMenu(data: NetworkModel.PartnerMetadata)
 
-    fun showReviewCartMenu(sharedView: View)
+    fun showReviewCartMenu(data: List<OrderModel>, formattedAddress: String, priceRange: PriceRange, timeRange: TimeRange)
 
     fun updateCartIconQuantityText(quantity: Int)
 

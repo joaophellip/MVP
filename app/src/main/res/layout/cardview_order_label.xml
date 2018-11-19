@@ -4,8 +4,7 @@
     android:id="@+id/cardViewOrderLabel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    app:layout_constraintBottom_toBottomOf="parent"
+    app:cardElevation="0dp"
     app:layout_anchorGravity="top">
 
     <android.support.constraint.ConstraintLayout
@@ -13,16 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EFEFEF">
-
-        <View
-            android:id="@+id/orderDivider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="0dp"
-            android:background="#ababab"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/orderLabel"
@@ -38,8 +27,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/orderDivider" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

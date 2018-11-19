@@ -1,17 +1,21 @@
 package com.cozo.cozomvp.mainactivity
 
-import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.networkapi.APIServices
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.cozo.cozomvp.usercart.OrderModel
+import com.cozo.cozomvp.usercart.PriceRange
+import com.cozo.cozomvp.usercart.TimeRange
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
 class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
@@ -20,6 +24,10 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()!!
     private lateinit var mUserLocation: NetworkModel.Location
+    private lateinit var mUserFormattedAddress: String
+    private lateinit var mUserPriceRange: PriceRange
+    private lateinit var mUserTimeRange: TimeRange
+
     private val mUser: FirebaseUser? = mAuth.currentUser
 
     override fun onActivityCreated(isFirstTimeLogged: Boolean) {
@@ -41,7 +49,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onBackPressedFromItemDetailsMenu(listPosition: Int) {
+    override fun onBackPressedFromListFragment() {
+        //do nothing pour l'instant
+    }
+
+    override fun onBackPressedFromItemDetailsMenu() {
         ifViewAttached {
 
             // force map to update zoom level and add markers back
@@ -53,14 +65,14 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             mListFragment.requestLayout()
 
             // ask activity to hide OrderDetailsMenu
-            it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
+            it.hideOrderDetailsMenu()
 
             // ask activity to show recycler view again
             it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
         }
     }
 
-    override fun onBackPressedFromItemReviewCartMenu(listPosition: Int) {
+    override fun onBackPressedFromItemReviewCartMenu() {
         ifViewAttached {
 
             // force recycler view to request layout again
@@ -68,7 +80,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             mListFragment.requestLayout()
 
             // ask activity to hide ReviewCartMenu
-            it.hideReviewCartMenu(mListFragment.sharedViewByPosition(listPosition))
+            it.hideReviewCartMenu()
 
             // ask activity to show recycler view again
             it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
@@ -116,13 +128,14 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             CartServiceImpl.myInstance.addOrder(order)
 
             // hide OrderDetailsMenu
-            it.hideOrderDetailsMenu(it.onListFragmentRequired().sharedViewByPosition(position))
+            it.hideOrderDetailsMenu()
 
             // inform list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
 
             // update cart related elements in UI
             updateCartElementsInUI()
+
         }
     }
 
@@ -171,7 +184,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onPartnerCardViewClicked(sharedView: View, data: NetworkModel.PartnerMetadata) {
+    override fun onPartnerCardViewClicked(data: NetworkModel.PartnerMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onPartnerCardViewClicked(data.partnerID)
@@ -192,8 +205,28 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onCartContainerClicked(sharedView: View) {
         ifViewAttached {
-            // start transition from actionContainer to reviewCart coordinator layout
-            it.showReviewCartMenu(sharedView)
+
+            // get preview delivery time and price from back-end
+            mUser?.getIdToken(true)?.addOnSuccessListener { result ->
+                val mCurrentRestaurantLocation = it.onMapFragmentRequired().
+                        restLocation(CartServiceImpl.myInstance.getOrders()[0].item.restaurantID)
+                val cIdToken: String? = result.token
+                val disposable = APIServices.create().userPreviewDeliveryInfo(
+                        cIdToken!!, mUserLocation.latitude, mUserLocation.longitude,
+                        mCurrentRestaurantLocation.latitude, mCurrentRestaurantLocation.longitude)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ delivInfo ->
+                            mUserPriceRange = PriceRange(delivInfo.minPrice, delivInfo.maxPrice)
+                            mUserTimeRange = TimeRange(delivInfo.minTime, delivInfo.maxTime)
+
+                            // start transition from actionContainer to reviewCart coordinator layout
+                            it.showReviewCartMenu(CartServiceImpl.myInstance.getOrders(),mUserFormattedAddress, mUserPriceRange, mUserTimeRange)
+
+                        },{
+                        })
+            }
+
         }
     }
 
@@ -215,19 +248,19 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata) {
+    override fun onRestaurantCardViewClicked(data: NetworkModel.MenuMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showItemDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
-    override fun onItemCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata) {
+    override fun onItemCardViewClicked(data: NetworkModel.MenuMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showItemDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
@@ -242,13 +275,13 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showItemDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
     override fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata) {
         ifViewAttached {
-            it.showPartnerDetailsMenu(sharedView, data)
+            it.showPartnerDetailsMenu(data)
         }
     }
 
@@ -256,7 +289,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showItemDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
@@ -283,6 +316,19 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             override fun onUserLocationRequestCompleted(location: NetworkModel.Location) {
                 // store location
                 mUserLocation = location
+
+                // get formatted address from current latlng location through back-end
+                mUser?.getIdToken(true)?.addOnSuccessListener { result ->
+                    val cIdToken: String? = result.token
+                    val disposable = APIServices.create().userReverseGeocoding(
+                            cIdToken!!,location.latitude,location.longitude)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                mUserFormattedAddress = it.formattedAddress
+                            },{
+                            })
+                }
 
                 // launch initial fragments
                 launchInitialFragments()

@@ -6,11 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.usercart.OrderModel
+import com.cozo.cozomvp.usercart.PriceRange
+import com.cozo.cozomvp.usercart.ReviewOrderModel
+import com.cozo.cozomvp.usercart.TimeRange
+import kotlinx.android.synthetic.main.cardview_address.view.*
 import kotlinx.android.synthetic.main.cardview_order.view.*
+import kotlinx.android.synthetic.main.cardview_preview_delivery.view.*
 
 class CartItemsRecyclerViewAdapter : RecyclerView.Adapter<CartItemsRecyclerViewAdapter.RecyclerViewHolder>() {
 
     private var itemList: List<OrderModel> = listOf()
+    private lateinit var address: String
+    private lateinit var priceRange: PriceRange
+    private lateinit var timeRange: TimeRange
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         val view: View = when(viewType){
@@ -35,8 +43,11 @@ class CartItemsRecyclerViewAdapter : RecyclerView.Adapter<CartItemsRecyclerViewA
         }
     }
 
-    fun setOrderList(items: List<OrderModel>){
-        itemList = items
+    fun setOrderList(items: ReviewOrderModel){
+        itemList = items.orders
+        address = items.formattedAddress
+        priceRange = items.priceRange
+        timeRange = items.timeRange
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
@@ -47,10 +58,18 @@ class CartItemsRecyclerViewAdapter : RecyclerView.Adapter<CartItemsRecyclerViewA
 
         fun bindView(position: Int){
             when(position){
-                0 -> {}
-                1 -> {}
+                0 -> {
+                    itemView.addressText.text = address
+                }
+                1 -> {
+                    itemView.previewDeliveryTime.text = itemView.context.getString(R.string.cardview_preview_delivery_time,
+                            timeRange.getFormattedMin(),timeRange.getFormattedMax())
+                    itemView.previewDeliveryPrice.text = itemView.context.getString(R.string.cardview_preview_delivery_price,
+                            String.format("%02.2f", priceRange.min).replace(".",","),
+                            String.format("%02.2f", priceRange.max).replace(".",","))
+                }
                 2 -> {}
-                3 -> {
+                else -> {
                     itemView.orderItemName.text = itemList[position-3].item.name
                     itemView.orderItemQuantity.text = itemView.context.getString(R.string.cardview_order_quantity, itemList[position-3].quantity.toString())
                     itemView.orderItemsPrice.text = itemView.context.getString(R.string.cardview_order_items_price, String.format("%02.2f", itemList[position-3].totalPrice).replace(".",","))
