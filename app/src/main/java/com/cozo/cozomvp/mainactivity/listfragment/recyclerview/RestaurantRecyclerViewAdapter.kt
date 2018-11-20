@@ -1,18 +1,12 @@
 package com.cozo.cozomvp.mainactivity.listfragment.recyclerview
 
-import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.networkapi.NetworkModel
-import com.cozo.cozomvp.mainactivity.inflatedlayouts.transition.TransitionUtils
+import kotlinx.android.synthetic.main.cardview.view.*
 
 class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) : RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RecyclerViewHolder>() {
 
@@ -20,7 +14,7 @@ class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) 
     private var restaurantList: List<NetworkModel.MenuMetadata> = listOf()
 
     interface OnPlaceClickListener {
-        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata)
+        fun onRestaurantCardViewClicked(sharedView: View, position: Int, data: NetworkModel.MenuMetadata)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
@@ -59,30 +53,21 @@ class RestaurantRecyclerViewAdapter(private var listener: OnPlaceClickListener) 
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        @BindView(R.id.foodImage) lateinit var foodImage: ImageView
-        @BindView(R.id.foodTitle) lateinit var foodTitle: TextView
-        @BindView(R.id.foodPrice) lateinit var foodPrice: TextView
-        @BindView(R.id.averagePrepTime) lateinit var foodAveragePrepTime: TextView
-        @BindView(R.id.foodRating) lateinit var foodRating: RatingBar
-        @BindView(R.id.ratedBy) lateinit var ratedBy: TextView
-        @BindView(R.id.cardViewRoot) lateinit var root: CardView
-
         init {
             mCardViewLayoutParams = itemView.layoutParams as ViewGroup.MarginLayoutParams   //doing it every time. optimize later
-            ButterKnife.bind(this, itemView)
         }
 
         fun bindView(position: Int){
 
-            this.foodTitle.text = restaurantList[position].name
-            this.foodPrice.text = itemView.context.getString(R.string.card_price, String.format("%02.2f", restaurantList[position].price).replace(".",","))
-            this.foodAveragePrepTime.text = itemView.context.getString(R.string.prepTime,restaurantList[position].prepTime)
-            this.foodRating.rating = restaurantList[position].rating
-            this.ratedBy.text = itemView.context.getString(R.string.ratedBy,restaurantList[position].ratedBy)
-            this.root.setOnClickListener {listener.onRestaurantCardViewClicked(this.root, TransitionUtils.getRecyclerViewTransitionName(position), position, restaurantList[position])}
+            itemView.foodTitle.text = restaurantList[position].name
+            itemView.foodPrice.text = itemView.context.getString(R.string.card_price, String.format("%02.2f", restaurantList[position].price).replace(".",","))
+            itemView.averagePrepTime.text = itemView.context.getString(R.string.prepTime,restaurantList[position].prepTime)
+            itemView.foodRating.rating = restaurantList[position].rating
+            itemView.ratedBy.text = itemView.context.getString(R.string.ratedBy,restaurantList[position].ratedBy)
+            itemView.cardViewRoot.setOnClickListener {listener.onRestaurantCardViewClicked(itemView.cardViewRoot, position, restaurantList[position])}
 
             // launch asynchronous process to download image
-            ImageDownload(itemView.context, this.foodImage, restaurantList[position].pictureRefID)
+            ImageDownload(itemView.context, itemView.foodImage, restaurantList[position].pictureRefID)
 
             // sets raised elevation to first card by default
             when (position) {

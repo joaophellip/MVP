@@ -1,21 +1,22 @@
 package com.cozo.cozomvp.emptyactivity
 
+import com.cozo.cozomvp.authentication.validationservice.ValidationService
 import com.cozo.cozomvp.paymentapi.PaymentAPIService
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import com.cozo.cozomvp.userprofile.UserModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class EmptyPresenter(private var firebaseAuth: FirebaseAuth) : MvpBasePresenter<EmptyView>(),
-        EmptyInterfaces.Presenter, ProfileServiceImpl.ProfileServiceListener {
+class EmptyPresenter : MvpBasePresenter<EmptyView>(),
+        EmptyInterfaces.Presenter, EmptyInterfaces.ModelListener, ProfileServiceImpl.ProfileServiceListener {
 
-    private var model = EmptyModel(firebaseAuth, null)
-    val user : FirebaseUser? = firebaseAuth.currentUser
+    private lateinit var emptyModel: EmptyModel
 
-    override fun onCreatedInvoked(){
+    override fun onCreateInvoked(){
+
+        // retrieve payment API authorization token
+        emptyModel = EmptyModel(this)
         retrieveAuthorizationToken()
     }
 
@@ -29,36 +30,17 @@ class EmptyPresenter(private var firebaseAuth: FirebaseAuth) : MvpBasePresenter<
     }
 
     private fun retrieveAuthorizationToken(){
-        val authToken = model.retrieveAuthorizationToken()
-        val dispose = authToken
+        val dispose = emptyModel.retrieveAuthorizationToken()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {authToken ->
-
-                            //storeAuthToken somewhere
+                            // storeAuthToken in PaymentAPIService
                             PaymentAPIService.setHeader(authToken.encryptedToken)
 
-                            //check if user is logged already. Start either AuthActivity or MainActivity accordingly
-                            ifViewAttached {
-                                if (user == null){
-                                    it.startAuthActivity()
-                                } else {
-                                    // tries to refresh user data from Firebase servers. Forces user to login when refresh
-                                    // fails, which means either Token is no longer valid or User has been deleted/disabled
-                                    // from DB
-                                    user.reload().addOnCompleteListener { mTask ->
-                                        if (mTask.isSuccessful){
-                                            //retrieve userProfile from backend
-                                            user.getIdToken(true).addOnSuccessListener{
-                                                ProfileServiceImpl.getInstance().loadUserProfile(it.token!!, this)
-                                            }
-                                        } else {
-                                            it.startAuthActivity()
-                                        }
-                                    }
-                                }
-                            }
+                            // check whether a user is logged in app
+                            emptyModel.getCurrentUser()
+
                         },
                         {
 
@@ -66,4 +48,17 @@ class EmptyPresenter(private var firebaseAuth: FirebaseAuth) : MvpBasePresenter<
                 )
     }
 
+    override fun userAvailable() {
+        // if user is available, go to Main Activity
+        ifViewAttached {
+            it.startMainActivity()
+        }
+    }
+
+    override fun noUserAvailable() {
+        // if user is not available, go to Auth Activity
+        ifViewAttached {
+            it.startAuthActivity()
+        }
+    }
 }

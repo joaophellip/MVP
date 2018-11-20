@@ -28,7 +28,7 @@ class PaymentActivity : MvpActivity<PaymentView, PaymentPresenter>(), CardListIn
         val phoneNumber = PhoneNumberUtil.getInstance().parse(firebaseUser!!.phoneNumber, "BR")
         val stateCode = phoneNumber.nationalNumber.toString().substring(0,2)
         val number = phoneNumber.nationalNumber.toString().substring(2)
-        return PaymentPresenter(PaymentPresenter.UserInfo(null,firebaseUser!!.uid,firebaseUser.email!!,
+        return PaymentPresenter(PaymentPresenter.UserInfo(null,firebaseUser.uid,firebaseUser.email!!,
                 PaymentPresenter.PhoneNumber(phoneNumber.countryCode.toString(),stateCode, number)))
     }
 

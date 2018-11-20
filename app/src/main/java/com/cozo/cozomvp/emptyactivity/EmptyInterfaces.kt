@@ -2,11 +2,10 @@ package com.cozo.cozomvp.emptyactivity
 
 interface EmptyInterfaces {
     interface Presenter{
-        fun onCreatedInvoked()
-
+        fun onCreateInvoked()
     }
-    interface Model{
-        fun onTokenRetrieveCompleted()
-        fun onTokenRetrieveFailed()
+    interface ModelListener{
+        fun userAvailable()
+        fun noUserAvailable()
     }
 }

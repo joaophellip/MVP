@@ -19,7 +19,7 @@ class ProfileServiceImpl : IProfileService {
     private fun updateUserInfo(user:UserModel) {
         this.user = user
         this.user!!.fundingInstruments.forEach {
-            favoriteCardMapping.put(it.cardId, false)
+            favoriteCardMapping[it.cardId] = false
         }
     }
 
@@ -50,7 +50,7 @@ class ProfileServiceImpl : IProfileService {
     override fun setAvatarUrl(image: File) {
         //send to back end storage
         val avatarUrl = model.uploadUserAvatarToStorage(user!!.ownId, image)
-        val dispose = avatarUrl
+        val disposable = avatarUrl
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -81,7 +81,7 @@ class ProfileServiceImpl : IProfileService {
 
         //store locally in singleton
         user!!.fundingInstruments.add(fundingInstrument)
-        favoriteCardMapping.put(fundingInstrument.cardId, false)
+        favoriteCardMapping[fundingInstrument.cardId] = false
         if(user!!.fundingInstruments.size == 1){
             setFavoriteFundingInstrument(fundingInstrument.cardId)
         }
@@ -96,10 +96,10 @@ class ProfileServiceImpl : IProfileService {
             favoriteCardMapping.forEach {
                 if(it.key != cardId && it.value){
                     favoriteCardMapping.remove(it.key)
-                    favoriteCardMapping.put(it.key, false)
+                    favoriteCardMapping[it.key] = false
                 } else if (it.key == cardId && !it.value){
                     favoriteCardMapping.remove(it.key)
-                    favoriteCardMapping.put(it.key, true)
+                    favoriteCardMapping[it.key] = true
                 }
             }
             return true
@@ -144,10 +144,10 @@ class ProfileServiceImpl : IProfileService {
                             favoriteCardMapping.forEach {vl ->
                                 if(vl.key != it && vl.value){
                                     favoriteCardMapping.remove(vl.key)
-                                    favoriteCardMapping.put(vl.key, false)
+                                    favoriteCardMapping[vl.key] = false
                                 } else if (vl.key == it && !vl.value){
                                     favoriteCardMapping.remove(vl.key)
-                                    favoriteCardMapping.put(vl.key, true)
+                                    favoriteCardMapping[vl.key] = true
                                 }
                             }
                         }

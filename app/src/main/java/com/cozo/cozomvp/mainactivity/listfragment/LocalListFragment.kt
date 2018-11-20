@@ -8,8 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.networkapi.NetworkModel
@@ -27,7 +25,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         RestaurantRecyclerViewAdapter.OnPlaceClickListener, PartnersRecyclerViewAdapter.OnPlaceClickListener,
         SwipeController.OnSwipeClickListener, RestaurantItemsRecyclerViewAdapter.OnPlaceClickListener {
 
-    @BindView(R.id.recyclerView) lateinit var mRecyclerView: RecyclerView
+    lateinit var mRecyclerView: RecyclerView
     private var recyclerViewDx : Int = 0
     private lateinit var mRootView: ViewGroup
 
@@ -141,8 +139,6 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         }
         mRecyclerView.addOnScrollListener(scrollHandler)
 
-        ButterKnife.bind(mView)
-
         return mView
     }
 
@@ -169,7 +165,7 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         return listenerMainActivity.onActivityRequired()
     }
 
-    override fun onItemCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata) {
+    override fun onItemCardViewClicked(sharedView: View, position: Int, data: NetworkModel.MenuMetadata) {
         listenerMainActivity.onItemCardViewClicked(position, data)
     }
 
@@ -185,31 +181,31 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         presenter.onRestLocationDataAvailable(location)
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata) {
+    override fun onRestaurantCardViewClicked(sharedView: View, position: Int, data: NetworkModel.MenuMetadata) {
         listenerMainActivity.onRestaurantCardViewClicked(position, data)
     }
 
-    override fun onCardViewSwiped(sharedView: View, transitionName: String, position: Int) {
+    override fun onCardViewSwiped(sharedView: View, position: Int) {
         when(currentCardViewContent){
             DIFF_RESTAURANT_ITEMS -> {
                 val restID: String = mRestaurantsRecyclerAdapter.currentRestID(position)
                 val data: NetworkModel.MenuMetadata? = mRestaurantsRecyclerAdapter.cardData(restID)
-                listenerMainActivity.onRestaurantCardViewSwiped(sharedView, transitionName, data!!)
+                listenerMainActivity.onRestaurantCardViewSwiped(sharedView, data!!)
             }
             SAME_RESTAURANT_ITEMS -> {
                 val restID: String = restaurantItemsRecyclerAdapter.currentRestID(position)
                 val data: NetworkModel.MenuMetadata? = restaurantItemsRecyclerAdapter.cardData(restID)
-                listenerMainActivity.onItemCardViewSwiped(sharedView, transitionName, data!!)
+                listenerMainActivity.onItemCardViewSwiped(sharedView, data!!)
             }
             DELIVERY_PARTNERS -> {
                 val restID: String = partnersRecyclerAdapter.currentPartnerID(position)
                 val data: NetworkModel.PartnerMetadata? = partnersRecyclerAdapter.cardData(restID)
-                listenerMainActivity.onPartnerCardViewSwiped(sharedView, transitionName, data!!)
+                listenerMainActivity.onPartnerCardViewSwiped(sharedView, data!!)
             }
         }
     }
 
-    override fun onPartnerCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.PartnerMetadata) {
+    override fun onPartnerCardViewClicked(sharedView: View, position: Int, data: NetworkModel.PartnerMetadata) {
         listenerMainActivity.onPartnerCardViewClicked(position, data)
     }
 

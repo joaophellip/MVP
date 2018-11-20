@@ -4,9 +4,9 @@ import com.cozo.cozomvp.networkapi.NetworkModel
 
 data class ReviewOrderModel(
         val formattedAddress: String,
-        val priceRange: PriceRange,
-        val timeRange: TimeRange,
-        val orders: List<OrderModel>)
+        var priceRange: PriceRange?,
+        var timeRange: TimeRange?,
+        var orders: List<OrderModel>)
 
 class TimeRange(private val min: Int, private val max: Int){
 

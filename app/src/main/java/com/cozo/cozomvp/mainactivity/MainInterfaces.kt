@@ -40,6 +40,8 @@ interface MainInterfaces {
 
     fun onItemAddedToCart(position: Int, order: OrderModel)
 
+    fun onItemRemovedFromCart()
+
     /*
     Informs presenter that a restaurant map marker was clicked by user. Passes restaurant ID
     associated with the marker as argument.
@@ -51,10 +53,7 @@ interface MainInterfaces {
      */
     fun onChoosingItemsDeliveryPartnerButtonClicked()
 
-    /*
-    Informs presenter that show deliverers view was clicked by user
-     */
-    fun onShowDeliverersClicked()
+    fun onReviewCartChooseDeliveryPartnerButtonClicked()
 
     /*
     Informs presenter that a card view for a delivery partner was clicked by user. Passes the
@@ -104,5 +103,7 @@ partner ID associated with the card view as argument.
     fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata)
 
     fun onRestaurantCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
+
+    fun onBackStackChanged()
 
 }

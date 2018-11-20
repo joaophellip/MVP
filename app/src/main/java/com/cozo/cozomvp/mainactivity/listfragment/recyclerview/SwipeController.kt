@@ -5,15 +5,13 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper.*
 import android.view.MotionEvent
 import android.view.View
-import com.cozo.cozomvp.mainactivity.inflatedlayouts.transition.TransitionUtils
-
 
 class SwipeController(private val listener: OnSwipeClickListener) : Callback() {
 
     private var mSwipeBack : Boolean = false
 
     interface OnSwipeClickListener {
-        fun onCardViewSwiped(sharedView: View, transitionName: String, position: Int)
+        fun onCardViewSwiped(sharedView: View, position: Int)
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -36,7 +34,6 @@ class SwipeController(private val listener: OnSwipeClickListener) : Callback() {
 
     override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
         listener.onCardViewSwiped(viewHolder?.itemView!!,
-                TransitionUtils.getRecyclerViewTransitionName(viewHolder.layoutPosition),
                 viewHolder.layoutPosition)
         super.clearView(recyclerView, viewHolder)
     }

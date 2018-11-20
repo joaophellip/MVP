@@ -7,8 +7,6 @@ import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingDeliveryPartnerFragment
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.usercart.OrderModel
-import com.cozo.cozomvp.usercart.PriceRange
-import com.cozo.cozomvp.usercart.TimeRange
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 /*
@@ -126,11 +124,15 @@ Asks activity to return a reference to current WhileChoosingDeliveryPartnerFragm
      */
     fun showPartnerDetailsMenu(data: NetworkModel.PartnerMetadata)
 
-    fun showReviewCartMenu(data: List<OrderModel>, formattedAddress: String, priceRange: PriceRange, timeRange: TimeRange)
+    fun showReviewCartMenu(data: List<OrderModel>, formattedAddress: String, userLocation: NetworkModel.Location, restLocation: NetworkModel.Location)
 
     fun updateCartIconQuantityText(quantity: Int)
 
     fun updateWhileChoosingItemsBottomFragmentPrice(currentPrice: String)
 
     fun updateWhileChoosingDeliveryPartnerFragmentReadyPrice(currentPrice: String)
+
+    fun shownFragment() : String
+
+    fun goToChoosingItemDiffRestaurantsState()
 }

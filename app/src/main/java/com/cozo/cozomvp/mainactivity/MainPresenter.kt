@@ -1,20 +1,21 @@
 package com.cozo.cozomvp.mainactivity
 
 import android.view.View
+import com.cozo.cozomvp.authentication.validationservice.PhoneValidationServiceImpl
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.ItemDetailsFragment
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.ReviewCartFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
 import com.cozo.cozomvp.networkapi.APIServices
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.cozo.cozomvp.usercart.OrderModel
-import com.cozo.cozomvp.usercart.PriceRange
-import com.cozo.cozomvp.usercart.TimeRange
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
@@ -22,13 +23,14 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private var mDataProvider: DataProvider? = null
 
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()!!
     private lateinit var mUserLocation: NetworkModel.Location
     private lateinit var mUserFormattedAddress: String
-    private lateinit var mUserPriceRange: PriceRange
-    private lateinit var mUserTimeRange: TimeRange
 
-    private val mUser: FirebaseUser? = mAuth.currentUser
+    private lateinit var disposable: Disposable
+
+    // variable to be used when user clicks on "Choose Deliver Partner" inside ReviewMenu. socketIO
+    // setup can be done until supportFragment popBackStack function is finished.
+    private var backStackDeliv = false
 
     override fun onActivityCreated(isFirstTimeLogged: Boolean) {
         ifViewAttached {
@@ -40,7 +42,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 }
                 false -> {
                     // tries to retrieve user location from model using Firebase TokenID for backend authentication
-                    mUser?.getIdToken(true)?.addOnSuccessListener { result ->
+                    PhoneValidationServiceImpl.getInstance().getCurrentToken().addOnSuccessListener { result ->
                         val idToken: String? = result.token
                         retrieveUserLocation(idToken!!)
                     }
@@ -96,10 +98,10 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 relayUserLocationToMapFragment(mUserLocation)
 
                 // display welcome message to user
-                it.displayMessage("Bem vindo " + mUser?.displayName!!)
+                it.displayMessage("Bem vindo " + ProfileServiceImpl.getInstance().getUserProfile()?.name)
 
                 // set up navigation drawer
-                it.setUpNavigationDrawer(mUser.displayName!!)
+                it.setUpNavigationDrawer(ProfileServiceImpl.getInstance().getUserProfile()?.name!!)
 
                 // update cart related elements in UI
                 updateCartElementsInUI()
@@ -112,8 +114,8 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             if(areThereOrdersInCart()) {
                 var currentPrice = 0f
-                CartServiceImpl.myInstance.getOrders().forEach {
-                    currentPrice += it.totalPrice
+                CartServiceImpl.myInstance.getOrders().forEach { order ->
+                    currentPrice += order.totalPrice
                 }
 
                 // update price text in whileChoosingDeliveryPartnerFragment
@@ -136,6 +138,23 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             // update cart related elements in UI
             updateCartElementsInUI()
 
+        }
+    }
+
+    override fun onItemRemovedFromCart() {
+        ifViewAttached {
+            // update iconCart quantity text
+            val quantity = CartServiceImpl.myInstance.getOrders().size
+            if (quantity > 0){
+                it.updateCartIconQuantityText(quantity)
+            } else {
+                // mimic behavior of reviewCartFragment
+                this.onBackPressedFromItemReviewCartMenu()
+
+                //go back to previous state of choosing items from different restaurants
+                it.goToChoosingItemDiffRestaurantsState()
+
+            }
         }
     }
 
@@ -166,7 +185,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             // send restaurant location to listFragment
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(0)
+            val restID: String = mListFragment.currentRestID(0) //fix this hardCode
             provideRestLocation(restID)
 
             // launch WhileChoosingDeliveryPartnerFragment
@@ -174,13 +193,20 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    override fun onShowDeliverersClicked() {
+    override fun onReviewCartChooseDeliveryPartnerButtonClicked() {
         ifViewAttached {
-            // update listFragment with delivery partners now. in order to do that,
-            // send restaurant location to listFragment
-            val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(0)
-            provideRestLocation(restID)
+            // hide reviewCartFragment
+            it.hideReviewCartMenu()
+
+            // set var to be used when fragment popBackStack finishes
+            backStackDeliv = true
+        }
+    }
+
+    override fun onBackStackChanged() {
+        if(backStackDeliv){
+            // mimic behavior of click on bottom fragment when state is choosing items
+            this.onChoosingItemsDeliveryPartnerButtonClicked()
         }
     }
 
@@ -205,28 +231,31 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onCartContainerClicked(sharedView: View) {
         ifViewAttached {
+                when(it.shownFragment()){
+                LocalListFragment.TAG -> {
+                    // pop up reviewCartFragment
+                    it.showReviewCartMenu(CartServiceImpl.myInstance.getOrders(), mUserFormattedAddress,
+                            mUserLocation,
+                            it.onMapFragmentRequired().restLocation(CartServiceImpl.myInstance.getOrders()[0].item.restaurantID))
+                }
+                ItemDetailsFragment.TAG -> {
+                    // pop up reviewCartFragment
+                    it.showReviewCartMenu(CartServiceImpl.myInstance.getOrders(), mUserFormattedAddress,
+                            mUserLocation,
+                            it.onMapFragmentRequired().restLocation(CartServiceImpl.myInstance.getOrders()[0].item.restaurantID))
+                }
+                ReviewCartFragment.TAG -> {
+                    // force recycler view to request layout again
+                    val mListFragment: LocalListFragment = it.onListFragmentRequired()
+                    mListFragment.requestLayout()
 
-            // get preview delivery time and price from back-end
-            mUser?.getIdToken(true)?.addOnSuccessListener { result ->
-                val mCurrentRestaurantLocation = it.onMapFragmentRequired().
-                        restLocation(CartServiceImpl.myInstance.getOrders()[0].item.restaurantID)
-                val cIdToken: String? = result.token
-                val disposable = APIServices.create().userPreviewDeliveryInfo(
-                        cIdToken!!, mUserLocation.latitude, mUserLocation.longitude,
-                        mCurrentRestaurantLocation.latitude, mCurrentRestaurantLocation.longitude)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ delivInfo ->
-                            mUserPriceRange = PriceRange(delivInfo.minPrice, delivInfo.maxPrice)
-                            mUserTimeRange = TimeRange(delivInfo.minTime, delivInfo.maxTime)
+                    // hide ReviewCartMenu
+                    it.hideReviewCartMenu()
 
-                            // start transition from actionContainer to reviewCart coordinator layout
-                            it.showReviewCartMenu(CartServiceImpl.myInstance.getOrders(),mUserFormattedAddress, mUserPriceRange, mUserTimeRange)
-
-                        },{
-                        })
+                    // show recycler view again
+                    it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
+                }
             }
-
         }
     }
 
@@ -318,9 +347,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 mUserLocation = location
 
                 // get formatted address from current latlng location through back-end
-                mUser?.getIdToken(true)?.addOnSuccessListener { result ->
+                PhoneValidationServiceImpl.getInstance().getCurrentToken().addOnSuccessListener { result ->
                     val cIdToken: String? = result.token
-                    val disposable = APIServices.create().userReverseGeocoding(
+                    disposable = APIServices.create().userReverseGeocoding(
                             cIdToken!!,location.latitude,location.longitude)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -390,8 +419,8 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             if(areThereOrdersInCart()){
                 var currentPrice = 0f
-                CartServiceImpl.myInstance.getOrders().forEach {
-                    currentPrice += it.totalPrice
+                CartServiceImpl.myInstance.getOrders().forEach { order ->
+                    currentPrice += order.totalPrice
                 }
 
                 // update price text in whileChoosingItemsBottomFragment

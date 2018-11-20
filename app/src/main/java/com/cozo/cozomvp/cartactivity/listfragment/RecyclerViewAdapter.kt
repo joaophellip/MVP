@@ -4,14 +4,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.cozo.cozomvp.R
-import com.cozo.cozomvp.mainactivity.listfragment.recyclerview.ImageDownload
 import com.cozo.cozomvp.usercart.OrderModel
+import kotlinx.android.synthetic.main.cardview_order.view.*
 
 class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
@@ -39,27 +34,17 @@ class RecyclerViewAdapter(private val listener: OnRecyclerListener) : RecyclerVi
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        @BindView(R.id.foodImage) lateinit var foodImage: ImageView
-        @BindView(R.id.orderItemName) lateinit var itemName: TextView
-        @BindView(R.id.MinusButton) lateinit var minusButton: Button
-        @BindView(R.id.txtQuantity) lateinit var txtQuantity: TextView
-        @BindView(R.id.PlusButton) lateinit var plusButton: Button
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
-
         fun bindView(position: Int){
 
-            itemName.text = orders[position].item.name
-            txtQuantity.text = orders[position].quantity.toString()
+            itemView.orderItemName.text = orders[position].item.name
+            itemView.orderItemQuantity.text = orders[position].quantity.toString()
 
             // launch asynchronous process to download image
-            ImageDownload(itemView.context, this.foodImage, orders[position].item.pictureRefID)
+            //ImageDownload(itemView.context, itemView.foodImage, orders[position].item.pictureRefID)
 
             // set buttons' triggers
-            minusButton.setOnClickListener {listener.onMinusButtonClicked(orders[position].id,orders[position].quantity-1,orders[position].notes) }
-            plusButton.setOnClickListener {listener.onPlusButtonClicked(orders[position].id,orders[position].quantity+1,orders[position].notes) }
+            //itemView.MinusButton.setOnClickListener {listener.onMinusButtonClicked(orders[position].id,orders[position].quantity-1,orders[position].notes) }
+            //itemView.PlusButton.setOnClickListener {listener.onPlusButtonClicked(orders[position].id,orders[position].quantity+1,orders[position].notes) }
 
         }
     }

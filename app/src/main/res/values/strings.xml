@@ -114,9 +114,9 @@
     <string name="fragment_bottom_while_choosing_delivery_partner_default_price">R$ 1,00</string>
     <string name="fragment_bottom_while_choosing_delivery_partner_price">R$ %1$s</string>
 
-    <!-- Strings for coordinator_layout_review_cart_menu.xmlw_cart_menu.xml -->
+    <!-- Strings for fragment_review_cart_.xml -->
     <string name="fragment_review_cart_title">Sua cesta</string>
-    <string name="fragment_review_cart_restaurant_name">TagBurger</string>
+    <string name="fragment_review_cart_restaurant_name">Bar Cozo</string>
     <string name="fragment_review_cart_subtotal_label">Subtotal</string>
     <string name="fragment_review_cart_default_price">R$ 1,00</string>
     <string name="fragment_review_cart_price">R$ %1$s</string>
@@ -152,6 +152,7 @@
     <string name="cardview_order_default_item_name">Nome do pedido</string>
     <string name="cardview_order_default_items_price">R$ 1,00</string>
     <string name="cardview_order_items_price">R$ %1$s</string>
+    <string name="cardview_order_hidden_comments">Observação: %1$s</string>
 
     <!-- Strings for cardview_order_label.xml -->
     <string name="cardview_order_label_label">Sua compra</string>

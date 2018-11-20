@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE
 import android.support.v4.content.ContextCompat
@@ -16,7 +17,6 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
@@ -38,12 +38,14 @@ import com.cozo.cozomvp.userprofileactivity.UserProfileActivity
 import com.google.gson.Gson
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.cardview_order.*
 import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
         MapFragmentView.MainActivityListener, WhileChoosingItemsBottomView.MainActivityListener,
         WhileChoosingDeliveryPartnerView.MainActivityListener, InflatedLayoutsInterface.MainActivityListener,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
+        FragmentManager.OnBackStackChangedListener  {
 
     // variables to hold reference to fragments
     private lateinit var mListFragment : LocalListFragment
@@ -94,6 +96,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         startActivity(Intent(this, UserProfileActivity::class.java))
     }
 
+    override fun goToChoosingItemDiffRestaurantsState() {
+        // as of now, only containers are hide to force user to select a new item before continuing
+        this.hideContainers()
+    }
+
     override fun hideOrderDetailsMenu() {
         supportFragmentManager.popBackStack(ItemDetailsFragment.TAG, POP_BACK_STACK_INCLUSIVE)
         currentListContainerFragment = LocalListFragment.TAG
@@ -104,6 +111,10 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         currentListContainerFragment = LocalListFragment.TAG
 
         actionContainer.visibility = View.VISIBLE
+    }
+
+    override fun onBackStackChanged() {
+        presenter.onBackStackChanged()
     }
 
     override fun launchListFragment() {
@@ -174,8 +185,18 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
+    override fun shownFragment(): String = currentListContainerFragment
+
     override fun onItemAddedToCart(order: OrderModel) {
         presenter.onItemAddedToCart(childListPosition, order)
+    }
+
+    override fun onItemRemovedFromCart() {
+        presenter.onItemRemovedFromCart()
+    }
+
+    override fun onReviewCartChooseDeliveryPartnerButtonClicked() {
+        presenter.onReviewCartChooseDeliveryPartnerButtonClicked()
     }
 
     override fun onItemsCardDataReady() {
@@ -237,7 +258,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
         cartContainer.setOnClickListener(this)
 
-        ButterKnife.bind(this)
+        supportFragmentManager.addOnBackStackChangedListener(this)
     }
 
     override fun onListFragmentRequired(): LocalListFragment {
@@ -328,12 +349,17 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         currentListContainerFragment = ItemDetailsFragment.TAG
     }
 
-    override fun showReviewCartMenu(data: List<OrderModel>, formattedAddress: String, priceRange: PriceRange, timeRange: TimeRange) {
+    override fun showReviewCartMenu(data: List<OrderModel>, formattedAddress: String, userLocation: NetworkModel.Location, restLocation: NetworkModel.Location) {
         // show up reviewCartMenu view and store reference
         val reviewCartFragment = ReviewCartFragment()
         val bundle = Bundle()
-        val stringedData: String = Gson().toJson(ReviewOrderModel(formattedAddress,priceRange,timeRange,data))
+        val stringedData: String = Gson().toJson(ReviewOrderModel(formattedAddress,null,null,data))
+        val stringedUserLocation: String = Gson().toJson(userLocation)
+        val stringedRestLocation: String = Gson().toJson(restLocation)
+
         bundle.putString("cardview_data", stringedData)
+        bundle.putString("user_location", stringedUserLocation)
+        bundle.putString("restaurant_location", stringedRestLocation)
         reviewCartFragment.arguments = bundle
         supportFragmentManager
                 .beginTransaction()
@@ -367,15 +393,15 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         presenter.onRestaurantCardViewClicked(data)
     }
 
-    override fun onItemCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) {
+    override fun onItemCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata) {
         presenter.onItemCardViewSwiped(sharedView, data)
     }
 
-    override fun onPartnerCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.PartnerMetadata) {
+    override fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata) {
         presenter.onPartnerCardViewSwiped(sharedView, data)
     }
 
-    override fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata) {
+    override fun onRestaurantCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata) {
         presenter.onRestaurantCardViewSwiped(sharedView, data)
     }
 
@@ -384,12 +410,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun updateWhileChoosingItemsBottomFragmentPrice(currentPrice: String) {
-        this.displayContainer()
+        this.displayContainers()
         whileChoosingItemsBottomFragment.updateContainerPrice(currentPrice)
     }
 
     override fun updateWhileChoosingDeliveryPartnerFragmentReadyPrice(currentPrice: String) {
-        this.displayContainer()
+        this.displayContainers()
         whileChoosingDeliveryPartnerFragment.updateContainerPrice(currentPrice)
     }
 
@@ -401,9 +427,14 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         }
     }
 
-    private fun displayContainer() {
+    private fun displayContainers() {
         actionContainer.visibility = View.VISIBLE
         cartContainer.visibility = View.VISIBLE
+    }
+
+    private fun hideContainers(){
+        actionContainer.visibility = View.GONE
+        cartContainer.visibility = View.GONE
     }
 
     companion object {

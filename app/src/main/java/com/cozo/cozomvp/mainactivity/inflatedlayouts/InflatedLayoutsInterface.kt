@@ -14,6 +14,9 @@ interface InflatedLayoutsInterface {
          */
         fun onItemAddedToCart(order: OrderModel)
 
+        fun onReviewCartChooseDeliveryPartnerButtonClicked()
+
+        fun onItemRemovedFromCart()
     }
 
 }
