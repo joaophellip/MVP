@@ -1,25 +1,36 @@
 package com.cozo.cozomvp.mainactivity
 
 import android.view.View
+import com.cozo.cozomvp.authentication.validationservice.PhoneValidationServiceImpl
 import com.cozo.cozomvp.dataprovider.DataProvider
 import com.cozo.cozomvp.dataprovider.DataProviderInterface
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.ItemDetailsFragment
+import com.cozo.cozomvp.mainactivity.inflatedlayouts.ReviewCartFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
+import com.cozo.cozomvp.networkapi.APIServices
 import com.cozo.cozomvp.networkapi.NetworkModel
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.cozo.cozomvp.usercart.OrderModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
 class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private var mDataProvider: DataProvider? = null
 
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()!!
     private lateinit var mUserLocation: NetworkModel.Location
-    private val mUser: FirebaseUser? = mAuth.currentUser
+    private lateinit var mUserFormattedAddress: String
+
+    private lateinit var disposable: Disposable
+
+    // variable to be used when user clicks on "Choose Deliver Partner" inside ReviewMenu. socketIO
+    // setup can be done until supportFragment popBackStack function is finished.
+    private var backStackDeliv = false
 
     override fun onActivityCreated(isFirstTimeLogged: Boolean) {
         ifViewAttached {
@@ -31,7 +42,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 }
                 false -> {
                     // tries to retrieve user location from model using Firebase TokenID for backend authentication
-                    mUser?.getIdToken(true)?.addOnSuccessListener { result ->
+                    PhoneValidationServiceImpl.getInstance().getCurrentToken().addOnSuccessListener { result ->
                         val idToken: String? = result.token
                         retrieveUserLocation(idToken!!)
                     }
@@ -40,42 +51,77 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
-    /*
-    Informs map fragment that all markers need to be visible
-      */
-    override fun onBackPressed(listPosition: Int) {
+    override fun onBackPressedFromListFragment() {
+        //do nothing pour l'instant
+    }
+
+    override fun onBackPressedFromItemDetailsMenu() {
         ifViewAttached {
 
+            // force map to update zoom level and add markers back
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mMapFragment.onBackPressed()
+
+            // force recycler view to request layout again
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             mListFragment.requestLayout()
 
-            it.hideOrderDetailsMenu(mListFragment.sharedViewByPosition(listPosition))
+            // ask activity to hide OrderDetailsMenu
+            it.hideOrderDetailsMenu()
+
+            // ask activity to show recycler view again
             it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
         }
     }
 
-    override fun onFragmentReady(){
+    override fun onBackPressedFromItemReviewCartMenu() {
         ifViewAttached {
-            if (it.areFragmentsReady()) {
-                // relays location to fragments
+
+            // force recycler view to request layout again
+            val mListFragment: LocalListFragment = it.onListFragmentRequired()
+            mListFragment.requestLayout()
+
+            // ask activity to hide ReviewCartMenu
+            it.hideReviewCartMenu()
+
+            // ask activity to show recycler view again
+            it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
+        }
+    }
+
+    override fun onInitialFragmentReady(){
+        ifViewAttached {
+            if (it.areInitialFragmentsReady()) {
+
+                // relay location to fragments
                 relayUserLocationToListFragment(mUserLocation)
                 relayUserLocationToMapFragment(mUserLocation)
 
-                // displays welcome message to user
-                it.displayMessage("Bem vindo " + mUser?.displayName!!)
+                // display welcome message to user
+                it.displayMessage("Bem vindo " + ProfileServiceImpl.getInstance().getUserProfile()?.name)
 
-                // sets up navigation drawer
-                it.setUpNavigationDrawer(mUser.displayName!!)
+                // set up navigation drawer
+                it.setUpNavigationDrawer(ProfileServiceImpl.getInstance().getUserProfile()?.name!!)
 
-                // informs checkout fragment that item was added to cart
-                if(checkCheckoutStatus()){
-                    it.onCheckoutFragmentRequired().updateContainer()
-                }
+                // update cart related elements in UI
+                updateCartElementsInUI()
             }
         }
 
+    }
+
+    override fun onWhileChoosingDeliveryPartnerFragmentReady() {
+        ifViewAttached {
+            if(areThereOrdersInCart()) {
+                var currentPrice = 0f
+                CartServiceImpl.myInstance.getOrders().forEach { order ->
+                    currentPrice += order.totalPrice
+                }
+
+                // update price text in whileChoosingDeliveryPartnerFragment
+                it.updateWhileChoosingDeliveryPartnerFragmentReadyPrice(String.format("%02.2f", currentPrice).replace(".", ","))
+            }
+        }
     }
 
     override fun onItemAddedToCart(position: Int, order: OrderModel) {
@@ -84,27 +130,41 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             CartServiceImpl.myInstance.addOrder(order)
 
             // hide OrderDetailsMenu
-            it.hideOrderDetailsMenu(it.onListFragmentRequired().sharedViewByPosition(position))
+            it.hideOrderDetailsMenu()
 
-            // informs list fragment that item was added to cart
+            // inform list fragment that item was added to cart
             it.onListFragmentRequired().dishOrderCreation(position)
 
-            // informs show deliverer fragment that item was added to cart
-            if(checkCheckoutStatus()){
-                var currentPrice = 0f
-                CartServiceImpl.myInstance.getOrders().forEach {
-                    currentPrice += it.totalPrice
-                }
-                it.updateContainerCheckoutPrice(String.format("%02.2f", currentPrice).replace(".",","))
-                it.updateContainerQuantityText(CartServiceImpl.myInstance.getOrders().size)
+            // update cart related elements in UI
+            updateCartElementsInUI()
+
+        }
+    }
+
+    override fun onItemRemovedFromCart() {
+        ifViewAttached {
+            // update iconCart quantity text
+            val quantity = CartServiceImpl.myInstance.getOrders().size
+            if (quantity > 0){
+                it.updateCartIconQuantityText(quantity)
+            } else {
+                // mimic behavior of reviewCartFragment
+                this.onBackPressedFromItemReviewCartMenu()
+
+                //go back to previous state of choosing items from different restaurants
+                it.goToChoosingItemDiffRestaurantsState()
+
             }
         }
     }
 
     override fun onItemsCardDataReady() {
         ifViewAttached {
+            // force recycler view to request layout
             val listFragment: LocalListFragment = it.onListFragmentRequired()
             listFragment.requestLayout()
+
+            // add recycler view to container
             it.addRecyclerViewToContainer(listFragment.onRecyclerViewRequired())
         }
     }
@@ -114,9 +174,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         retrieveUserLocation("", true)
     }
 
-    /*
-    Informs list fragment that card needs to be highlighted
-      */
     override fun onMapMarkerClicked(restID: String) {
         ifViewAttached {
             val mListFragment : LocalListFragment = it.onListFragmentRequired()
@@ -126,29 +183,34 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onChoosingItemsDeliveryPartnerButtonClicked() {
         ifViewAttached {
-            // update listFragment with delivery partners now. in order to do that,
             // send restaurant location to listFragment
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(0)
+            val restID: String = mListFragment.currentRestID(0) //fix this hardCode
             provideRestLocation(restID)
+
+            // launch WhileChoosingDeliveryPartnerFragment
+            it.launchWhileChoosingDeliveryPartnerFragment()
         }
-        /*ifViewAttached{
-            // launch cart activity
-            it.goToCartActivity()
-        }*/
     }
 
-    override fun onShowDeliverersClicked() {
+    override fun onReviewCartChooseDeliveryPartnerButtonClicked() {
         ifViewAttached {
-            // update listFragment with delivery partners now. in order to do that,
-            // send restaurant location to listFragment
-            val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(0)
-            provideRestLocation(restID)
+            // hide reviewCartFragment
+            it.hideReviewCartMenu()
+
+            // set var to be used when fragment popBackStack finishes
+            backStackDeliv = true
         }
     }
 
-    override fun onPartnerCardViewClicked(sharedView: View, data: NetworkModel.PartnerMetadata) {
+    override fun onBackStackChanged() {
+        if(backStackDeliv){
+            // mimic behavior of click on bottom fragment when state is choosing items
+            this.onChoosingItemsDeliveryPartnerButtonClicked()
+        }
+    }
+
+    override fun onPartnerCardViewClicked(data: NetworkModel.PartnerMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onPartnerCardViewClicked(data.partnerID)
@@ -167,31 +229,67 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
+    override fun onCartContainerClicked(sharedView: View) {
+        ifViewAttached {
+                when(it.shownFragment()){
+                LocalListFragment.TAG -> {
+                    // pop up reviewCartFragment
+                    it.showReviewCartMenu(CartServiceImpl.myInstance.getOrders(), mUserFormattedAddress,
+                            mUserLocation,
+                            it.onMapFragmentRequired().restLocation(CartServiceImpl.myInstance.getOrders()[0].item.restaurantID))
+                }
+                ItemDetailsFragment.TAG -> {
+                    // pop up reviewCartFragment
+                    it.showReviewCartMenu(CartServiceImpl.myInstance.getOrders(), mUserFormattedAddress,
+                            mUserLocation,
+                            it.onMapFragmentRequired().restLocation(CartServiceImpl.myInstance.getOrders()[0].item.restaurantID))
+                }
+                ReviewCartFragment.TAG -> {
+                    // force recycler view to request layout again
+                    val mListFragment: LocalListFragment = it.onListFragmentRequired()
+                    mListFragment.requestLayout()
+
+                    // hide ReviewCartMenu
+                    it.hideReviewCartMenu()
+
+                    // show recycler view again
+                    it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
+                }
+            }
+        }
+    }
+
     override fun onPartnersCardDataReady(locations: MutableMap<String, NetworkModel.Location>, encodedPolylines: Map<String, String>) {
         ifViewAttached {
+            // send list to mapFragment
             val mMapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mMapFragment.onPartLocationDataAvailable(locations, encodedPolylines)
 
+            // force recycler view to request layout
             val mListFragment: LocalListFragment = it.onListFragmentRequired()
             mListFragment.requestLayout()
 
+            // add recycler view to container
             it.addRecyclerViewToContainer(mListFragment.onRecyclerViewRequired())
+
+            //
+
         }
     }
 
-    override fun onRestaurantCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata) {
+    override fun onRestaurantCardViewClicked(data: NetworkModel.MenuMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
-    override fun onItemCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata) {
+    override fun onItemCardViewClicked(data: NetworkModel.MenuMetadata) {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
@@ -206,13 +304,13 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
     override fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata) {
         ifViewAttached {
-            it.showPartnerDetailsMenu(sharedView, data)
+            it.showPartnerDetailsMenu(data)
         }
     }
 
@@ -220,11 +318,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         ifViewAttached {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
-            it.showOrderDetailsMenu(sharedView, data)
+            it.showItemDetailsMenu(data)
         }
     }
 
-    private fun checkCheckoutStatus() : Boolean{
+    private fun areThereOrdersInCart() : Boolean{
         return (!CartServiceImpl.myInstance.getOrders().isEmpty())
     }
 
@@ -245,22 +343,24 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 return mActivity
             }
             override fun onUserLocationRequestCompleted(location: NetworkModel.Location) {
-                ifViewAttached {
-                    // stores location
-                    mUserLocation = location
+                // store location
+                mUserLocation = location
 
-                    // launches map fragment
-                    it.launchMapFragment()
-
-                    // launches list fragment
-                    it.launchListFragment()
-
-                    // launches checkout fragment
-                    it.launchCheckoutFragment()
-
-                    // launches show deliverers fragment
-                    it.launchShowDeliverersFragment()
+                // get formatted address from current latlng location through back-end
+                PhoneValidationServiceImpl.getInstance().getCurrentToken().addOnSuccessListener { result ->
+                    val cIdToken: String? = result.token
+                    disposable = APIServices.create().userReverseGeocoding(
+                            cIdToken!!,location.latitude,location.longitude)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                mUserFormattedAddress = it.formattedAddress
+                            },{
+                            })
                 }
+
+                // launch initial fragments
+                launchInitialFragments()
             }
             override fun onUserLocationRequestFailed(e: Throwable) {
                 when (e) {
@@ -302,5 +402,34 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
+    private fun launchInitialFragments(){
+        ifViewAttached {
+            // launches map fragment
+            it.launchMapFragment()
+
+            // launches list fragment
+            it.launchListFragment()
+
+            // launches whileChoosingItemsBottomFragment
+            it.launchWhileChoosingItemsBottomFragment()
+        }
+    }
+
+    private fun updateCartElementsInUI(){
+        ifViewAttached {
+            if(areThereOrdersInCart()){
+                var currentPrice = 0f
+                CartServiceImpl.myInstance.getOrders().forEach { order ->
+                    currentPrice += order.totalPrice
+                }
+
+                // update price text in whileChoosingItemsBottomFragment
+                it.updateWhileChoosingItemsBottomFragmentPrice(String.format("%02.2f", currentPrice).replace(".",","))
+
+                // update item count in cartContainer inside MainActivity
+                it.updateCartIconQuantityText(CartServiceImpl.myInstance.getOrders().size)
+            }
+        }
+    }
 
 }

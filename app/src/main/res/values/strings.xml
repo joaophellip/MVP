@@ -109,8 +109,62 @@
     <string name="fragment_bottom_while_choosing_items_default_price">R$ 1,00</string>
     <string name="fragment_bottom_while_choosing_items_price">R$ %1$s</string>
 
-    <!-- Strings for fragment_cart.xml -->
-    <string name="fragment_cart_items_price">R$ 0,00</string>
+    <!-- Strings for fragment_bottom_while_choosing_delivery_partner.xml -->
+    <string name="fragment_bottom_while_choosing_delivery_partner_button">Confirmar entregador</string>
+    <string name="fragment_bottom_while_choosing_delivery_partner_default_price">R$ 1,00</string>
+    <string name="fragment_bottom_while_choosing_delivery_partner_price">R$ %1$s</string>
+
+    <!-- Strings for fragment_review_cart_.xml -->
+    <string name="fragment_review_cart_title">Sua cesta</string>
+    <string name="fragment_review_cart_restaurant_name">Bar Cozo</string>
+    <string name="fragment_review_cart_subtotal_label">Subtotal</string>
+    <string name="fragment_review_cart_default_price">R$ 1,00</string>
+    <string name="fragment_review_cart_price">R$ %1$s</string>
+    <string name="fragment_review_cart_button">Escolher entregador</string>
+
+    <!-- Strings for fragment_delivery_partner_details.xml -->
+    <string name="fragment_delivery_partner_default_partner_name">João</string>
+    <string name="fragment_delivery_partner_notes">Adicione um comentário ao entregador...</string>
+    <string name="fragment_delivery_partner_button">Confirmar entregador</string>
+
+
+    <!-- - - - - - CARD VIEWS - - - - - -->
+
+    <!-- Strings for cardview_address.xml -->
+    <string name="cardview_address_label">Seu endereço</string>
+    <string name="cardview_address_default_address">Rua do Matão, 747</string>
+
+    <!-- String for cardview_credit_card.xml -->
+    <string name="cardview_credit_card_default_credit_card_number">**** **** **** 0123</string>
+    <string name="cardview_credit_card_credit_card_number">**** **** **** %1$s</string>
+    <string name="cardview_credit_card_default_owner_credit_card_name">João da Silva</string>
+
+    <!-- Strings for cardview_delivery.xml -->
+    <string name="cardview_delivery_label">Detalhes da entrega</string>
+    <string name="cardview_delivery_default_delivery_partner_name">João da Silva</string>
+    <string name="cardview_delivery_default_delivery_time">13min - 31min</string>
+    <string name="cardview_delivery_default_delivery_price">R$ 7,50</string>
+    <string name="cardview_delivery_delivery_price">R$ %1$s</string>
+
+    <!-- Strings for cardview_order.xml -->
+    <string name="cardview_order_default_quantity">1x</string>
+    <string name="cardview_order_quantity">%1$sx</string>
+    <string name="cardview_order_default_item_name">Nome do pedido</string>
+    <string name="cardview_order_default_items_price">R$ 1,00</string>
+    <string name="cardview_order_items_price">R$ %1$s</string>
+    <string name="cardview_order_hidden_comments">Observação: %1$s</string>
+
+    <!-- Strings for cardview_order_label.xml -->
+    <string name="cardview_order_label_label">Sua compra</string>
+
+    <!-- String for cardview_preview_delivery.xml -->
+    <string name="cardview_preview_delivery_label">Previsão de entrega</string>
+    <string name="cardview_preview_delivery_time_label">Tempo:</string>
+    <string name="cardview_preview_delivery_time">%1$s - %2$s</string>
+    <string name="cardview_preview_default_delivery_time">13min - 31min</string>
+    <string name="cardview_preview_delivery_price_label">Preço:</string>
+    <string name="cardview_preview_default_delivery_price">R$ 7,50 - R$ 10,00</string>
+    <string name="cardview_preview_delivery_price">R$ %1$s - R$ %2$s</string>
 
 </resources>
 

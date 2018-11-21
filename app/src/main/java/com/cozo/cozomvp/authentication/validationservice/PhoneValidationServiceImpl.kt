@@ -1,9 +1,10 @@
 package com.cozo.cozomvp.authentication.validationservice
 
-import android.util.Log
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.authentication.AuthModel
+import com.cozo.cozomvp.emptyactivity.EmptyModel
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
+import com.cozo.cozomvp.userprofile.UserModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
@@ -13,7 +14,39 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import java.util.concurrent.TimeUnit
 
-class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private var phoneAuthProvider: PhoneAuthProvider, private var firebaseAuth: FirebaseAuth) : ValidationService{
+class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil,
+                                 private var phoneAuthProvider: PhoneAuthProvider,
+                                 private var firebaseAuth: FirebaseAuth) : ValidationService,
+        ProfileServiceImpl.ProfileServiceListener{
+
+    private lateinit var emptyModel: EmptyModel
+
+    override fun isThereALoggedUser(emptyModel: EmptyModel) {
+        val user : FirebaseUser? = firebaseAuth.currentUser
+        if (user == null){
+            emptyModel.modelListener.noUserAvailable()
+        } else {
+            // tries to refresh user data from Firebase servers. Forces user to login when refresh
+            // fails, which means either Token is no longer valid or User has been deleted/disabled
+            // from DB
+            user.reload().addOnCompleteListener { mTask ->
+                if (mTask.isSuccessful){
+                    //retrieve userProfile from backend
+                    this.emptyModel = emptyModel
+                    user.getIdToken(true).addOnSuccessListener{
+                        ProfileServiceImpl.getInstance().loadUserProfile(it.token!!, this)
+                    }
+                } else {
+                    emptyModel.modelListener.noUserAvailable()
+                }
+            }
+        }
+    }
+
+    override fun getCurrentToken(): Task<GetTokenResult> {
+        val user: FirebaseUser? = firebaseAuth.currentUser
+        return user!!.getIdToken(true)
+    }
 
     override fun linkWithAccount(accountData: ValidationData, authModel: AuthModel) {
 
@@ -131,5 +164,26 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil, private
     override fun signUserOut(authModel: AuthModel) {
         firebaseAuth.signOut()
         authModel.mOnRequestSignInWithGoogleListener.onFailed()
+    }
+
+    override fun onComplete(userProfile: UserModel) {
+        emptyModel.modelListener.userAvailable()
+    }
+
+    override fun onError() {}
+
+    companion object {
+
+        private var myInstance:PhoneValidationServiceImpl? = null
+
+        fun getInstance(phoneUtil: PhoneNumberUtil? = null,
+                        phoneAuthProvider: PhoneAuthProvider? = null,
+                        firebaseAuth: FirebaseAuth? = null): PhoneValidationServiceImpl {
+            if (myInstance != null) {
+                return myInstance!!
+            }
+            myInstance = PhoneValidationServiceImpl(phoneUtil!!, phoneAuthProvider!!, firebaseAuth!!)
+            return myInstance!!
+        }
     }
 }

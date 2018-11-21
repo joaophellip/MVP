@@ -72,10 +72,10 @@ class DataProvider : DataProviderInterface.Model {
             mListenerListFragment.onPartCardDataRequestCompleted(partnerList.items)
         }
     }
-    private val onUpdatedListAvailable = Emitter.Listener { args ->
+    private val onUpdatedListAvailable = Emitter.Listener { _ ->
         mActivity?.runOnUiThread {}
     }
-    private val onUpdatedLocationsAvailable = Emitter.Listener { args ->
+    private val onUpdatedLocationsAvailable = Emitter.Listener { _ ->
         mActivity?.runOnUiThread {}
     }
 
@@ -201,6 +201,7 @@ class DataProvider : DataProviderInterface.Model {
     }
 
     private fun setupSocketIO(){
+        Log.d("setupSocketIO","just before crash")
         val app : DelivererApplication = mActivity?.application as DelivererApplication
         mSocket = app.mSocket!!
         mSocket.on(Socket.EVENT_CONNECT, onConnect)

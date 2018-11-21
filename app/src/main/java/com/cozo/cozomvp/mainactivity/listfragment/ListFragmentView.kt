@@ -77,37 +77,37 @@ delivery partners locations and routes to be relayed to MapFragment as argument.
         /*
         Informs activity that cardview item was clicked. Passes item data as argument.
          */
-        fun onItemCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
+        fun onItemCardViewClicked(childListPosition: Int, data: NetworkModel.MenuMetadata)
 
         /*
         Informs activity that cardview item containing a delivery partner was clicked. Passes
         delivery partner ID as argument.
          */
-        fun onPartnerCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.PartnerMetadata)
+        fun onPartnerCardViewClicked(childListPosition: Int, data: NetworkModel.PartnerMetadata)
 
         /*
         Informs activity that cardview item containing a restaurant menu was clicked. Passes View object,
          transitionName, menu data, and the restaurant ID as argument.
          */
-        fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
+        fun onRestaurantCardViewClicked(childListPosition: Int, data: NetworkModel.MenuMetadata)
 
         /*
         Informs activity that cardview item containing a delivery partner was swiped. Passes View object,
          transitionName, and card data as argument.
          */
-        fun onPartnerCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.PartnerMetadata)
+        fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata)
 
         /*
         Informs activity that cardview item containing a restaurant item was swiped. Passes View object,
          transitionName, and card data as argument.
          */
-        fun onItemCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
+        fun onItemCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
 
         /*
         Informs activity that cardview item containing a restaurant item was swiped. Passes View object,
          transitionName, and card data as argument.
          */
-        fun onRestaurantCardViewSwiped(sharedView: View, transitionName: String, data: NetworkModel.MenuMetadata)
+        fun onRestaurantCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
 
     }
 }

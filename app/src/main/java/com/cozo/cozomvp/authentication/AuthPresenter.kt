@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.authentication
 
-import com.cozo.cozomvp.authentication.validationservice.ValidationService
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Task
@@ -8,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
-class AuthPresenter(private var validationService: ValidationService) : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
+class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
 
     private lateinit var mAuthModel: AuthModel
 
@@ -16,7 +15,7 @@ class AuthPresenter(private var validationService: ValidationService) : MvpBaseP
         ifViewAttached {
             it.showLoading() }
 
-        mAuthModel = AuthModel(validationService, object : AuthInterfaces.Presenter.OnRequestAuthListener {
+        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestAuthListener {
             override fun onAuthAndLinkedCompleted() {
                 ifViewAttached {
                     it.showMainActivity()
@@ -45,7 +44,7 @@ class AuthPresenter(private var validationService: ValidationService) : MvpBaseP
 
     override fun requestLinkWithGoogle(task: Task<GoogleSignInAccount>) {
 
-        mAuthModel = AuthModel(validationService, object : AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener {
+        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener {
             override fun onCompleted(providerData: MutableList<out UserInfo>) {
 
                 val mMapUserId: MutableMap<String, UserInfo> = mutableMapOf()
@@ -74,7 +73,7 @@ class AuthPresenter(private var validationService: ValidationService) : MvpBaseP
             it.showLoading()
         }
 
-        mAuthModel = AuthModel(validationService, object : AuthInterfaces.Presenter.OnRequestSignOutListener {
+        mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestSignOutListener {
             override fun onCompleted() {
                 ifViewAttached {
                     it.showLogOffActivity()

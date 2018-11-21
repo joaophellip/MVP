@@ -1,16 +1,12 @@
 package com.cozo.cozomvp.cartactivity.listfragment
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
@@ -18,7 +14,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpFragment
 class ListFragment : MvpFragment<ListView, ListPresenter>(), ListView,
         RecyclerViewAdapter.OnRecyclerListener {
 
-    @BindView(R.id.recyclerView) lateinit var recyclerView: RecyclerView
+    lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter: RecyclerViewAdapter
     private lateinit var listenerCartActivity : ListView.CartActivityListener
 
@@ -41,7 +37,6 @@ class ListFragment : MvpFragment<ListView, ListPresenter>(), ListView,
         recyclerView = view?.findViewById(R.id.recyclerView) as RecyclerView
         recyclerAdapter = RecyclerViewAdapter(this)
 
-        ButterKnife.bind(view)
         listenerCartActivity.onCompleteListFragment(this)
 
         return view

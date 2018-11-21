@@ -58,13 +58,6 @@ data class MapPresenterData(
         val restID: String,
         val location: NetworkModel.Location)
 
-data class CardMenuData(
-        var image: Bitmap?,
-        var menu: NetworkModel.MenuMetadata?)
-data class CardInfoData(
-        var image: Bitmap?,
-        var info: NetworkModel.PartnerMetadata?)
-
 data class CreditCardData(
         var externalAPIId: String?,
         var creditCardList: List<PaymentActivity.CardData>
@@ -81,3 +74,12 @@ data class SaveFavoriteCreditCardResponse (
 data class AuthorizationToken(
         val encryptedToken: String
 )
+
+data class UserReverseGeocodingResponse (
+        val formattedAddress: String)
+
+data class UserPreviewDeliveryInfoResponse(
+        val minTime: Int,
+        val maxTime: Int,
+        val minPrice: Float,
+        val maxPrice: Float)

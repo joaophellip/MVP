@@ -18,14 +18,18 @@ interface MainInterfaces {
     Informs presenter that back button has been pressed in main activity. Passes position within
     RecyclerView that had been previously inflated as argument.
      */
-    fun onBackPressed(listPosition: Int)
+    fun onBackPressedFromItemDetailsMenu()
+
+    fun onBackPressedFromItemReviewCartMenu()
+
+    fun onBackPressedFromListFragment()
 
     /*
-    Informs presenter that both list and map fragments are ready to be used.
+    Informs presenter that initial fragments are ready to be used.
      */
-    fun onFragmentReady(){
+    fun onInitialFragmentReady()
 
-    }
+    fun onWhileChoosingDeliveryPartnerFragmentReady()
 
     fun onLocationServiceReady()
 
@@ -35,6 +39,8 @@ interface MainInterfaces {
     fun onItemsCardDataReady()
 
     fun onItemAddedToCart(position: Int, order: OrderModel)
+
+    fun onItemRemovedFromCart()
 
     /*
     Informs presenter that a restaurant map marker was clicked by user. Passes restaurant ID
@@ -47,10 +53,7 @@ interface MainInterfaces {
      */
     fun onChoosingItemsDeliveryPartnerButtonClicked()
 
-    /*
-    Informs presenter that show deliverers view was clicked by user
-     */
-    fun onShowDeliverersClicked()
+    fun onReviewCartChooseDeliveryPartnerButtonClicked()
 
     /*
     Informs presenter that a card view for a delivery partner was clicked by user. Passes the
@@ -63,6 +66,8 @@ interface MainInterfaces {
     Informs presenter that payment menu was clicked.
      */
     fun onPaymentMenuClicked()
+
+    fun onCartContainerClicked(sharedView: View)
 
     /*
 Informs presenter that a card view for a restaurant was highlighted. Passes the restaurant ID
@@ -79,24 +84,26 @@ associated with the card view as argument.
     Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
     menu data and the View object as argument.
      */
-    fun onRestaurantCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata)
+    fun onRestaurantCardViewClicked(data: NetworkModel.MenuMetadata)
 
     /*
 Informs presenter that a card view for a delivery partner was clicked by user. Passes delivery
 partner ID associated with the card view as argument.
  */
-    fun onPartnerCardViewClicked(sharedView: View, data: NetworkModel.PartnerMetadata)
+    fun onPartnerCardViewClicked(data: NetworkModel.PartnerMetadata)
 
     /*
     Informs presenter that a card view for a restaurant was clicked by user. Passes the restaurant
     menu data and the View object as argument.
      */
-    fun onItemCardViewClicked(sharedView: View, data: NetworkModel.MenuMetadata)
+    fun onItemCardViewClicked(data: NetworkModel.MenuMetadata)
 
     fun onItemCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
 
     fun onPartnerCardViewSwiped(sharedView: View, data: NetworkModel.PartnerMetadata)
 
     fun onRestaurantCardViewSwiped(sharedView: View, data: NetworkModel.MenuMetadata)
+
+    fun onBackStackChanged()
 
 }

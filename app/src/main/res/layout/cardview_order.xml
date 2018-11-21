@@ -5,60 +5,69 @@
     android:id="@+id/cardViewRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginBottom="12dp"
-    android:layout_alignParentBottom="true"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_anchorGravity="top"
-    app:cardCornerRadius="8dp">
+    app:cardElevation="0dp"
+    app:layout_anchorGravity="top">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/itemContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#EFEFEF">
 
         <TextView
-            android:id="@+id/itemQuantity"
+            android:id="@+id/orderItemQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="1x"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/default_item_quantity"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/itemName"
-            android:layout_width="wrap_content"
+            android:id="@+id/orderItemName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tag Burger Classic"
-            app:layout_constraintBaseline_toBaselineOf="@+id/itemQuantity"
-            app:layout_constraintEnd_toStartOf="@+id/itemPrice"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/default_item_name"
+            app:layout_constraintBaseline_toBaselineOf="@+id/orderItemQuantity"
+            app:layout_constraintEnd_toStartOf="@+id/orderItemsPrice"
             app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toEndOf="@+id/itemQuantity" />
+            app:layout_constraintStart_toEndOf="@+id/orderItemQuantity" />
 
         <TextView
-            android:id="@+id/itemPrice"
+            android:id="@+id/orderItemsPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="R$ 20,00"
-            app:layout_constraintBaseline_toBaselineOf="@+id/itemName"
-            app:layout_constraintEnd_toStartOf="@+id/moreItemImage" />
+            android:text="@string/cardview_order_default_items_price"
+            app:layout_constraintBaseline_toBaselineOf="@+id/orderItemName"
+            app:layout_constraintEnd_toStartOf="@+id/orderMoreInfoItemsImage" />
 
         <ImageView
-            android:id="@+id/moreItemImage"
+            android:id="@+id/orderMoreInfoItemsImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="12dp"
             android:src="@drawable/baseline_more_vert_black_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/itemPrice"
+            app:layout_constraintBottom_toBottomOf="@+id/orderItemsPrice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/itemPrice" />
+            app:layout_constraintTop_toTopOf="@+id/orderItemsPrice" />
+
+        <TextView
+            android:id="@+id/orderItemsHiddenComments"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:textAlignment="textStart"
+            app:layout_constraintStart_toStartOf="@+id/orderItemName"
+            app:layout_constraintTop_toBottomOf="@+id/orderItemName" />
 
     </android.support.constraint.ConstraintLayout>
 

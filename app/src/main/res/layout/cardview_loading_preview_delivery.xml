@@ -1,7 +1,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardViewOrderLabel"
+    android:id="@+id/cardViewPreviewDelivery"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -9,24 +9,37 @@
     app:layout_anchorGravity="top">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/orderContainer"
+        android:id="@+id/previewDeliveryContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EFEFEF">
 
         <TextView
-            android:id="@+id/orderLabel"
+            android:id="@+id/previewDeliveryLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/cardview_order_label_label"
+            android:text="@string/cardview_preview_delivery_label"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/previewDeliveryLabel" />
+
     </android.support.constraint.ConstraintLayout>
+
 </android.support.v7.widget.CardView>

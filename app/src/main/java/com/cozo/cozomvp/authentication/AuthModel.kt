@@ -1,7 +1,7 @@
 package com.cozo.cozomvp.authentication
 
+import com.cozo.cozomvp.authentication.validationservice.PhoneValidationServiceImpl
 import com.cozo.cozomvp.authentication.validationservice.ValidationData
-import com.cozo.cozomvp.authentication.validationservice.ValidationService
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
@@ -10,27 +10,25 @@ import com.google.firebase.auth.FirebaseAuth
 
 class AuthModel : AuthInterfaces.Model {
 
-    constructor(validationService: ValidationService, onRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener) {
+    constructor(onRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener) {
         this.mOnRequestAuthListener = onRequestAuthListener
-        this.mValidationService = validationService
     }
-    constructor(validationService: ValidationService, onRequestSignOutListener: AuthInterfaces.Presenter.OnRequestSignOutListener) {
+
+    constructor(onRequestSignOutListener: AuthInterfaces.Presenter.OnRequestSignOutListener) {
         this.mOnRequestSignOutListener = onRequestSignOutListener
-        this.mValidationService = validationService
     }
-    constructor(validationService: ValidationService, onRequestSignInWithGoogleListener: AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener) {
+
+    constructor(onRequestSignInWithGoogleListener: AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener) {
         this.mOnRequestSignInWithGoogleListener = onRequestSignInWithGoogleListener
-        this.mValidationService = validationService
     }
 
     lateinit var mOnRequestAuthListener: AuthInterfaces.Presenter.OnRequestAuthListener
     lateinit var mOnRequestSignOutListener: AuthInterfaces.Presenter.OnRequestSignOutListener
     lateinit var mOnRequestSignInWithGoogleListener: AuthInterfaces.Presenter.OnRequestSignInWithGoogleListener
-    private var mValidationService: ValidationService
 
     override fun authenticateNumber(phoneNumber: String) {
         val signInData = ValidationData(phoneNumber)
-        mValidationService.signUserIn(signInData, this)
+        PhoneValidationServiceImpl.getInstance().signUserIn(signInData, this)
     }
 
     override fun linkAccountWithGoogle(completedTask: Task<GoogleSignInAccount>) {
@@ -46,7 +44,7 @@ class AuthModel : AuthInterfaces.Model {
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val accountData = ValidationData(account)
-        mValidationService.linkWithAccount(accountData, this)
+        PhoneValidationServiceImpl.getInstance().linkWithAccount(accountData, this)
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
@@ -54,7 +52,7 @@ class AuthModel : AuthInterfaces.Model {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)!!
             firebaseAuthWithGoogle(account)
         } catch (e: ApiException) {
-            mValidationService.signUserOut(this)
+            PhoneValidationServiceImpl.getInstance().signUserOut(this)
         }
     }
 }
