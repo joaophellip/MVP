@@ -100,7 +100,7 @@
     <string name="phone_number">+%1$s (%2$s) %3$s</string>
 
     <!-- Strings for checkout fragment -->
-    <string name="checkout_message">Checkout</string>
+    <string name="checkout_message">Confirmar entregador</string>
     <string name="checkout_quantity">1</string>
     <string name="fragment_checkout_price">R$ 5,00</string>
 
