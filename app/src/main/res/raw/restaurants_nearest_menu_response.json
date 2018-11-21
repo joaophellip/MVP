@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "ingredients": "",
+      "name": "",
+      "prepTime": 15,
+      "pictureRefID": "",
+      "price": 23.00,
+      "rating": 5.0,
+      "ratedBy": 99,
+      "restaurantName": "TagBurger",
+      "restaurantID": "TagBurger"
+    },
+    {
+      "ingredients": "",
+      "name": "",
+      "prepTime": 17,
+      "pictureRefID": "",
+      "price": 18.50,
+      "rating": 4.9,
+      "ratedBy": 37,
+      "restaurantName": "AnaBurger",
+      "restaurantID": "AnaBurger"
+    }
+  ]
+}

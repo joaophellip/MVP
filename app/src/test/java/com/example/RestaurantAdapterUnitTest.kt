@@ -22,8 +22,8 @@ class RestaurantAdapterUnitTest {
             "Kiosk da Ana",
             restaurantID)
     private val listenerImpl = object: RestaurantRecyclerViewAdapter.OnPlaceClickListener{
-        override fun onRestaurantCardViewClicked(sharedView: View, transitionName: String, position: Int, data: NetworkModel.MenuMetadata) {
-            //
+        override fun onRestaurantCardViewClicked(sharedView: View, position: Int, data: NetworkModel.MenuMetadata) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }
 

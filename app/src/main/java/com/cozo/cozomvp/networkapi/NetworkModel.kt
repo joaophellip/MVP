@@ -13,6 +13,7 @@ object NetworkModel{
     data class RestLocationObjects(
             val id: String,
             val location: Location)
+
     data class Location(
             val latitude: Double,
             val longitude: Double)
