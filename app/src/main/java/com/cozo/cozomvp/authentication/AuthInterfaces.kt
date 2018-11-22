@@ -12,14 +12,17 @@ interface AuthInterfaces {
         fun authenticateNumber(phoneNumber: String)
         fun linkAccountWithGoogle(completedTask: Task<GoogleSignInAccount>)
         fun signOutModel(mGoogleSignInClient: GoogleSignInClient, mAuth: FirebaseAuth)
+        fun authenticateWithSmsCode(smsCode: String)
     }
 
     interface Presenter {
         fun requestAuth(phoneNumber: String)
         fun requestLinkWithGoogle(task: Task<GoogleSignInAccount>)
         fun requestSignOut(mGoogleSignInClient: GoogleSignInClient, mAuth: FirebaseAuth)
+        fun onSmsCodeEntered(smsCode: String)
 
         interface OnRequestAuthListener {
+            fun smsAutoRetrievalTimedOut()
             fun onAuthAndLinkedCompleted()
             fun onRequestLinkWithGoogleNeeded()
             fun onAuthenticationFailed()

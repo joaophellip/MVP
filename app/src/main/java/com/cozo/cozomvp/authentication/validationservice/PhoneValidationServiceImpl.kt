@@ -20,6 +20,12 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil,
         ProfileServiceImpl.ProfileServiceListener{
 
     private lateinit var emptyModel: EmptyModel
+    private lateinit var authModel: AuthModel
+    private lateinit var verificationId: String
+    private lateinit var signInData: ValidationData
+
+    //https://firebase.google.com/docs/auth/android/phone-auth
+    //https://medium.com/@ravirawal13/phone-number-authentication-with-firebase-144e9787e764
 
     override fun isThereALoggedUser(emptyModel: EmptyModel) {
         val user : FirebaseUser? = firebaseAuth.currentUser
@@ -85,85 +91,112 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil,
     }
 
     override fun signUserIn(signInData: ValidationData, authModel : AuthModel) {
-        val brPhone: Phonenumber.PhoneNumber = phoneUtil.parse(signInData.phoneNumber, "BR")
-        val isValid = phoneUtil.isValidNumber(brPhone)
-        if (isValid) {
-            val validPhoneNumber = "+" + brPhone.countryCode.toString() + brPhone.nationalNumber.toString()
-            val mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    firebaseAuth.signInWithCredential(credential)
-                            .addOnCompleteListener(AuthActivity(), object : OnCompleteListener<AuthResult> {
-                                override fun onComplete(task: Task<AuthResult>) {
-                                    if (task.isSuccessful) {
-                                        val user: FirebaseUser? = firebaseAuth.currentUser
-                                        when(user?.providers?.contains("google.com")) {
-                                            true -> {
-                                                // get user token
-                                                user.getIdToken(true).addOnSuccessListener{
-                                                    // create userProfile inside ProfileService
-                                                    ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
-                                                            brPhone.countryCode.toString(), signInData.phoneNumber.substring(3,5), signInData.phoneNumber.substring(5))
-                                                }
-                                                // fire callback
-                                                authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()
+        this.signInData = signInData
+        this.authModel = authModel
+        val formattedBrPhoneNumber = "+55" + signInData.phoneNumber
+        val mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onCodeAutoRetrievalTimeOut(verificationId: String?) {
+                this@PhoneValidationServiceImpl.verificationId = verificationId!!
+                // prompt UI and ask for verification code
+                authModel.mOnRequestAuthListener.smsAutoRetrievalTimedOut()
+            }
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                firebaseAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(AuthActivity(), object : OnCompleteListener<AuthResult> {
+                            override fun onComplete(task: Task<AuthResult>) {
+                                if (task.isSuccessful) {
+                                    val user: FirebaseUser? = firebaseAuth.currentUser
+                                    when(user?.providers?.contains("google.com")) {
+                                        true -> {
+                                            // get user token
+                                            user.getIdToken(true).addOnSuccessListener{
+                                                // create userProfile inside ProfileService
+                                                ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
+                                                        "55", signInData.phoneNumber.substring(0,2), signInData.phoneNumber.substring(2))
                                             }
-                                            false -> {
-                                                authModel.mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
-                                            }
+                                            // fire callback
+                                            authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()
                                         }
-
-                                    } else {
-                                        // Sign in failed, display a message and update the UI
-                                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                                            authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                                        false -> {
+                                            authModel.mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
                                         }
                                     }
-                                }
-                            })
-                }
-                override fun onVerificationFailed(e: FirebaseException) {
-                    when (e) {
-                        is FirebaseAuthInvalidCredentialsException -> {
-                            // Invalid request
-                            authModel.mOnRequestAuthListener.onAuthenticationFailed()
-                        }
-                        is FirebaseTooManyRequestsException -> {
-                            authModel.mOnRequestAuthListener.onAuthenticationFailed()
-                            // The SMS quota for the project has been exceeded
-                            // ...
-                        }
-                        is FirebaseAuthException -> {
-                            // The app is not authorized to use Firebase Authentication
-                        }
-                    }
-                    // Show a message and update the UI
-                }
-                override fun onCodeSent(verificationId: String?,
-                                        token: PhoneAuthProvider.ForceResendingToken?) {
-                    // The SMS verification code has been sent to the provided phone number, we
-                    // now need to ask the user to enter the code and then construct a credential
-                    // by combining the code with a verification ID.
 
-                    // Save verification ID and resending token so we can use them later
-                    /*mVerificationId = verificationId
-                    mResendToken = token*/
-                    // ...
-                }
+                                } else {
+                                    // Sign in failed, display a message and update the UI
+                                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                                        authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                                    }
+                                }
+                            }
+                        })
             }
-            phoneAuthProvider.verifyPhoneNumber(
-                    validPhoneNumber,       // Phone number to verify
-                    60,                     // Timeout duration
-                    TimeUnit.SECONDS,       // Unit of timeout
-                    AuthActivity(),         // Activity (for callback binding)
-                    mCallbacks)             // OnVerificationStateChangedCallbacks
-        } else {
-            authModel.mOnRequestAuthListener.onInvalidNumber()
+            override fun onVerificationFailed(e: FirebaseException) {
+                when (e) {
+                    is FirebaseAuthInvalidCredentialsException -> {
+                        // Invalid request
+                        authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                    }
+                    is FirebaseTooManyRequestsException -> {
+                        authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                        // The SMS quota for the project has been exceeded
+                        // ...
+                    }
+                    is FirebaseAuthException -> {
+                        // The app is not authorized to use Firebase Authentication
+                    }
+                }
+                // Show a message and update the UI
+            }
+            override fun onCodeSent(verificationId: String?,
+                                    token: PhoneAuthProvider.ForceResendingToken?) {
+                this@PhoneValidationServiceImpl.verificationId = verificationId!!
+            }
         }
+        phoneAuthProvider.verifyPhoneNumber(
+                formattedBrPhoneNumber, // Phone number to be verified
+                60,                     // Timeout duration
+                TimeUnit.SECONDS,       // Unit of timeout
+                AuthActivity(),         // Activity for callback binding
+                mCallbacks)             // Implementation for OnVerificationStateChangedCallbacks
     }
 
-    override fun signUserOut(authModel: AuthModel) {
+    override fun signUserOut() {
         firebaseAuth.signOut()
         authModel.mOnRequestSignInWithGoogleListener.onFailed()
+    }
+
+    override fun signUserInWithSmsCode(smsCode: String){
+        val credential = PhoneAuthProvider.getCredential(verificationId, smsCode)
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(AuthActivity(), object : OnCompleteListener<AuthResult> {
+                    override fun onComplete(task: Task<AuthResult>) {
+                        if (task.isSuccessful) {
+                            val user: FirebaseUser? = firebaseAuth.currentUser
+                            when(user?.providers?.contains("google.com")) {
+                                true -> {
+                                    // get user token
+                                    user.getIdToken(true).addOnSuccessListener{
+                                        // create userProfile inside ProfileService
+                                        ProfileServiceImpl.createUserProfile(it.token!!, user.displayName!!, user.email!!,
+                                                "55", signInData.phoneNumber.substring(0,2), signInData.phoneNumber.substring(2))
+                                    }
+                                    // fire callback
+                                    authModel.mOnRequestAuthListener.onAuthAndLinkedCompleted()
+                                }
+                                false -> {
+                                    authModel.mOnRequestAuthListener.onRequestLinkWithGoogleNeeded()
+                                }
+                            }
+
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                                authModel.mOnRequestAuthListener.onAuthenticationFailed()
+                            }
+                        }
+                    }
+                })
     }
 
     override fun onComplete(userProfile: UserModel) {

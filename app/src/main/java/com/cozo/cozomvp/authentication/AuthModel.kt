@@ -42,6 +42,10 @@ class AuthModel : AuthInterfaces.Model {
 
     }
 
+    override fun authenticateWithSmsCode(smsCode: String) {
+        PhoneValidationServiceImpl.getInstance().signUserInWithSmsCode(smsCode)
+    }
+
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val accountData = ValidationData(account)
         PhoneValidationServiceImpl.getInstance().linkWithAccount(accountData, this)
@@ -52,7 +56,7 @@ class AuthModel : AuthInterfaces.Model {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)!!
             firebaseAuthWithGoogle(account)
         } catch (e: ApiException) {
-            PhoneValidationServiceImpl.getInstance().signUserOut(this)
+            PhoneValidationServiceImpl.getInstance().signUserOut()
         }
     }
 }

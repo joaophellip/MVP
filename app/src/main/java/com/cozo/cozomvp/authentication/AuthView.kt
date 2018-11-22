@@ -9,6 +9,7 @@ interface AuthView : MvpView {
     fun showInvalidNumber()
     fun showAuthenticationFail()
     fun showLinkFail()
+    fun popUpViewForEnterSmsCode()
 
     fun showMainActivity()
     fun showLogOffActivity()
