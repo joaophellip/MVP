@@ -157,7 +157,7 @@
     <!-- Strings for cardview_order_label.xml -->
     <string name="cardview_order_label_label">Sua compra</string>
 
-    <!-- String for cardview_preview_delivery.xml -->
+    <!-- Strings for cardview_preview_delivery.xml -->
     <string name="cardview_preview_delivery_label">Previsão de entrega</string>
     <string name="cardview_preview_delivery_time_label">Tempo:</string>
     <string name="cardview_preview_delivery_time">%1$s - %2$s</string>
@@ -165,6 +165,24 @@
     <string name="cardview_preview_delivery_price_label">Preço:</string>
     <string name="cardview_preview_default_delivery_price">R$ 7,50 - R$ 10,00</string>
     <string name="cardview_preview_delivery_price">R$ %1$s - R$ %2$s</string>
+
+
+    <!-- Strings for activity_cart.xml -->
+    <string name="activity_cart_label">Resumo do pedido</string>
+    <string name="activity_cart_total_label">Total</string>
+    <string name="activity_cart__default_price">R$ 27,50</string>
+    <string name="activity_cart_price">R$ %1$s - R$ %2$s</string>
+    <string name="activity_cart_button_label">Confirmar pedido</string>
+
+    <!-- Strings for cardview_without_credit_card.xml -->
+    <string name="cardview_no_credit_card_label">Método de pagamento</string>
+    <string name="cardview_no_credit_card_text">Adicionar método de pagamento</string>
+
+    <!-- Strings for cardview_with_credit_card.xml -->
+    <string name="cardview_with_credit_card_default_number">**** **** **** 0123</string>
+    <string name="cardview_with_credit_card_number">**** **** **** %1$s</string>
+    <string name="cardview_with_credit_card_change_label">Trocar</string>
+
 
 </resources>
 
