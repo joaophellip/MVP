@@ -111,11 +111,14 @@ dependencies {
     testImplementation "org.robolectric:robolectric:3.8"
 
     // Espresso Framework for Instrumented testing
+    implementation'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.10.0'
+    testImplementation "com.google.truth:truth:0.42"
 }
 
 // Add dependencies for basic libs for the google api services. Can't be added with other plug-ins

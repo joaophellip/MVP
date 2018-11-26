@@ -1,12 +1,14 @@
 package com.example
 
+import android.support.test.espresso.Espresso
+import android.support.test.espresso.IdlingRegistry
 import android.support.test.espresso.intent.Intents
 import android.support.test.espresso.intent.Intents.intended
 import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.emptyactivity.EmptyActivity
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.mainactivity.MainActivity
 import org.junit.Before
 import org.junit.Rule
@@ -23,11 +25,12 @@ class AuthenticationUITests {
     @Before
     fun setup(){
         Intents.init()
+        IdlingRegistry.getInstance().register(IdleResourceInterceptor.getInstance())
     }
 
     @Test
     fun launchMainActivity(){
-        Thread.sleep(2000)
+        //Thread.sleep(4000)
         intended(hasComponent(MainActivity::class.java.name))
     }
 

@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.networkapi
 
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import retrofit2.http.GET
 import retrofit2.http.Query
 import io.reactivex.Observable
@@ -59,8 +60,10 @@ interface APIServices{
             val defaultUrl = "https://us-central1-cozo-platform-version-1.cloudfunctions.net"
             logging.level = HttpLoggingInterceptor.Level.HEADERS
             val client = OkHttpClient.Builder().readTimeout(30,TimeUnit.SECONDS)
-            val okHttpClient = client.addInterceptor(logging).build()
-
+            val okHttpClient = client.addInterceptor(logging)
+                    .addInterceptor(IdleResourceInterceptor.getInstance())
+                    .build()
+            okHttpClient.dispatcher().setIdleCallback(IdleResourceInterceptor.getInstance())
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())

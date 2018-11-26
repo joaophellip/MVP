@@ -21,6 +21,7 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
 import com.cozo.cozomvp.cartactivity.CartActivity
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomFragment
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomView
 import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
@@ -435,6 +436,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private fun hideContainers(){
         actionContainer.visibility = View.GONE
         cartContainer.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        IdleResourceInterceptor.getInstance().popCall()
     }
 
     companion object {

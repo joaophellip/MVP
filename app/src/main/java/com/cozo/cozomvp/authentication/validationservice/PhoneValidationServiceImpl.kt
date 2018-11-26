@@ -3,6 +3,7 @@ package com.cozo.cozomvp.authentication.validationservice
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.authentication.AuthModel
 import com.cozo.cozomvp.emptyactivity.EmptyModel
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
 import com.cozo.cozomvp.userprofile.UserModel
 import com.google.android.gms.tasks.OnCompleteListener
@@ -35,7 +36,9 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil,
             // tries to refresh user data from Firebase servers. Forces user to login when refresh
             // fails, which means either Token is no longer valid or User has been deleted/disabled
             // from DB
+            IdleResourceInterceptor.getInstance().stackCall()
             user.reload().addOnCompleteListener { mTask ->
+                IdleResourceInterceptor.getInstance().popCall()
                 if (mTask.isSuccessful){
                     //retrieve userProfile from backend
                     this.emptyModel = emptyModel

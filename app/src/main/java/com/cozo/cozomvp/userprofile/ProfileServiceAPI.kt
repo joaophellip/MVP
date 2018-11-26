@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.userprofile
 
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.networkapi.CreditCardData
 import com.cozo.cozomvp.networkapi.SaveFavoriteCreditCardResponse
 import com.cozo.cozomvp.networkapi.SaveUserExternalIdResponse
@@ -46,7 +47,8 @@ interface ProfileServiceAPI{
     companion object {
         fun create(baseUrl: String? = null): ProfileServiceAPI {
 
-            val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder().addInterceptor(IdleResourceInterceptor.getInstance()).build()
+            okHttpClient.dispatcher().setIdleCallback(IdleResourceInterceptor.getInstance())
             val defaultUrl = "https://us-central1-cozo-platform-version-1.cloudfunctions.net"
             val retrofit: Retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

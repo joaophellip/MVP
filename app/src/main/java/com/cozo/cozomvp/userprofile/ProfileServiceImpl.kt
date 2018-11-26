@@ -1,6 +1,7 @@
 package com.cozo.cozomvp.userprofile
 
 import android.util.Log
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
