@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,9 +90,9 @@ class ReviewCartFragment : Fragment(), View.OnClickListener,
         // update price
         updatePrice()
 
-        reviewCartRestaurantName.text = cardviewData.orders[0].item.restaurantName
+        activityCartRestaurantName.text = cardviewData.orders[0].item.restaurantName
 
-        reviewCartChooseDeliveryPartnerButton.setOnClickListener(this)
+        activityCartConfirmOrderButton.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -103,7 +102,7 @@ class ReviewCartFragment : Fragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when(v){
-            reviewCartChooseDeliveryPartnerButton -> {
+            activityCartConfirmOrderButton -> {
                 listenerMainActivity.onReviewCartChooseDeliveryPartnerButtonClicked()
             }
         }

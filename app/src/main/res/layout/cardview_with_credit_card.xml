@@ -1,0 +1,65 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardViewWithCreditCard"
+    android:layout_width="match_parent"
+    android:layout_height="82dp"
+    android:layout_marginTop="8dp"
+    app:cardElevation="0dp"
+    app:layout_anchorGravity="top">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/withCreditCardContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EFEFEF">
+
+        <TextView
+            android:id="@+id/withCreditCardLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/cardview_no_credit_card_label"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/withCreditCardNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cardview_with_credit_card_default_number"
+            android:textColor="@color/cyan_700"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/withCreditCardNetworkImage"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/withCreditCardLabel" />
+
+        <ImageView
+            android:id="@+id/withCreditCardNetworkImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/withCreditCardNumber"
+            app:layout_constraintEnd_toStartOf="@+id/changePaymentMethodText"
+            app:layout_constraintTop_toTopOf="@+id/withCreditCardNumber"
+            app:srcCompat="@drawable/ic_credit_card_black_24dp" />
+
+        <TextView
+            android:id="@+id/changePaymentMethodText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:text="@string/cardview_with_credit_card_change_label"
+            android:textColor="@color/cyan_700"
+            app:layout_constraintBaseline_toBaselineOf="@+id/withCreditCardNumber"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

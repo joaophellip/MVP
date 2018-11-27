@@ -1,37 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/listContainer"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/activityCartMainLayout"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:layout_constraintTop_toTopOf="parent" >
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:background="#EFEFEF">
 
-    <TextView
-        android:id="@+id/totalOrderPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/total_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listContainer" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/activityCartHeaderAndBody"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#EFEFEF"
+            app:layout_constraintBottom_toTopOf="@+id/activityCartFooter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/confirmOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/confirmCart"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/activityCartRestaurantName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/fragment_review_cart_restaurant_name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activityCartRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activityCartRestaurantName" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/activityCartFooter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#EFEFEF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <FrameLayout
+                android:id="@+id/paymentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </FrameLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/totalPriceContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/paymentContainer">
+
+                <TextView
+                    android:id="@+id/activityCartTotalLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="14dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/activity_cart_total_label"
+                    android:textColor="@color/cyan_500"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:transitionName="titleTransition"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/activityCartPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="14dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/activity_cart__default_price"
+                    android:textColor="@color/cyan_500"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/activityCartTotalLabel"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <Button
+                android:id="@+id/activityCartConfirmOrderButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/ripple_effect"
+                android:elevation="18dp"
+                android:text="@string/activity_cart_button_label"
+                android:textColor="@color/white100"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalPriceContainer" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
