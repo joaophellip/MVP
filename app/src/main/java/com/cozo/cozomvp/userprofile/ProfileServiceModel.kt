@@ -1,5 +1,6 @@
 package com.cozo.cozomvp.userprofile
 
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -47,6 +48,7 @@ class ProfileServiceModel {
     }
 
     fun loadUserProfileFromBackEnd(token: String): Observable<UserModel>{
+        IdleResourceInterceptor.getInstance().stackCall("ProfileServiceModel - loadUserProfileFromBackEnd")
         return profileServiceAPI.loadUserProfile(token)
     }
 }

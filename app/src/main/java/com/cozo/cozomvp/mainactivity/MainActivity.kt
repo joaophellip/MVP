@@ -21,6 +21,7 @@ import com.cozo.cozomvp.R
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import com.cozo.cozomvp.SettingsActivity
 import com.cozo.cozomvp.cartactivity.CartActivity
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomFragment
 import com.cozo.cozomvp.mainactivity.bottomfragments.WhileChoosingItemsBottomView
 import com.cozo.cozomvp.mainactivity.listfragment.ListFragmentView
@@ -38,7 +39,6 @@ import com.cozo.cozomvp.userprofileactivity.UserProfileActivity
 import com.google.gson.Gson
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.cardview_order.*
 import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
@@ -435,6 +435,11 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     private fun hideContainers(){
         actionContainer.visibility = View.GONE
         cartContainer.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        IdleResourceInterceptor.getInstance().popCall("MainActivity - onStart")
     }
 
     companion object {

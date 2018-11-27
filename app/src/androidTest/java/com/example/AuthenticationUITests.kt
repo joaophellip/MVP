@@ -1,14 +1,14 @@
 package com.example
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.IdlingRegistry
+import android.support.test.espresso.intent.Intents
+import android.support.test.espresso.intent.Intents.intended
+import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.cozo.cozomvp.R
 import com.cozo.cozomvp.authentication.AuthActivity
+import com.cozo.cozomvp.emptyactivity.EmptyActivity
+import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,12 +19,40 @@ class AuthenticationUITests {
 
     @Rule
     @JvmField
-    val mActivity = ActivityTestRule<AuthActivity>(AuthActivity::class.java)
+    val mActivity = ActivityTestRule<EmptyActivity>(EmptyActivity::class.java)
+
+    @Before
+    fun setup(){
+        Intents.init()
+        IdlingRegistry.getInstance().register(IdleResourceInterceptor.getInstance())
+    }
+
+    /*@Test
+    fun launchMainActivity(){
+        intended(hasComponent(MainActivity::class.java.name))
+    }*/
 
     @Test
+    fun launchAuthActivity(){
+        intended(hasComponent(AuthActivity::class.java.name))
+    }
+
+    //https://stackoverflow.com/questions/30733718/how-to-use-espresso-idling-resource-for-network-calls
+
+    /*@Test
     fun testEmptyLogIn(){
         onView(withId(R.id.authButton)).perform(click())
         onView(withId(R.id.subTitleText))
                 .check(matches(withText("Invalid Number. Please try again")))
-    }
+    }*/
+
+    /*@Test
+    fun testFakeUserLogin(){
+        val number = "59911111111"
+        val verif_code = "123456"
+        onView(withId(R.id.phoneNumberEditText)).perform(typeText(number), closeSoftKeyboard())
+        onView(withId(R.id.authButton)).perform(click())
+        onView(withId(R.id.progressBar))
+                .check(matches(isDisplayed()))
+    }*/
 }

@@ -16,6 +16,11 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
             it.showLoading() }
 
         mAuthModel = AuthModel(object : AuthInterfaces.Presenter.OnRequestAuthListener {
+            override fun smsAutoRetrievalTimedOut() {
+                ifViewAttached {
+                    it.popUpViewForEnterSmsCode()
+                }
+            }
             override fun onAuthAndLinkedCompleted() {
                 ifViewAttached {
                     it.showMainActivity()
@@ -90,4 +95,7 @@ class AuthPresenter : MvpBasePresenter<AuthView>(), AuthInterfaces.Presenter {
         mAuthModel.signOutModel(mGoogleSignInClient, mAuth)
     }
 
+    override fun onSmsCodeEntered(smsCode: String) {
+        mAuthModel.authenticateWithSmsCode(smsCode)
+    }
 }

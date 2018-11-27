@@ -85,6 +85,11 @@ class AuthActivity : MvpActivity<AuthView, AuthPresenter>(), AuthView {
         signIn()
     }
 
+    override fun popUpViewForEnterSmsCode() {
+        //harded-coded - enter from user later
+        presenter.onSmsCodeEntered("123456")
+    }
+
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)

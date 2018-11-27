@@ -30,9 +30,7 @@ class ProfileServiceImpl : IProfileService {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.d("DebugXPTO","Post OK")
                 },{
-                    Log.d("DebugXPTO","Post Error")
                 })
         user = userProfile
         return true
