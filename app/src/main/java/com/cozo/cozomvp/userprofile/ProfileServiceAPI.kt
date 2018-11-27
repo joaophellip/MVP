@@ -8,12 +8,13 @@ import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.util.concurrent.TimeUnit
 
 interface ProfileServiceAPI{
 
@@ -47,15 +48,24 @@ interface ProfileServiceAPI{
     companion object {
         fun create(baseUrl: String? = null): ProfileServiceAPI {
 
-            val okHttpClient: OkHttpClient = OkHttpClient.Builder().addInterceptor(IdleResourceInterceptor.getInstance()).build()
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.HEADERS
+            val client = OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS)
+
+            val okHttpClient: OkHttpClient = client.addInterceptor(logging)
+                    .addInterceptor(IdleResourceInterceptor.getInstance())
+                    .build()
             okHttpClient.dispatcher().setIdleCallback(IdleResourceInterceptor.getInstance())
+
             val defaultUrl = "https://us-central1-cozo-platform-version-1.cloudfunctions.net"
+
             val retrofit: Retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(okHttpClient)
                     .baseUrl(baseUrl ?: defaultUrl)
                     .build()
+
             return retrofit.create(ProfileServiceAPI::class.java)
         }
     }

@@ -1,6 +1,5 @@
 package com.cozo.cozomvp.emptyactivity
 
-import com.cozo.cozomvp.authentication.validationservice.ValidationService
 import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.paymentapi.PaymentAPIService
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
@@ -18,7 +17,7 @@ class EmptyPresenter : MvpBasePresenter<EmptyView>(),
 
         // retrieve payment API authorization token
         emptyModel = EmptyModel(this)
-        IdleResourceInterceptor.getInstance().stackCall()
+        IdleResourceInterceptor.getInstance().stackCall("EmptyPresenter - onCreateInvoked")
         retrieveAuthorizationToken()
     }
 
@@ -42,7 +41,7 @@ class EmptyPresenter : MvpBasePresenter<EmptyView>(),
 
                             // check whether a user is logged in app
                             emptyModel.getCurrentUser()
-                            IdleResourceInterceptor.getInstance().popCall()
+                            IdleResourceInterceptor.getInstance().popCall("EmptyPresenter - retrieveAuthorizationToken")
 
                         },
                         {

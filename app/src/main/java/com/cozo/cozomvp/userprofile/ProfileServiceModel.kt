@@ -48,7 +48,7 @@ class ProfileServiceModel {
     }
 
     fun loadUserProfileFromBackEnd(token: String): Observable<UserModel>{
-        IdleResourceInterceptor.getInstance().stackCall()
+        IdleResourceInterceptor.getInstance().stackCall("ProfileServiceModel - loadUserProfileFromBackEnd")
         return profileServiceAPI.loadUserProfile(token)
     }
 }

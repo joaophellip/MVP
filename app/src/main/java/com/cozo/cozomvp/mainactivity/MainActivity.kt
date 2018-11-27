@@ -39,7 +39,6 @@ import com.cozo.cozomvp.userprofileactivity.UserProfileActivity
 import com.google.gson.Gson
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.cardview_order.*
 import org.jetbrains.anko.toast
 
 class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragmentView.MainActivityListener,
@@ -440,7 +439,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
 
     override fun onStart() {
         super.onStart()
-        IdleResourceInterceptor.getInstance().popCall()
+        IdleResourceInterceptor.getInstance().popCall("MainActivity - onStart")
     }
 
     companion object {

@@ -6,7 +6,6 @@ import retrofit2.http.Query
 import io.reactivex.Observable
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -55,15 +54,18 @@ interface APIServices{
 
     companion object {
         fun create(baseUrl: String? = null): APIServices {
-            // Variables used for testing API using an interceptor
+
             val logging = HttpLoggingInterceptor()
-            val defaultUrl = "https://us-central1-cozo-platform-version-1.cloudfunctions.net"
             logging.level = HttpLoggingInterceptor.Level.HEADERS
             val client = OkHttpClient.Builder().readTimeout(30,TimeUnit.SECONDS)
+
             val okHttpClient = client.addInterceptor(logging)
                     .addInterceptor(IdleResourceInterceptor.getInstance())
                     .build()
             okHttpClient.dispatcher().setIdleCallback(IdleResourceInterceptor.getInstance())
+
+            val defaultUrl = "https://us-central1-cozo-platform-version-1.cloudfunctions.net"
+
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())

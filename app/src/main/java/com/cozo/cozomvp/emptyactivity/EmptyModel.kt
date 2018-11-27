@@ -1,7 +1,6 @@
 package com.cozo.cozomvp.emptyactivity
 
 import com.cozo.cozomvp.authentication.validationservice.PhoneValidationServiceImpl
-import com.cozo.cozomvp.authentication.validationservice.ValidationService
 import com.cozo.cozomvp.networkapi.APIServices
 import com.cozo.cozomvp.networkapi.AuthorizationToken
 import io.reactivex.Observable

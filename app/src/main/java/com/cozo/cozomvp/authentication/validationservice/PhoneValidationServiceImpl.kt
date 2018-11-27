@@ -36,13 +36,15 @@ class PhoneValidationServiceImpl(private var phoneUtil: PhoneNumberUtil,
             // tries to refresh user data from Firebase servers. Forces user to login when refresh
             // fails, which means either Token is no longer valid or User has been deleted/disabled
             // from DB
-            IdleResourceInterceptor.getInstance().stackCall()
+            IdleResourceInterceptor.getInstance().stackCall("PhoneValidationServiceImpl - isThereALoggedUser - reload")
             user.reload().addOnCompleteListener { mTask ->
-                IdleResourceInterceptor.getInstance().popCall()
+                IdleResourceInterceptor.getInstance().popCall("PhoneValidationServiceImpl - isThereALoggedUser - reload")
                 if (mTask.isSuccessful){
                     //retrieve userProfile from backend
                     this.emptyModel = emptyModel
+                    IdleResourceInterceptor.getInstance().stackCall("PhoneValidationServiceImpl - isThereALoggedUser - getTokenId")
                     user.getIdToken(true).addOnSuccessListener{
+                        IdleResourceInterceptor.getInstance().popCall("PhoneValidationServiceImpl - isThereALoggedUser - getTokenId")
                         ProfileServiceImpl.getInstance().loadUserProfile(it.token!!, this)
                     }
                 } else {

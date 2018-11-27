@@ -1,15 +1,17 @@
 package com.cozo.cozomvp.helpers
 
 import okhttp3.Interceptor
-import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.IdlingResource
 import android.util.Log
 import okhttp3.Response
 import java.util.*
 
 class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
 
-    val stack : Stack<Int> = Stack()
-    var outerCall: Boolean = false
+    private val stack : Stack<Int> = Stack()
+    private val outerCallStack : Stack<Int> = Stack()
+
+    //var outerCall: Boolean = false
 
     @Volatile
     var callback: IdlingResource.ResourceCallback? = null
@@ -18,14 +20,19 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
         return "idleResourceInterceptor"
     }
 
-    fun stackCall() {
-        Log.d("DeuRuim","outer call started")
-        outerCall = true;
+    fun stackCall(tag: String) {
+        Log.d("DeuRuim","outer call started on $tag")
+        //outerCall = true;
+        outerCallStack.push(1)
     }
 
-    fun popCall() {
-        Log.d("DeuRuim","outer call ended")
-        outerCall = false
+    fun popCall(tag: String) {
+        Log.d("DeuRuim","outer call ended on $tag")
+        //outerCall = false
+        outerCallStack.pop()    // treat EmptyStackException
+        if(outerCallStack.isEmpty() && this.callback != null){
+            this.callback!!.onTransitionToIdle()
+        }
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -40,8 +47,10 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
     }
 
     override fun isIdleNow(): Boolean {
-        Log.d("DeuRuim","is Idle? ${stack.isEmpty() && !outerCall}")
-        return stack.isEmpty() && !outerCall
+        //Log.d("DeuRuim","is Idle? ${stack.isEmpty() && !outerCall}")
+        //return stack.isEmpty() && !outerCall
+        Log.d("DeuRuim","is Idle? ${stack.isEmpty()} and ${outerCallStack.isEmpty()}")
+        return stack.isEmpty() && outerCallStack.isEmpty()
     }
 
     override fun registerIdleTransitionCallback(callback: IdlingResource.ResourceCallback?) {
@@ -62,7 +71,7 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
         private var aInstance = IdleResourceInterceptor()
 
         fun getInstance() : IdleResourceInterceptor {
-            return aInstance;
+            return aInstance
         }
     }
 }

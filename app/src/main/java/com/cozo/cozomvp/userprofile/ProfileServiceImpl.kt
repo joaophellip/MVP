@@ -1,7 +1,6 @@
 package com.cozo.cozomvp.userprofile
 
 import android.util.Log
-import com.cozo.cozomvp.helpers.IdleResourceInterceptor
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -31,9 +30,7 @@ class ProfileServiceImpl : IProfileService {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.d("DebugXPTO","Post OK")
                 },{
-                    Log.d("DebugXPTO","Post Error")
                 })
         user = userProfile
         return true
