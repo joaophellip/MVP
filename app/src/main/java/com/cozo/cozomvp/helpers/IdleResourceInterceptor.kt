@@ -11,8 +11,6 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
     private val stack : Stack<Int> = Stack()
     private val outerCallStack : Stack<Int> = Stack()
 
-    //var outerCall: Boolean = false
-
     @Volatile
     var callback: IdlingResource.ResourceCallback? = null
 
@@ -21,15 +19,15 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
     }
 
     fun stackCall(tag: String) {
-        Log.d("DeuRuim","outer call started on $tag")
-        //outerCall = true;
+        Log.d("IdleDebug","outer call started on $tag")
         outerCallStack.push(1)
     }
 
     fun popCall(tag: String) {
-        Log.d("DeuRuim","outer call ended on $tag")
-        //outerCall = false
-        outerCallStack.pop()    // treat EmptyStackException
+        Log.d("IdleDebug","outer call ended on $tag")
+        if (!outerCallStack.isEmpty()){
+            outerCallStack.pop()
+        }
         if(outerCallStack.isEmpty() && this.callback != null){
             this.callback!!.onTransitionToIdle()
         }
@@ -37,7 +35,7 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         stack.push(1)
-        Log.d("DeuRuim","stacking... ${chain.request().url().encodedPath()}")
+        Log.d("IdleDebug","stacking ... ${chain.request().url().encodedPath()}")
         val res = chain.proceed(chain.request())
         stack.pop()
         if(stack.isEmpty() && this.callback != null) {
@@ -47,9 +45,7 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
     }
 
     override fun isIdleNow(): Boolean {
-        //Log.d("DeuRuim","is Idle? ${stack.isEmpty() && !outerCall}")
-        //return stack.isEmpty() && !outerCall
-        Log.d("DeuRuim","is Idle? ${stack.isEmpty()} and ${outerCallStack.isEmpty()}")
+        Log.d("IdleDebug","is Idle? ${stack.isEmpty()} and ${outerCallStack.isEmpty()}")
         return stack.isEmpty() && outerCallStack.isEmpty()
     }
 
@@ -57,14 +53,7 @@ class IdleResourceInterceptor : Interceptor, IdlingResource, Runnable {
         this.callback = callback
     }
 
-    override fun run() {
-//        stack.clear()
-//        Log.d("DeuRuim","called run")
-//        if(this.callback != null && !outerCall) {
-//            Log.d("DeuRuim","idling....")
-//            this.callback!!.onTransitionToIdle()
-//        }
-    }
+    override fun run() {}
 
     companion object {
 

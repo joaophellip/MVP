@@ -9,7 +9,6 @@ import android.support.test.runner.AndroidJUnit4
 import com.cozo.cozomvp.authentication.AuthActivity
 import com.cozo.cozomvp.emptyactivity.EmptyActivity
 import com.cozo.cozomvp.helpers.IdleResourceInterceptor
-import com.cozo.cozomvp.mainactivity.MainActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
