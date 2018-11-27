@@ -2,12 +2,10 @@ package com.cozo.cozomvp.cartactivity
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.cozo.cozomvp.R
 import com.cozo.cozomvp.cartactivity.listfragment.ListFragment
 import com.cozo.cozomvp.cartactivity.listfragment.ListView
-import com.cozo.cozomvp.mainactivity.MainActivity
 import com.cozo.cozomvp.usercart.OrderModel
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import kotlinx.android.synthetic.main.activity_cart.*
@@ -31,7 +29,7 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
                 .commit()
 
         //set confirmButton onClickListener
-        confirmOrder.setOnClickListener(this)
+        activityCartConfirmOrderButton.setOnClickListener(this)
     }
 
     override fun onCompleteListFragment(fragment: ListFragment) {
@@ -60,7 +58,7 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
         val formattedTotalPrice: String = String.format("%02.2f", total).replace(".",",")
 
         //show total in screen
-        totalOrderPrice.text = applicationContext.getString(R.string.total_label, formattedTotalPrice)
+        activityCartPrice.text = applicationContext.getString(R.string.total_label, formattedTotalPrice)
 
         //pass orders to list fragment
         listFragment.updateRecyclerView(orders)
@@ -77,7 +75,7 @@ class CartActivity: MvpActivity<CartView, CartPresenter>(), CartView, ListView.C
 
     override fun onClick(v: View?) {
         when(v){
-            confirmOrder -> {
+            activityCartConfirmOrderButton -> {
                 presenter.onConfirmOrderButtonClicked()
             }
         }

@@ -28,10 +28,10 @@ class CartPresenter: MvpBasePresenter<CartView>(), ICartPresenter {
     }
 
     override fun onConfirmOrderButtonClicked() {
-        // open mainActivity partner select window
-        ifViewAttached { it ->
+        // confirm to back end...
+        /*ifViewAttached { it ->
             it.returnToParentActivity()
-        }
+        }*/
     }
 
     override fun onDiscountCodeSet(discountCode: String) {

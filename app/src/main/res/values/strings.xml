@@ -166,7 +166,6 @@
     <string name="cardview_preview_default_delivery_price">R$ 7,50 - R$ 10,00</string>
     <string name="cardview_preview_delivery_price">R$ %1$s - R$ %2$s</string>
 
-
     <!-- Strings for activity_cart.xml -->
     <string name="activity_cart_label">Resumo do pedido</string>
     <string name="activity_cart_total_label">Total</string>
