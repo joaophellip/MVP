@@ -1,15 +1,13 @@
 package com.cozo.cozomvp.networkapi
 
 import com.cozo.cozomvp.helpers.IdleResourceInterceptor
-import retrofit2.http.GET
-import retrofit2.http.Query
 import io.reactivex.Observable
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Path
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -51,6 +49,9 @@ interface APIServices{
 
     @GET("config/authentication")
     fun authenticationToken(): Observable<AuthorizationToken>
+
+    @POST("order/new")
+    fun sendOrderToBackEnd(@Body order: OrderConfirmation): Observable<OrderConfirmationResponse>
 
     companion object {
         fun create(baseUrl: String? = null): APIServices {

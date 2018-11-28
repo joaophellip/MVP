@@ -8,8 +8,7 @@ import com.cozo.cozomvp.mainactivity.inflatedlayouts.ItemDetailsFragment
 import com.cozo.cozomvp.mainactivity.inflatedlayouts.ReviewCartFragment
 import com.cozo.cozomvp.mainactivity.listfragment.LocalListFragment
 import com.cozo.cozomvp.mainactivity.mapfragment.LocalMapFragment
-import com.cozo.cozomvp.networkapi.APIServices
-import com.cozo.cozomvp.networkapi.NetworkModel
+import com.cozo.cozomvp.networkapi.*
 import com.cozo.cozomvp.usercart.CartServiceImpl
 import com.cozo.cozomvp.usercart.OrderModel
 import com.cozo.cozomvp.userprofile.ProfileServiceImpl
@@ -25,7 +24,6 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private lateinit var mUserLocation: NetworkModel.Location
     private lateinit var mUserFormattedAddress: String
-
     private lateinit var disposable: Disposable
 
     // variable to hold current state of listFragment
@@ -243,8 +241,13 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onPartnerCardViewClicked(data: NetworkModel.PartnerMetadata) {
         ifViewAttached {
+            // draw route on map
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onPartnerCardViewClicked(data.partnerID)
+
+            // add delivery price to total
+            addDeliveryPriceToTotal(data.totalPrice)
+
         }
     }
 
@@ -350,6 +353,34 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             val mapFragment: LocalMapFragment = it.onMapFragmentRequired()
             mapFragment.onRestaurantCardViewClicked(data.restaurantID)
             it.showItemDetailsMenu(data)
+        }
+    }
+
+    override fun onChoosingDeliveryPartnerConfirmButtonClicked() {
+        // send order to back end - for now
+        PhoneValidationServiceImpl.getInstance().getCurrentToken().addOnSuccessListener { result ->
+            val cIdToken: String? = result.token
+            val items = mutableListOf<Items>()
+            var totalPrice = 0f
+            CartServiceImpl.myInstance.getOrders().forEach {
+                items.add(Items(it.id.toString(),it.quantity.toString(),it.item.name))
+                totalPrice += it.totalPrice
+            }
+            val orderDetails : OrderDetails
+            ProfileServiceImpl.getInstance().getUserProfile().run {
+                orderDetails = OrderDetails(this!!.name,this.avatarUrl!!,this.phone,"",totalPrice,items)
+            }
+            val orderConfirmation = OrderConfirmation(cIdToken!!, "BhfUZK1wiYYDCBPEOUaHWHZYe7C3",
+                    orderDetails)
+            disposable = APIServices.create().sendOrderToBackEnd(orderConfirmation)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ _ ->
+                        ifViewAttached {
+                            it.displayMessage("Ordem enviada ao restaurante com sucesso")
+                        }
+                    },{
+                    })
         }
     }
 
@@ -500,6 +531,20 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             it.launchWhileChoosingDeliveryPartnerFragment()
         }
     }
+
+    private fun addDeliveryPriceToTotal(deliveryPrice: Float){
+        ifViewAttached {
+
+            var currentPrice = 0f
+            CartServiceImpl.myInstance.getOrders().forEach { order ->
+                currentPrice += order.totalPrice
+            }
+            currentPrice += deliveryPrice
+            // update price text in whileChoosingDeliveryPartnerFragment
+            it.updateWhileChoosingDeliveryPartnerFragmentReadyPrice(String.format("%02.2f", currentPrice).replace(".", ","))
+        }
+    }
+
     companion object {
         const val OTHER_REST = 0
         const val SAME_REST = 1

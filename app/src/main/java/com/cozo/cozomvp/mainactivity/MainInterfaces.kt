@@ -106,4 +106,5 @@ partner ID associated with the card view as argument.
 
     fun onBackStackChanged()
 
+    fun onChoosingDeliveryPartnerConfirmButtonClicked()
 }

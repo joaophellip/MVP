@@ -2,6 +2,7 @@ package com.cozo.cozomvp.networkapi
 
 import android.graphics.Bitmap
 import com.cozo.cozomvp.paymentactivity.PaymentActivity
+import com.cozo.cozomvp.userprofile.Phone
 
 /**
  * This is the singleton model for storing backend responses received through HTTP
@@ -84,3 +85,24 @@ data class UserPreviewDeliveryInfoResponse(
         val maxTime: Int,
         val minPrice: Float,
         val maxPrice: Float)
+
+data class OrderConfirmation(
+        val userIdToken: String,
+        val restaurantIdToken: String,
+        val details : OrderDetails)
+
+data class OrderDetails(
+        val customerName: String,
+        val customerPictureRefID: String,
+        val customerPhone: Phone,
+        val comments: String,
+        val totalPrice: Float,
+        val details: List<Items>)
+
+data class Items(
+        val itemId: String,
+        val amount: String,
+        val itemName: String)
+
+data class OrderConfirmationResponse(
+        val orderId: String)

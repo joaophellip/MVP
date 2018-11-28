@@ -1,7 +1,6 @@
 package com.cozo.cozomvp.mainactivity
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,9 +12,7 @@ import android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -291,8 +288,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
     }
 
     override fun onChoosingDeliveryPartnerConfirmButtonClicked() {
-        //before changing this, work on swipe functionality for container + click on CartIcon
-        //TODO: presenter.onSomething()
+        presenter.onChoosingDeliveryPartnerConfirmButtonClicked()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -433,25 +429,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
             }
         }
     }
-
-    /*override fun showAlertDialog(message: String, title: String) {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(message)
-                .setTitle(title)
-        val positiveCallback = DialogInterface.OnClickListener { dialogState, _ ->
-            //presenter.onAlertPositiveButtonClicked(dialogState)
-        }
-        val negativeCallback = DialogInterface.OnClickListener { dialogState, _ ->
-            //presenter.onAlertNegativeButtonClicked(dialogState)
-        }
-        builder.setPositiveButton("Voltar", positiveCallback)
-        builder.setNegativeButton("Continuar", negativeCallback)
-        }
-
-        val myDialog = builder.create()
-        myDialog.setCanceledOnTouchOutside(false)
-        myDialog.show()
-    }*/
 
     private fun displayContainers() {
         actionContainer.visibility = View.VISIBLE
