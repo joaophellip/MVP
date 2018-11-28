@@ -463,6 +463,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(), MainView, ListFragm
         cartContainer.visibility = View.GONE
     }
 
+    override fun currentInflatedFragment() : String = currentListContainerFragment
+
     override fun onStart() {
         super.onStart()
         IdleResourceInterceptor.getInstance().popCall("MainActivity - onStart")

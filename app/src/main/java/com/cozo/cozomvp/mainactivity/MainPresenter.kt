@@ -34,8 +34,8 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     // variable to hold amount of times back button is pressed successively
     private var backPressCount = 0
 
-    // variable to be used when user clicks on "Choose Deliver Partner" inside ReviewMenu. socketIO
-    // setup can't be done until supportFragment popBackStack function is finished.
+    // variable to be used when user clicks on "Choose Deliver Partner" inside ReviewMenu or ItemsMenu.
+    // The socketIO setup can't be done until supportFragment popBackStack function is finished.
     private var backStackDeliv = false
 
     override fun onActivityCreated(isFirstTimeLogged: Boolean) {
@@ -61,7 +61,11 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         when(currentListState){
             SAME_REST -> {
                 backPressCount += 1
-                if (backPressCount <= 1) {}
+                if (backPressCount <= 1) {
+                    ifViewAttached {
+                        it.displayMessage("Clique novamente para voltar ao menu anterior.")
+                    }
+                }
                 else {
                     goBackToInitialListState()
                 }
@@ -203,13 +207,18 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     override fun onChoosingItemsDeliveryPartnerButtonClicked() {
         ifViewAttached {
-            // send restaurant location to listFragment
-            val mListFragment: LocalListFragment = it.onListFragmentRequired()
-            val restID: String = mListFragment.currentRestID(0) //fix this hardCode
-            provideRestLocation(restID)
+            when(it.currentInflatedFragment()){
+                ItemDetailsFragment.TAG -> {
+                    // hide itemsMenuCart if shown
+                    it.hideOrderDetailsMenu()
 
-            // launch WhileChoosingDeliveryPartnerFragment
-            it.launchWhileChoosingDeliveryPartnerFragment()
+                    // set var to be used when fragment popBackStack finishes
+                    backStackDeliv = true
+                }
+                LocalListFragment.TAG -> {
+                    showDeliveryPartnerCards()
+                }
+            }
         }
     }
 
@@ -226,7 +235,9 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     override fun onBackStackChanged() {
         if(backStackDeliv){
             // mimic behavior of click on bottom fragment when state is choosing items
+            showDeliveryPartnerCards()
             this.onChoosingItemsDeliveryPartnerButtonClicked()
+            backStackDeliv = false
         }
     }
 
@@ -478,6 +489,17 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
         }
     }
 
+    private fun showDeliveryPartnerCards(){
+        ifViewAttached {
+            // send restaurant location to listFragment
+            val mListFragment: LocalListFragment = it.onListFragmentRequired()
+            val restID: String = mListFragment.currentRestID(0) //fix this hardCode
+            provideRestLocation(restID)
+
+            // launch WhileChoosingDeliveryPartnerFragment
+            it.launchWhileChoosingDeliveryPartnerFragment()
+        }
+    }
     companion object {
         const val OTHER_REST = 0
         const val SAME_REST = 1

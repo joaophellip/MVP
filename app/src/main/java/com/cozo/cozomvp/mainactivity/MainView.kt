@@ -139,4 +139,6 @@ Asks activity to return a reference to current WhileChoosingDeliveryPartnerFragm
     fun hideContainers()
 
     fun showAlertDialog(message: String, title: String)
+
+    fun currentInflatedFragment() : String
 }
