@@ -63,7 +63,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
                 backPressCount += 1
                 if (backPressCount <= 1) {
                     ifViewAttached {
-                        it.displayMessage("Clique novamente para voltar ao menu anterior.")
+                        it.displayMessage("Clique novamente para esvaziar o carrinho e voltar ao menu anterior.")
                     }
                 }
                 else {
