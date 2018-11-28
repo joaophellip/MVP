@@ -35,4 +35,4 @@ The authentication package in this project relies on firebase auth external libr
 
 ## License
 
-[Apache License 2.0](http://www.apache.org/licenses/)
+This repository is licensed under the [Apache License 2.0](http://www.apache.org/licenses/). See the [LICENSE.md](LICENSE.md) for the full [Apache License 2.0].
