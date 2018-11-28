@@ -7,15 +7,15 @@
     <item
         android:id="@+id/menu_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:title="Início" />
     <item
         android:id="@+id/menu_payment"
         android:icon="@drawable/ic_credit_card_black_24dp"
-        android:title="Payment" />
+        android:title="Pagamento" />
 
     <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Settings" />
+        android:title="Perfil" />
 
 </menu>

@@ -135,4 +135,8 @@ Asks activity to return a reference to current WhileChoosingDeliveryPartnerFragm
     fun shownFragment() : String
 
     fun goToChoosingItemDiffRestaurantsState()
+
+    fun hideContainers()
+
+    fun showAlertDialog(message: String, title: String)
 }

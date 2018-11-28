@@ -254,6 +254,18 @@ class LocalListFragment : MvpFragment<ListFragmentView, ListPresenter>(), ListFr
         return null
     }
 
+    fun showItemsOtherRestaurants(){
+        mRecyclerView.adapter = mRestaurantsRecyclerAdapter
+        currentCardViewContent = DIFF_RESTAURANT_ITEMS
+        currentRestaurantId = null
+    }
+
+    fun showItemsSameRestaurants(){
+        mRecyclerView.adapter = restaurantItemsRecyclerAdapter
+        currentCardViewContent = SAME_RESTAURANT_ITEMS
+        currentRestaurantId = null
+    }
+
     companion object {
         const val DIFF_RESTAURANT_ITEMS = 0
         const val SAME_RESTAURANT_ITEMS = 1

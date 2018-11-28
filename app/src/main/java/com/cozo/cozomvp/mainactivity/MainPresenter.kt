@@ -28,8 +28,14 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private lateinit var disposable: Disposable
 
+    // variable to hold current state of listFragment
+    private var currentListState: Int = OTHER_REST
+
+    // variable to hold amount of times back button is pressed successively
+    private var backPressCount = 0
+
     // variable to be used when user clicks on "Choose Deliver Partner" inside ReviewMenu. socketIO
-    // setup can be done until supportFragment popBackStack function is finished.
+    // setup can't be done until supportFragment popBackStack function is finished.
     private var backStackDeliv = false
 
     override fun onActivityCreated(isFirstTimeLogged: Boolean) {
@@ -52,10 +58,19 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     }
 
     override fun onBackPressedFromListFragment() {
-        //do nothing pour l'instant
+        when(currentListState){
+            SAME_REST -> {
+                backPressCount += 1
+                if (backPressCount <= 1) {}
+                else {
+                    goBackToInitialListState()
+                }
+            }
+        }
     }
 
     override fun onBackPressedFromItemDetailsMenu() {
+        backPressCount = 0
         ifViewAttached {
 
             // force map to update zoom level and add markers back
@@ -75,6 +90,7 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
     }
 
     override fun onBackPressedFromItemReviewCartMenu() {
+        backPressCount = 0
         ifViewAttached {
 
             // force recycler view to request layout again
@@ -138,6 +154,8 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
             // update cart related elements in UI
             updateCartElementsInUI()
 
+            // update listState
+            currentListState = SAME_REST
         }
     }
 
@@ -153,6 +171,8 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
                 //go back to previous state of choosing items from different restaurants
                 it.goToChoosingItemDiffRestaurantsState()
+
+                goBackToInitialListState()
 
             }
         }
@@ -417,19 +437,49 @@ class MainPresenter : MvpBasePresenter<MainView>(), MainInterfaces {
 
     private fun updateCartElementsInUI(){
         ifViewAttached {
-            if(areThereOrdersInCart()){
+            if(areThereOrdersInCart()) {
                 var currentPrice = 0f
                 CartServiceImpl.myInstance.getOrders().forEach { order ->
                     currentPrice += order.totalPrice
                 }
 
                 // update price text in whileChoosingItemsBottomFragment
-                it.updateWhileChoosingItemsBottomFragmentPrice(String.format("%02.2f", currentPrice).replace(".",","))
+                it.updateWhileChoosingItemsBottomFragmentPrice(String.format("%02.2f", currentPrice).replace(".", ","))
 
                 // update item count in cartContainer inside MainActivity
                 it.updateCartIconQuantityText(CartServiceImpl.myInstance.getOrders().size)
+            } else {
+                // change visibility of cartContainer and actionContainer to gone
+                it.hideContainers()
             }
         }
     }
 
+    private fun goBackToInitialListState(){
+        ifViewAttached {
+            // remove all orders from CartService singleton
+            val ids = mutableListOf<Int>()
+            CartServiceImpl.myInstance.getOrders().forEach { order ->
+                ids.add(order.id)
+            }
+            for(id in ids){
+                CartServiceImpl.myInstance.removeOrder(id)
+            }
+
+            // update UI elements
+            updateCartElementsInUI()
+
+            // listFragment to update list to items from diff restaurants
+            it.onListFragmentRequired().showItemsOtherRestaurants()
+
+            // reset backPressCount and listState
+            backPressCount = 0
+            currentListState = OTHER_REST
+        }
+    }
+
+    companion object {
+        const val OTHER_REST = 0
+        const val SAME_REST = 1
+    }
 }
