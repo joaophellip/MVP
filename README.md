@@ -3,11 +3,11 @@
 [![Build Status](https://travis-ci.org/joaophellip/MVP.svg?branch=master)](https://travis-ci.org/joaophellip/MVP)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ccb2007fb0d7620ea9d1/maintainability)](https://codeclimate.com/github/joaophellip/MVP/maintainability)
 
-Cozo Delivery is a statup whose mission is to build an open and decentralised food delivery community. 
-
 *Code Climate test coverage tool doesn't offer support to Kotlin yet; check [this link](https://docs.codeclimate.com/docs/configuring-test-coverage#section-supported-languages-and-formats) for more information.*
 
 ## About
+
+Cozo Delivery is a statup whose mission is to build an open and decentralised food delivery community. 
 
 This repository contains source code for an Android application. The application is written in Kotlin using the Model-View-Presenter pattern.
 
@@ -32,6 +32,10 @@ You will also need your own Google API key to be able to launch GoogleMaps in de
 ###### Firebase Authentication
 
 The current authentication logic relies on the Firebase SDK Authentication for Android. In order to use it, you will need to setup a project on Google Cloud, add this package to the project, and download the configuration file `google-services.json`. See [this link](https://firebase.google.com/docs/android/setup) for detailed instructions for this setup.
+
+## Contributing
+
+In order to contribute to this project, please refer to the instruction on `CONTRIBUTING.md` file.
 
 ## License
 
