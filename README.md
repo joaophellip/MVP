@@ -35,7 +35,7 @@ The current authentication logic relies on the Firebase SDK Authentication for A
 
 ## Contributing
 
-In order to contribute to this project, please refer to the instruction on `CONTRIBUTING.md` file.
+In order to contribute to this project, please refer to the instruction on [`CONTRIBUTING.md`](CONTRIBUTING.md) file.
 
 ## License
 
